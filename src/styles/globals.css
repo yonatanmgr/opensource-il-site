@@ -105,3 +105,11 @@ a {
     color-scheme: dark;
   }
 }
+
+.projectsGrid{
+  display: flexbox;
+  flex-direction: column;
+  direction: rtl;
+  gap: 15px;
+  
+}

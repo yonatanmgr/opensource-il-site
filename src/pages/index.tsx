@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Project from "@/components/Project";
@@ -95,21 +94,24 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        {data.map((lang) => {
-          return (
-            <div key={lang.language}>
-              <div>{lang.language}</div>
-              {lang.projects.map((proj) => (
-                <Project
-                  name={proj.name}
-                  description={proj.desc}
-                  url={proj.url}
-                  key={proj.url}
-                />
-              ))}
-            </div>
-          );
-        })}
+        <div className="projectsGrid">
+          {data.map((lang) => {
+            return (
+              <div key={lang.language}>
+                <div>{lang.language}</div>
+                {lang.projects.map((proj) => (
+                  <Project
+                    image="https://opengraph.githubassets.com/test"
+                    name={proj.name}
+                    description={proj.desc}
+                    url={proj.url}
+                    key={proj.url}
+                  />
+                ))}
+              </div>
+            );
+          })}
+        </div>
       </main>
     </>
   );
