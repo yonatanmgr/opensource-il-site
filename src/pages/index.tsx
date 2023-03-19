@@ -38,6 +38,8 @@ export default function Home() {
 
           const processLinks = (headerContent: string) => {
             const parseLink = (proj: string) => {
+              console.log(proj);
+              
               const [, name, url, desc] = proj.match(
                 /\[(.+)\]\((.+)\) - (.+)/
               ) as Array<string>;
