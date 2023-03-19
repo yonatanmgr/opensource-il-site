@@ -38,18 +38,26 @@ export default function Home() {
 
           const processLinks = (headerContent: string) => {
             const parseLink = (proj: string) => {
-              
-              const [, name, url, desc] = proj.match(
+              const res = proj.match(
                 /\[(.+)\]\((.+)\) - (.+)/
               ) as RegExpMatchArray;
-              const cleanDesc = (desc: string) => {
-                return desc.replace(/!\[(.+)\]\(.+\)/, "");
-              };
-              return {
-                name: name,
-                url: url,
-                desc: cleanDesc(desc).trim(),
-              };
+              
+              if (res) {
+                const [, name, url, desc] = res;
+                const cleanDesc = (desc: string) => {
+                  return desc.replace(/!\[(.+)\]\(.+\)/, "");
+                };
+                return {
+                  name: name,
+                  url: url,
+                  desc: cleanDesc(desc).trim(),
+                };
+              }
+              else return {
+                name: "ERR",
+                url: "ERR",
+                desc: "ERR",
+              }
             };
 
             const contMatch = headerContent.match(/(?<=\* ).*/gm);
@@ -72,7 +80,6 @@ export default function Home() {
         const results = processHeader((langs as string[])[0]);
         setData(results);
         console.log(results);
-        
       });
   }, []);
 
