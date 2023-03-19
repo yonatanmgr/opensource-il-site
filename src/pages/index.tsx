@@ -94,11 +94,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <div className="projectsGrid">
+        <div className="langsList">
           {data.map((lang) => {
             return (
               <div key={lang.language}>
-                <div>{lang.language}</div>
+                <div className="projectGrid">{lang.language}</div>
                 {lang.projects.map((proj) => (
                   <Project
                     image="https://opengraph.githubassets.com/test"

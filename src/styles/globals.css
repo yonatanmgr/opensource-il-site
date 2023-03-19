@@ -106,10 +106,36 @@ a {
   }
 }
 
-.projectsGrid{
-  display: flexbox;
+.langsList{
+  display: flex;
   flex-direction: column;
   direction: rtl;
   gap: 15px;
-  
+}
+
+.projectList{
+  display: flex;
+  max-width: 50%;
+  height: auto;
+  flex-direction: row;
+  direction: rtl;
+  gap: 15px;
+}
+
+.projectBlock{
+  display: flex;
+  max-width: 120px;
+  max-height: 80px;
+  flex-direction: column;
+}
+
+.projectPreview{
+  width: 100%;
+  height: 60px;
+}
+
+.projectName{
+  width: 100%;
+  height: 20px;
+  direction: rtl;
 }
