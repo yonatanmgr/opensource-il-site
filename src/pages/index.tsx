@@ -41,7 +41,7 @@ export default function Home() {
               const res = proj.match(
                 /\[(.+)\]\((.+)\) - (.+)/
               ) as RegExpMatchArray;
-              
+
               if (res) {
                 const [, name, url, desc] = res;
                 const cleanDesc = (desc: string) => {
@@ -52,12 +52,12 @@ export default function Home() {
                   url: url,
                   desc: cleanDesc(desc).trim(),
                 };
-              }
-              else return {
-                name: "ERR",
-                url: "ERR",
-                desc: "ERR",
-              }
+              } else
+                return {
+                  name: "ERR",
+                  url: "ERR",
+                  desc: "ERR",
+                };
             };
 
             const contMatch = headerContent.match(/(?<=\* ).*/gm);
@@ -94,7 +94,13 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}></main>
+      <main className={styles.main}>
+        {data[0].projects.map((proj) => {
+          return (
+            <Project name={proj.name} description={proj.desc} url={proj.url} key={proj.url}/>
+          );
+        })}
+      </main>
     </>
   );
 }
