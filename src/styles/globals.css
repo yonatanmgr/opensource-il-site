@@ -120,7 +120,6 @@ a {
 
 .projectGrid{
   display: flex;
-  max-width: 50%;
   height: auto;
   flex-direction: row;
   direction: rtl;
