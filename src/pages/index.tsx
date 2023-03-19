@@ -95,9 +95,19 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        {data[0].projects.map((proj) => {
+        {data.map((lang) => {
           return (
-            <Project name={proj.name} description={proj.desc} url={proj.url} key={proj.url}/>
+            <div key={lang.language}>
+              <div>{lang.language}</div>
+              {lang.projects.map((proj) => (
+                <Project
+                  name={proj.name}
+                  description={proj.desc}
+                  url={proj.url}
+                  key={proj.url}
+                />
+              ))}
+            </div>
           );
         })}
       </main>
