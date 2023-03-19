@@ -98,7 +98,7 @@ export default function Home() {
           {data.map((lang) => {
             return (
               <div key={lang.language} className="language">
-                <h2>{lang.language}</h2>
+                <h1>{lang.language}</h1>
                 <div className="projectGrid">
                   {lang.projects.map((proj) => (
                     <Project

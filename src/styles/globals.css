@@ -111,6 +111,10 @@ a {
   padding-bottom: 40px;
 }
 
+.language>h1 {
+  padding-bottom: 20px;
+}
+
 .langsList{
   display: flex;
   flex-direction: column;
@@ -132,6 +136,18 @@ a {
   width: 320px;
   max-height: 180px;
   flex-direction: column;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid hsla(0,0%, 100%, 0.4);
+  transition: 0.2s;
+}
+
+.projectBlock:hover{
+  transform: scale(1.1);
+}
+
+.projectBlock:active{
+  transform: scale(0.9);
 }
 
 .projectPreview{
@@ -141,6 +157,8 @@ a {
 
 .projectName{
   width: 100%;
-  height: 20px;
+  display: flex;
+  height: 40px;
   direction: rtl;
+  align-items: center;
 }

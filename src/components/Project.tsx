@@ -10,14 +10,18 @@ type ProjectProps = {
 export default function Project(props: ProjectProps) {
   return (
     <div className="projectBlock">
-      <img
-        width={320}
-        height={160}
-        className="projectPreview"
-        src={props.image}
-        alt={props.name}
-      />
-      <div className="projectName">{props.name}</div>
+      <a href={props.url}>
+        <img
+          width={320}
+          height={160}
+          className="projectPreview"
+          src={props.image}
+          alt={props.name}
+        />
+      </a>
+      <div className="projectName">
+        <span>{props.name}</span>
+      </div>
     </div>
   );
 }
