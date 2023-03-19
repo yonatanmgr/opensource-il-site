@@ -124,14 +124,14 @@ a {
 
 .projectBlock{
   display: flex;
-  max-width: 120px;
-  max-height: 80px;
+  max-width: 320px;
+  max-height: 180px;
   flex-direction: column;
 }
 
 .projectPreview{
   width: 100%;
-  height: 60px;
+  height: 160px;
 }
 
 .projectName{

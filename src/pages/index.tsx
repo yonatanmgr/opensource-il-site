@@ -98,16 +98,18 @@ export default function Home() {
           {data.map((lang) => {
             return (
               <div key={lang.language}>
-                <div className="projectGrid">{lang.language}</div>
-                {lang.projects.map((proj) => (
-                  <Project
-                    image="https://opengraph.githubassets.com/test"
-                    name={proj.name}
-                    description={proj.desc}
-                    url={proj.url}
-                    key={proj.url}
-                  />
-                ))}
+                <span>{lang.language}</span>
+                <div className="projectGrid">
+                  {lang.projects.map((proj) => (
+                    <Project
+                      image="https://opengraph.githubassets.com/test"
+                      name={proj.name}
+                      description={proj.desc}
+                      url={proj.url}
+                      key={proj.url}
+                    />
+                  ))}
+                </div>
               </div>
             );
           })}
