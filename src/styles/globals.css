@@ -134,7 +134,7 @@ a {
 .projectBlock{
   display: flex;
   width: 320px;
-  max-height: 180px;
+  max-height: 220px;
   flex-direction: column;
   overflow: hidden;
   border-radius: 10px;
@@ -143,11 +143,11 @@ a {
 }
 
 .projectBlock:hover{
-  transform: scale(1.1);
+  transform: scale(1.06);
 }
 
 .projectBlock:active{
-  transform: scale(0.9);
+  transform: scale(0.98);
 }
 
 .projectPreview{

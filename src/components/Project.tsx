@@ -10,7 +10,7 @@ type ProjectProps = {
 export default function Project(props: ProjectProps) {
   return (
     <div className="projectBlock">
-      <a href={props.url}>
+      <a href={props.url} target="_blank">
         <img
           width={320}
           height={160}
