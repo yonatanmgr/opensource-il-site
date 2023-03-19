@@ -93,6 +93,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+  font-family:Arial, Helvetica, sans-serif;
 }
 
 a {
@@ -106,6 +107,10 @@ a {
   }
 }
 
+.language{
+  padding-bottom: 40px;
+}
+
 .langsList{
   display: flex;
   flex-direction: column;
@@ -113,18 +118,19 @@ a {
   gap: 15px;
 }
 
-.projectList{
+.projectGrid{
   display: flex;
   max-width: 50%;
   height: auto;
   flex-direction: row;
   direction: rtl;
   gap: 15px;
+  flex-wrap: wrap;
 }
 
 .projectBlock{
   display: flex;
-  max-width: 320px;
+  width: 320px;
   max-height: 180px;
   flex-direction: column;
 }

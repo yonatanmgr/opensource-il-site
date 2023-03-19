@@ -97,12 +97,12 @@ export default function Home() {
         <div className="langsList">
           {data.map((lang) => {
             return (
-              <div key={lang.language}>
-                <span>{lang.language}</span>
+              <div key={lang.language} className="language">
+                <h2>{lang.language}</h2>
                 <div className="projectGrid">
                   {lang.projects.map((proj) => (
                     <Project
-                      image="https://opengraph.githubassets.com/test"
+                      image="https://assets-global.website-files.com/6207f5adfd8e615d3d70498b/6261753e28b7772bcf0266a0_Github%20comp.png"
                       name={proj.name}
                       description={proj.desc}
                       url={proj.url}
