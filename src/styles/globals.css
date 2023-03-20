@@ -118,6 +118,7 @@ a {
 .socialLinks {
   display: flex;
   flex-direction: row;
+  direction: ltr;
   align-items: center;
   gap: 25px;
   width: max-content;
@@ -125,8 +126,6 @@ a {
 
 .socialLink {
   overflow: hidden;
-  height: 30px;
-  width: 30px;
 }
 
 .pageTitle{

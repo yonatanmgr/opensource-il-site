@@ -105,9 +105,8 @@ export default function Home() {
               className="socialLink"
             >
               <img
-                width={30}
                 height={30}
-                src="https://www.nicepng.com/png/detail/52-520535_free-files-github-github-icon-png-white.png"
+                src="https://www.nicepng.com/png/full/52-520535_free-files-github-github-icon-png-white.png"
                 alt="github"
               />
             </a>
@@ -119,9 +118,8 @@ export default function Home() {
               className="socialLink"
             >
               <img
-                width={30}
                 height={30}
-                src="https://icon-library.com/images/facebook-png-icon-white/facebook-png-icon-white-18.jpg"
+                src="https://assets.stickpng.com/images/60fea6773d624000048712b5.png"
                 alt="facebook"
               />
             </a>
@@ -133,7 +131,6 @@ export default function Home() {
               className="socialLink"
             >
               <img
-                width={30}
                 height={30}
                 src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6cc3c481a15a141738_icon_clyde_white_RGB.png"
                 alt="discord"
