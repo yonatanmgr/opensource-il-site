@@ -1,3 +1,5 @@
+@import url('https://fonts.cdnfonts.com/css/rubik');
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
@@ -87,13 +89,9 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-  font-family:Arial, Helvetica, sans-serif;
+  background-color: hsl(222, 50%, 15%);
+
+  font-family: Rubik;
 }
 
 a {
@@ -107,12 +105,21 @@ a {
   }
 }
 
+.pageTitle{
+  font-weight: 800;
+  font-size: 50px;
+  line-height: 59px;
+  text-align: right;
+  direction: rtl;
+}
+
 .language{
   padding-bottom: 40px;
 }
 
 .language>h1 {
   padding-bottom: 20px;
+  font-weight: 800;
 }
 
 .langsList{
@@ -161,4 +168,5 @@ a {
   height: 40px;
   direction: rtl;
   align-items: center;
+  background-color: hsl(222, 50%, 36%);
 }
