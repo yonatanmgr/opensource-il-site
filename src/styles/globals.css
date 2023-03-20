@@ -87,7 +87,7 @@ body {
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  color: white;
   background-color: hsl(222, 80%, 5%);
 
   font-family: Rubik;
