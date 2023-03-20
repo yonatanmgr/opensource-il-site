@@ -38,7 +38,7 @@ export default function Home() {
             const parseLink = (proj: string) => {
               const res = proj.match(
                 /\[(.+)\]\((.+)\) - (.+)/
-              ) as RegExpMatchArray;
+              );
 
               if (res) {
                 const [, name, url, desc] = res;
