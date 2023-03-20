@@ -140,15 +140,7 @@ a {
   padding-bottom: 40px;
 }
 
-details summary::-webkit-details-marker {
-  display:none;
-}
-
-summary {
-  cursor: pointer;
-}
-
-.language h1 {
+.language>h1 {
   padding-bottom: 20px;
   font-weight: 800;
 }
