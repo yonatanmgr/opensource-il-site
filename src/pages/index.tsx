@@ -3,8 +3,7 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Project from "@/components/Project";
 import React, { useEffect, useState } from "react";
-const FilterableTable = require('react-filterable-table');
-
+const FilterableTable = require("react-filterable-table");
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +20,7 @@ type LangProps = {
 
 export default function Home() {
   const [data, setData] = useState<LangProps[]>([]);
+  const [table, setTable] = useState<React.ReactElement>();
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -68,9 +68,14 @@ export default function Home() {
             return link;
           };
 
-          const t = (temp as string[]).map((element) => ({
-            projects: processLinks(element, (element.match(getTitle) as string[])[0]),
-          })).flat();
+          const t = (temp as string[])
+            .map((element) => ({
+              projects: processLinks(
+                element,
+                (element.match(getTitle) as string[])[0]
+              ),
+            }))
+            .flat();
 
           return t as LangProps[];
         };
@@ -81,21 +86,53 @@ export default function Home() {
         );
         const results = processHeader((langs as string[])[0]);
 
-        
-
         setData(results);
         console.log(results);
       });
+  }, []);
+
+  useEffect(() => {
+    setTable(
+      <FilterableTable
+        namespace="Projects"
+        initialSort="name"
+        data={data}
+        fields={fields}
+      />
+    );
   }, []);
 
   if (isLoading) return <p>Loading...</p>;
   if (!data) return <p>No profile data</p>;
 
   const fields = [
-    { name: 'name', displayName: "שם הפרויקט", inputFilterable: true, sortable: true },
-    { name: 'description', displayName: "תיאור", inputFilterable: true, exactFilterable: true, sortable: true },
-    { name: 'url', displayName: "קישור", inputFilterable: false, exactFilterable: true, sortable: true },
-    { name: 'language', displayName: "שפה", inputFilterable: true, exactFilterable: true, sortable: true }
+    {
+      name: "name",
+      displayName: "שם הפרויקט",
+      inputFilterable: true,
+      sortable: true,
+    },
+    {
+      name: "description",
+      displayName: "תיאור",
+      inputFilterable: true,
+      exactFilterable: true,
+      sortable: true,
+    },
+    {
+      name: "url",
+      displayName: "קישור",
+      inputFilterable: false,
+      exactFilterable: true,
+      sortable: true,
+    },
+    {
+      name: "language",
+      displayName: "שפה",
+      inputFilterable: true,
+      exactFilterable: true,
+      sortable: true,
+    },
   ];
 
   return (
@@ -151,11 +188,7 @@ export default function Home() {
             </a>
           </div>
         </div>
-        <FilterableTable
-          initialSort="name"
-          data={data}
-          fields={fields}
-        />
+        {table}
         {/* <div className="langsList">
           {data.map((lang) => {
             return (
