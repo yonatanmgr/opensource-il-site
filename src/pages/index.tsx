@@ -3,12 +3,10 @@ import styles from "@/styles/Home.module.css";
 import Project from "@/components/Project";
 import React, { useEffect, useState } from "react";
 import ReactDataGrid from "@inovua/reactdatagrid-community";
-import ComboBox from "@inovua/reactdatagrid-community/packages/ComboBox";
 
 import "@inovua/reactdatagrid-community/index.css";
 import "@inovua/reactdatagrid-community/base.css";
 import "@inovua/reactdatagrid-community/theme/default-dark.css";
-import { TypeColumns } from "@inovua/reactdatagrid-community/types/TypeColumn";
 
 type ProjProps = {
   name: string;
@@ -17,25 +15,10 @@ type ProjProps = {
   language: string;
 };
 
-const projectColumns = [
-  { name: "name", header: "שם הפרויקט", minWidth: 50, defaultFlex: 1 },
-  { name: "desc", header: "תיאור", maxWidth: 1000, defaultFlex: 2 },
-  { name: "url", header: "קישור", maxWidth: 1000, defaultFlex: 1 },
-  { name: "language", header: "שפה", maxWidth: 1000, defaultFlex: 1 },
-];
-
-const companyColumns = [
-  { name: "name", header: "שם החברה", minWidth: 50, defaultFlex: 1 },
-  { name: "url", header: "קישור", maxWidth: 1000, defaultFlex: 1 },
-];
-
 export default function Home() {
-  const [data, setData] = useState<any>([]);
-  const [projectsData, setProjectsData] = useState<ProjProps[]>([]);
+  const [data, setData] = useState<ProjProps[]>([]);
   const [table, setTable] = useState<React.ReactElement>();
-  const [dataSource, setDataSource] = useState("projects");
   const [isLoading, setLoading] = useState(false);
-  const [columns, setColumns] = useState<TypeColumns>();
 
   useEffect(() => {
     setLoading(true);
@@ -97,46 +80,32 @@ export default function Home() {
         );
         const results = processHeader((langs as string[])[0]);
 
-        setProjectsData(results);
+        setData(results);
         console.log(results);
       });
   }, []);
 
   useEffect(() => {
-    switch (dataSource) {
-      case "projects":
-        setColumns(projectColumns);
-        setData(projectsData)
-        break;
-      case "companies":
-        setColumns(companyColumns);
-        setData([{name: "abc", url: "def"}, {name: "ghi", url: "jkl"}])
-        break;
-    
-      default:
-        break;
-    }
-  }, [dataSource]);
+    const columns = [
+      { name: "name", header: "שם הפרויקט", minWidth: 50, defaultFlex: 1 },
+      { name: "desc", header: "תיאור", maxWidth: 1000, defaultFlex: 2 },
+      { name: "url", header: "קישור", maxWidth: 1000, defaultFlex: 1 },
+      { name: "language", header: "שפה", maxWidth: 1000, defaultFlex: 1 },
+    ];
 
-  useEffect(() => {
     const gridStyle = { minHeight: 550 };
 
     setTable(
       <ReactDataGrid
         idProperty="projectsTable"
         rtl={true}
-        columns={(columns as TypeColumns)}
+        columns={columns}
         dataSource={data}
         style={gridStyle}
         theme="default-dark"
       />
     );
   }, [data]);
-
-  const dataSourcePicker = [
-    { id: "projects", label: "פרויקטים" },
-    { id: "companies", label: "חברות" },
-  ];
 
   if (isLoading) return <p>Loading...</p>;
   if (!data) return <p>No profile data</p>;
@@ -193,20 +162,6 @@ export default function Home() {
               />
             </a>
           </div>
-        </div>
-        <div style={{ marginBottom: 20 }}>
-          Theme:{" "}
-          <ComboBox
-            style={{ width: 150 }}
-            inlineFlex
-            collapseOnSelect
-            clearIcon={false}
-            searchable={false}
-            changeValueOnNavigation
-            dataSource={dataSourcePicker}
-            value={dataSource}
-            onChange={setDataSource}
-          />
         </div>
         {table}
         {/* <div className="langsList">
