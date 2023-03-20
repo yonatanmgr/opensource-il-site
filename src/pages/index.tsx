@@ -3,17 +3,19 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Project from "@/components/Project";
 import React, { useEffect, useState } from "react";
+const FilterableTable = require('react-filterable-table');
+
 
 const inter = Inter({ subsets: ["latin"] });
 
 type ProjProps = {
+  language: string;
   name: string;
   url: string;
   desc: string;
 };
 
 type LangProps = {
-  language: string;
   projects: ProjProps[];
 };
 
@@ -35,7 +37,7 @@ export default function Home() {
             /^\s?#{3}([^#{3}]+?)\n([^]+?)(?=^\s?#{3}[^#{3}])/gm
           );
 
-          const processLinks = (headerContent: string) => {
+          const processLinks = (headerContent: string, lang: string) => {
             const parseLink = (proj: string) => {
               const res = proj.match(
                 /\[(.+)\]\((.+)\) - (.+)/
@@ -47,12 +49,14 @@ export default function Home() {
                   return desc.replace(/!\[(.+)\]\(.+\)/, "");
                 };
                 return {
+                  language: lang,
                   name: name,
                   url: url,
                   desc: cleanDesc(desc).trim(),
                 };
               } else
                 return {
+                  language: "ERR",
                   name: "ERR",
                   url: "ERR",
                   desc: "ERR",
@@ -65,9 +69,8 @@ export default function Home() {
           };
 
           const t = (temp as string[]).map((element) => ({
-            language: (element.match(getTitle) as string[])[0],
-            projects: processLinks(element),
-          }));
+            projects: processLinks(element, (element.match(getTitle) as string[])[0]),
+          })).flat();
 
           return t as LangProps[];
         };
@@ -77,6 +80,9 @@ export default function Home() {
           /(?:^|\n)## Projects by main language\s[^\n]*\n(.*?)(?=\n##?\s|$)/gs
         );
         const results = processHeader((langs as string[])[0]);
+
+        
+
         setData(results);
         console.log(results);
       });
@@ -84,6 +90,13 @@ export default function Home() {
 
   if (isLoading) return <p>Loading...</p>;
   if (!data) return <p>No profile data</p>;
+
+  const fields = [
+    { name: 'name', displayName: "שם הפרויקט", inputFilterable: true, sortable: true },
+    { name: 'description', displayName: "תיאור", inputFilterable: true, exactFilterable: true, sortable: true },
+    { name: 'url', displayName: "קישור", inputFilterable: false, exactFilterable: true, sortable: true },
+    { name: 'language', displayName: "שפה", inputFilterable: true, exactFilterable: true, sortable: true }
+  ];
 
   return (
     <>
@@ -138,7 +151,13 @@ export default function Home() {
             </a>
           </div>
         </div>
-        <div className="langsList">
+        <FilterableTable
+          namespace="Projects"
+          initialSort="name"
+          data={data}
+          fields={fields}
+        />
+        {/* <div className="langsList">
           {data.map((lang) => {
             return (
               <div key={lang.language} className="language">
@@ -157,7 +176,7 @@ export default function Home() {
               </div>
             );
           })}
-        </div>
+        </div> */}
       </main>
     </>
   );
