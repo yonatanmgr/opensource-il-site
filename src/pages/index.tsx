@@ -1,12 +1,12 @@
 import Head from "next/head";
-import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Project from "@/components/Project";
 import React, { useEffect, useState } from "react";
 import ReactDataGrid from "@inovua/reactdatagrid-community";
-import "@inovua/reactdatagrid-community/index.css";
 
-const inter = Inter({ subsets: ["latin"] });
+import "@inovua/reactdatagrid-community/index.css";
+import "@inovua/reactdatagrid-community/base.css";
+import "@inovua/reactdatagrid-community/theme/default-dark.css";
 
 type ProjProps = {
   name: string;
