@@ -4,7 +4,7 @@ import styles from "@/styles/Home.module.css";
 import Project from "@/components/Project";
 import React, { useEffect, useState } from "react";
 import ReactDataGrid from "@inovua/reactdatagrid-community";
-import "@inovua/reactdatagrid-enterprise/index.css";
+import "@inovua/reactdatagrid-community/index.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
