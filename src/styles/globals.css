@@ -1,5 +1,4 @@
-@import url('https://fonts.cdnfonts.com/css/rubik');
-
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
@@ -145,7 +144,7 @@ a {
   flex-direction: column;
   overflow: hidden;
   border-radius: 10px;
-  border: 1px solid hsla(0,0%, 100%, 0.4);
+  outline: 1px solid hsl(222, 50%, 25%);
   transition: 0.2s;
 }
 
@@ -168,5 +167,6 @@ a {
   height: 40px;
   direction: rtl;
   align-items: center;
-  background-color: hsl(222, 50%, 36%);
+  justify-content: center;
+  background-color: hsl(222, 50%, 25%);
 }
