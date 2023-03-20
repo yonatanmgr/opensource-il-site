@@ -118,6 +118,7 @@ export default function Home() {
       <FilterableTable
         namespace="Projects"
         initialSort="name"
+        pagersVisible={false}
         data={data}
         fields={fields}
       />
