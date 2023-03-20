@@ -104,6 +104,30 @@ a {
   }
 }
 
+.pageTop{
+  display: flex;
+  flex-direction: row;
+  direction: rtl;
+  height: 80px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.socialLinks {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.socialLink {
+  height: 20px;
+  width: 20px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background-color: white;
+}
+
 .pageTitle{
   font-weight: 800;
   font-size: 50px;
@@ -140,7 +164,7 @@ a {
 .projectBlock{
   display: flex;
   width: 320px;
-  max-height: 220px;
+  max-height: 200px;
   flex-direction: column;
   overflow: hidden;
   border-radius: 10px;
