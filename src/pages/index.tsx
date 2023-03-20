@@ -119,7 +119,7 @@ export default function Home() {
             >
               <img
                 height={30}
-                src="https://assets.stickpng.com/images/60fea6773d624000048712b5.png"
+                src="https://sgwlawfirm.com/wp-content/uploads/2020/12/Facebook_Icon_White.png"
                 alt="facebook"
               />
             </a>
