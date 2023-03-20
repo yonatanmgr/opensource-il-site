@@ -95,7 +95,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <div className="pageTop">
-          <div className="pageTitle">פרויקטי קוד פתוח כחול לבן</div>
+          <div className="pageTitle">פרויקטי קוד פתוח ישראלים</div>
           <div className="socialLinks">
             <a
               rel="noopener"
