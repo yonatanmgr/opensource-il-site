@@ -12,6 +12,7 @@ export default function Project(props: ProjectProps) {
     <div className="projectBlock">
       <a href={props.url} target="_blank">
         <img
+          title={props.description}
           width={320}
           height={160}
           className="projectPreview"
