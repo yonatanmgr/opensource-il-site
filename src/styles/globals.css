@@ -119,16 +119,14 @@ a {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 20px;
+  gap: 25px;
   width: max-content;
 }
 
 .socialLink {
+  overflow: hidden;
   height: 30px;
   width: 30px;
-  border: 1px solid transparent;
-  border-radius: 50%;
-  background-color: white;
 }
 
 .pageTitle{

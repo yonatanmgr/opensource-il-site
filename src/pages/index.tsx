@@ -97,9 +97,48 @@ export default function Home() {
         <div className="pageTop">
           <div className="pageTitle">פרויקטי קוד פתוח ישראלים</div>
           <div className="socialLinks">
-            <div className="socialLink"></div>
-            <div className="socialLink"></div>
-            <div className="socialLink"></div>
+            <a
+              rel="noopener"
+              title="github"
+              href="https://github.com/lirantal/awesome-opensource-israel"
+              target="_blank"
+              className="socialLink"
+            >
+              <img
+                width={30}
+                height={30}
+                src="https://www.nicepng.com/png/detail/52-520535_free-files-github-github-icon-png-white.png"
+                alt="github"
+              />
+            </a>
+            <a
+              rel="noopener"
+              title="facebook"
+              href="https://www.facebook.com/groups/PullRequest"
+              target="_blank"
+              className="socialLink"
+            >
+              <img
+                width={30}
+                height={30}
+                src="https://icon-library.com/images/facebook-png-icon-white/facebook-png-icon-white-18.jpg"
+                alt="facebook"
+              />
+            </a>
+            <a
+              rel="noopener"
+              title="discord"
+              href="https://discord.com/invite/ZmChMVZxpU"
+              target="_blank"
+              className="socialLink"
+            >
+              <img
+                width={30}
+                height={30}
+                src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6cc3c481a15a141738_icon_clyde_white_RGB.png"
+                alt="discord"
+              />
+            </a>
           </div>
         </div>
         <div className="langsList">
