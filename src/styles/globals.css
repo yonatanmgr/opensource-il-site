@@ -187,6 +187,7 @@ a {
 .projectBlock > a{
   width: 100%;
   height: 160px;
+  -webkit-user-drag: none;  
 }
 
 .projectPreview{
