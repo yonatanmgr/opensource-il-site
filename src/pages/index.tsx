@@ -8,18 +8,14 @@ const FilterableTable = require("react-filterable-table");
 const inter = Inter({ subsets: ["latin"] });
 
 type ProjProps = {
-  language: string;
   name: string;
   url: string;
   desc: string;
-};
-
-type LangProps = {
-  projects: ProjProps[];
+  language: string;
 };
 
 export default function Home() {
-  const [data, setData] = useState<LangProps[]>([]);
+  const [data, setData] = useState<ProjProps[]>([]);
   const [table, setTable] = useState<React.ReactElement>();
   const [isLoading, setLoading] = useState(false);
 
@@ -49,35 +45,30 @@ export default function Home() {
                   return desc.replace(/!\[(.+)\]\(.+\)/, "");
                 };
                 return {
-                  language: lang,
                   name: name,
-                  url: url,
                   desc: cleanDesc(desc).trim(),
-                };
+                  url: url,
+                  language: lang,
+                } as ProjProps;
               } else
                 return {
-                  language: "ERR",
                   name: "ERR",
-                  url: "ERR",
                   desc: "ERR",
-                };
+                  url: "ERR",
+                  language: "ERR",
+                } as ProjProps;
             };
 
             const contMatch = headerContent.match(/(?<=\* ).*/gm);
             const link = (contMatch as string[]).map((l) => parseLink(l));
-            return link;
+            return link.flat();
           };
 
-          const t = (temp as string[])
-            .map((element) => ({
-              projects: processLinks(
-                element,
-                (element.match(getTitle) as string[])[0]
-              ),
-            }))
-            .flat();
+          const t = (temp as string[]).map((element) =>
+            processLinks(element, (element.match(getTitle) as string[])[0])
+          ).flat();
 
-          return t as LangProps[];
+          return t as ProjProps[];
         };
 
         setLoading(false);
@@ -92,19 +83,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    setTable(
-      <FilterableTable
-        namespace="Projects"
-        initialSort="name"
-        data={data}
-        fields={fields}
-      />
-    );
-  }, []);
-
-  if (isLoading) return <p>Loading...</p>;
-  if (!data) return <p>No profile data</p>;
-
+    
   const fields = [
     {
       name: "name",
@@ -113,7 +92,7 @@ export default function Home() {
       sortable: true,
     },
     {
-      name: "description",
+      name: "desc",
       displayName: "תיאור",
       inputFilterable: true,
       exactFilterable: true,
@@ -134,6 +113,20 @@ export default function Home() {
       sortable: true,
     },
   ];
+
+    setTable(
+      <FilterableTable
+        namespace="Projects"
+        initialSort="name"
+        data={data}
+        fields={fields}
+      />
+    );
+  }, [data]);
+
+  if (isLoading) return <p>Loading...</p>;
+  if (!data) return <p>No profile data</p>;
+
 
   return (
     <>
