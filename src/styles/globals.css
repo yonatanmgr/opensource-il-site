@@ -88,7 +88,7 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background-color: hsl(222, 50%, 15%);
+  background-color: hsl(222, 80%, 5%);
 
   font-family: Rubik;
 }
@@ -157,7 +157,7 @@ a {
   height: auto;
   flex-direction: row;
   direction: rtl;
-  gap: 15px;
+  gap: 20px;
   flex-wrap: wrap;
 }
 
@@ -168,12 +168,16 @@ a {
   flex-direction: column;
   overflow: hidden;
   border-radius: 10px;
-  outline: 1px solid hsl(222, 50%, 25%);
-  transition: 0.2s;
+  outline: 1px solid hsl(222, 50%, 30%);
+  transition: 0.2s ease;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .projectBlock:hover{
   transform: scale(1.06);
+  box-shadow: 0px 0px 30px hsl(222, 50%, 30%);
+  z-index: 10;
 }
 
 .projectBlock:active{
@@ -186,6 +190,7 @@ a {
 }
 
 .projectPreview{
+  -webkit-user-drag: none;
   width: 100%;
   height: 160px;
 }
@@ -197,5 +202,5 @@ a {
   direction: rtl;
   align-items: center;
   justify-content: center;
-  background-color: hsl(222, 50%, 25%);
+  background-color: hsl(222, 63%, 10%);
 }
