@@ -3,7 +3,8 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Project from "@/components/Project";
 import React, { useEffect, useState } from "react";
-const FilterableTable = require("react-filterable-table");
+import ReactDataGrid from "@inovua/reactdatagrid-community";
+import "@inovua/reactdatagrid-enterprise/index.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -64,9 +65,11 @@ export default function Home() {
             return link.flat();
           };
 
-          const t = (temp as string[]).map((element) =>
-            processLinks(element, (element.match(getTitle) as string[])[0])
-          ).flat();
+          const t = (temp as string[])
+            .map((element) =>
+              processLinks(element, (element.match(getTitle) as string[])[0])
+            )
+            .flat();
 
           return t as ProjProps[];
         };
@@ -83,53 +86,27 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    
-  const fields = [
-    {
-      name: "name",
-      displayName: "שם הפרויקט",
-      inputFilterable: true,
-      sortable: true,
-    },
-    {
-      name: "desc",
-      displayName: "תיאור",
-      inputFilterable: true,
-      exactFilterable: true,
-      sortable: true,
-    },
-    {
-      name: "url",
-      displayName: "קישור",
-      inputFilterable: false,
-      exactFilterable: true,
-      sortable: true,
-    },
-    {
-      name: "language",
-      displayName: "שפה",
-      inputFilterable: true,
-      exactFilterable: true,
-      sortable: true,
-    },
-  ];
+    const columns = [
+      { name: "name", header: "שם הפרויקט", minWidth: 50, defaultFlex: 1 },
+      { name: "desc", header: "תיאור", maxWidth: 1000, defaultFlex: 2 },
+      { name: "url", header: "קישור", maxWidth: 1000, defaultFlex: 1 },
+      { name: "language", header: "שפה", maxWidth: 1000, defaultFlex: 1 },
+    ];
+
+    const gridStyle = { minHeight: 550 };
 
     setTable(
-      <FilterableTable
-        className="projectsTable"
-        namespace="Projects"
-        initialSort="name"
-        topPagerVisible={false}
-        bottomPagerVisible={true}
-        data={data}
-        fields={fields}
+      <ReactDataGrid
+        idProperty="projectsTable"
+        columns={columns}
+        dataSource={data}
+        style={gridStyle}
       />
     );
   }, [data]);
 
   if (isLoading) return <p>Loading...</p>;
   if (!data) return <p>No profile data</p>;
-
 
   return (
     <>
