@@ -98,9 +98,11 @@ export default function Home() {
     setTable(
       <ReactDataGrid
         idProperty="projectsTable"
+        rtl={true}
         columns={columns}
         dataSource={data}
         style={gridStyle}
+        theme="default-dark"
       />
     );
   }, [data]);
