@@ -152,7 +152,6 @@ export default function Home() {
           </div>
         </div>
         <FilterableTable
-          namespace="Projects"
           initialSort="name"
           data={data}
           fields={fields}
