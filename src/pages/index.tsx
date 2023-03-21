@@ -22,7 +22,7 @@ export default function Home() {
 
   useEffect(() => {
     setLoading(true);
-    
+
     fetch(
       "https://raw.githubusercontent.com/lirantal/awesome-opensource-israel/master/README.md"
     )
@@ -37,9 +37,7 @@ export default function Home() {
 
           const processLinks = (headerContent: string, lang: string) => {
             const parseLink = (proj: string) => {
-              const res = proj.match(
-                /\[(.+)\]\((.+)\) - (.+)/
-              );
+              const res = proj.match(/\[(.+)\]\((.+)\) - (.+)/);
 
               if (res) {
                 const [, name, url, desc] = res;
@@ -88,13 +86,13 @@ export default function Home() {
 
   useEffect(() => {
     let headersList = {
-      "Accept": "*/*",
-      "Authorization": "Bearer " + process.env.github_read_token,
-      "Content-Type": "application/json"
-     }
-     
-     let gqlBody = {
-       query: `query ($repoOwner: String!, $repoName: String!) {
+      Accept: "*/*",
+      Authorization: "Bearer " + process.env.github_read_token,
+      "Content-Type": "application/json",
+    };
+
+    let gqlBody = {
+      query: `query ($repoOwner: String!, $repoName: String!) {
        repository(owner: $repoOwner, name: $repoName) {
          languages(first: 3, orderBy: {field: SIZE, direction: DESC}) {
            totalSize
@@ -115,19 +113,19 @@ export default function Home() {
          }
        }
      }`,
-       variables: {"repoOwner":"yonatanmgr","repoName":"mathberet"}
-     }
-     
-     let bodyContent =  JSON.stringify(gqlBody);
-     
-     fetch("https://api.github.com/graphql", { 
-       method: "POST",
-       body: bodyContent,
-       headers: headersList
-     }).then(res => console.log(res.text()));
-          
-  }, [])
-  
+      variables: { repoOwner: "yonatanmgr", repoName: "mathberet" },
+    };
+
+    let bodyContent = JSON.stringify(gqlBody);
+
+    fetch("https://api.github.com/graphql", {
+      method: "POST",
+      body: bodyContent,
+      headers: headersList,
+    })
+      .then((res) => res.text())
+      .then((text) => console.log(text));
+  }, []);
 
   useEffect(() => {
     const columns = [
