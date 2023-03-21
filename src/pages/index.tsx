@@ -84,9 +84,7 @@ export default function Home() {
       });
   }, []);
 
-  useEffect(() => {
-    console.log(process.env.github_read_token);
-    
+  useEffect(() => {    
     let headersList = {
       Accept: "*/*",
       Authorization: `Bearer ${process.env.github_read_token}`,
