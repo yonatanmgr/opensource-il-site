@@ -85,9 +85,11 @@ export default function Home() {
   }, []);
 
   useEffect(() => {    
+    console.log(process.env.github_read_token);
+    
     let headersList = {
       Accept: "*/*",
-      Authorization: `Bearer ${process.env.github_read_token}`,
+      Authorization: `"Bearer ${process.env.github_read_token}"`,
       "Content-Type": "application/json",
     };
 
