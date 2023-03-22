@@ -89,7 +89,7 @@ export default function Home() {
     
     let headersList = {
       Accept: "*/*",
-      Authorization: `"Bearer ${process.env.github_read_token}"`,
+      Authorization: "Bearer " + process.env.github_read_token,
       "Content-Type": "application/json",
     };
 
