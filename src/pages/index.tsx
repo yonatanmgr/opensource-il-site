@@ -40,33 +40,33 @@ export default function Home() {
   useEffect(() => {
     setLoading(true);
 
-    fetch("https://os-il-api.vercel.app/api/reposdb", {mode: "no-cors"})
+    fetch("https://os-il-api.vercel.app/api/reposdb")
       .then((res) => res.json())
       .then((data) => {
-        
-        setData((data as {repository: RepoProps}[]).map((proj) => {
-          const projectObject = proj.repository;
-          const projectOwner = projectObject.nameWithOwner.split("/")[0];
-          const projectName = projectObject.nameWithOwner.split("/")[1];
-          const projectDescription = projectObject.shortDescriptionHTML;
-          const projectLastCommit = projectObject.pushedAt
+        setData(
+          (data as { repository: RepoProps }[]).map((proj) => {
+            const projectObject = proj.repository;
+            const projectOwner = projectObject.nameWithOwner.split("/")[0];
+            const projectName = projectObject.nameWithOwner.split("/")[1];
+            const projectDescription = projectObject.shortDescriptionHTML;
+            const projectLastCommit = projectObject.pushedAt;
 
-          return {
-            "owner": projectOwner,
-            "name": projectName,
-            "description": projectDescription,
-            "lastCommit": projectLastCommit,
-          };
-        }));
+            return {
+              owner: projectOwner,
+              name: projectName,
+              description: projectDescription,
+              lastCommit: projectLastCommit,
+            };
+          })
+        );
       });
   }, []);
 
   useEffect(() => {
     setLoading(false);
     // console.log(data);
-    setTable(<ReactTable repoData={data}/>);
+    setTable(<ReactTable repoData={data} />);
   }, [data]);
-
 
   if (isLoading) return <p>Loading...</p>;
   if (!data) return <p>No profile data</p>;
