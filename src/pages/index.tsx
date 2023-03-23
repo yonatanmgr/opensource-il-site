@@ -40,7 +40,7 @@ export default function Home() {
   useEffect(() => {
     setLoading(true);
 
-    fetch("https://os-il-api.vercel.app/api/reposdb")
+    fetch("https://os-il-api.vercel.app/api/reposdb", {mode: "no-cors"})
       .then((res) => res.json())
       .then((data) => {
         
