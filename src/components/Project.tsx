@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 type ProjectProps = {
+  setReadme: (name: string) => void;
   name: string;
   url: string;
   image: string;
@@ -9,8 +10,8 @@ type ProjectProps = {
 
 export default function Project(props: ProjectProps) {
   return (
-    <div className="projectBlock">
-      <a href={props.url} target="_blank">
+    <div className="projectBlock" onClick={() => props.setReadme(props.url)}>
+      <div>
         <img
           title={props.description}
           width={320}
@@ -19,10 +20,10 @@ export default function Project(props: ProjectProps) {
           src={props.image}
           alt={props.name}
         />
-      </a>
-      <div className="projectName">
-        <span>{props.name}</span>
       </div>
+      <a href={props.url} target="_blank" className="projectName">
+        <span>{props.name}</span>
+      </a>
     </div>
   );
 }
