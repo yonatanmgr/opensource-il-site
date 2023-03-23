@@ -2,109 +2,71 @@ import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import Project from "@/components/Project";
 import React, { useEffect, useState } from "react";
-import ReactDataGrid from "@inovua/reactdatagrid-community";
+import { createColumnHelper } from "@tanstack/react-table";
+import ReactTable from "@/components/Table";
 
-import "@inovua/reactdatagrid-community/index.css";
-import "@inovua/reactdatagrid-community/base.css";
-import "@inovua/reactdatagrid-community/theme/default-dark.css";
+type RepoProps = {
+  nameWithOwner: string;
+  languages: {
+    edges: {
+      size: number;
+      node: { name: string };
+    }[];
+  };
+  openGraphImageUrl: string;
+  pushedAt: string;
+  shortDescriptionHTML: string;
+  upcase?: { text: string } | null;
+};
 
-type ProjProps = {
+type orgProps = {
+  repositories: {
+    nodes: RepoProps[];
+  };
+};
+
+export type RepoColumns = {
   name: string;
-  url: string;
-  desc: string;
-  language: string;
+  owner: string;
+  description: string;
+  lastCommit: string;
 };
 
 export default function Home() {
-  const [data, setData] = useState<ProjProps[]>([]);
+  const [data, setData] = useState<any[]>([]);
   const [table, setTable] = useState<React.ReactElement>();
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
 
-    fetch(
-      "https://raw.githubusercontent.com/lirantal/awesome-opensource-israel/master/README.md"
-    )
-      .then((res) => res.text())
+    fetch("https://os-il-api.vercel.app/api/reposdb")
+      .then((res) => res.json())
       .then((data) => {
-        const processHeader = (data: string) => {
-          const getTitle = /(?<=#{3} ).*/gm;
+        
+        setData((data as {repository: RepoProps}[]).map((proj) => {
+          const projectObject = proj.repository;
+          const projectOwner = projectObject.nameWithOwner.split("/")[0];
+          const projectName = projectObject.nameWithOwner.split("/")[1];
+          const projectDescription = projectObject.shortDescriptionHTML;
+          const projectLastCommit = projectObject.pushedAt
 
-          const temp = data.match(
-            /^\s?#{3}([^#{3}]+?)\n([^]+?)(?=^\s?#{3}[^#{3}])/gm
-          );
-
-          const processLinks = (headerContent: string, lang: string) => {
-            const parseLink = (proj: string) => {
-              const res = proj.match(/\[(.+)\]\((.+)\) - (.+)/);
-
-              if (res) {
-                const [, name, url, desc] = res;
-                const cleanDesc = (desc: string) => {
-                  return desc.replace(/!\[(.+)\]\(.+\)/, "");
-                };
-                return {
-                  name: name,
-                  desc: cleanDesc(desc).trim(),
-                  url: url,
-                  language: lang,
-                } as ProjProps;
-              } else
-                return {
-                  name: "ERR",
-                  desc: "ERR",
-                  url: "ERR",
-                  language: "ERR",
-                } as ProjProps;
-            };
-
-            const contMatch = headerContent.match(/(?<=\* ).*/gm);
-            const link = (contMatch as string[]).map((l) => parseLink(l));
-            return link.flat();
+          return {
+            "owner": projectOwner,
+            "name": projectName,
+            "description": projectDescription,
+            "lastCommit": projectLastCommit,
           };
-
-          const t = (temp as string[])
-            .map((element) =>
-              processLinks(element, (element.match(getTitle) as string[])[0])
-            )
-            .flat();
-
-          return t as ProjProps[];
-        };
-
-        setLoading(false);
-        const langs = data.match(
-          /(?:^|\n)## Projects by main language\s[^\n]*\n(.*?)(?=\n##?\s|$)/gs
-        );
-        const results = processHeader((langs as string[])[0]);
-
-        setData(results);
-        console.log(results);
+        }));
       });
   }, []);
 
   useEffect(() => {
-    const columns = [
-      { name: "name", header: "שם הפרויקט", minWidth: 50, defaultFlex: 1 },
-      { name: "desc", header: "תיאור", maxWidth: 1000, defaultFlex: 2 },
-      { name: "url", header: "קישור", maxWidth: 1000, defaultFlex: 1 },
-      { name: "language", header: "שפה", maxWidth: 1000, defaultFlex: 1 },
-    ];
-
-    const gridStyle = { minHeight: 550 };
-
-    setTable(
-      <ReactDataGrid
-        idProperty="projectsTable"
-        rtl={true}
-        columns={columns}
-        dataSource={data}
-        style={gridStyle}
-        theme="default-dark"
-      />
-    );
+    setLoading(false);
+    // console.log(data);
+    setTable(<ReactTable repoData={data}/>);
   }, [data]);
+
 
   if (isLoading) return <p>Loading...</p>;
   if (!data) return <p>No profile data</p>;
@@ -117,7 +79,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
+      <main className="main_app">
         <div className="pageTop">
           <div className="pageTitle">פרויקטי קוד פתוח ישראלים</div>
           <div className="socialLinks">
