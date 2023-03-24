@@ -294,6 +294,7 @@ export default function Home() {
             </div>
           </div>
           <div className="filters">
+            <span className="filtersText">מסננים (קליק ימני - סדר הפוך): </span>
             <button
               onClick={(e) => {
                 e.currentTarget.innerHTML =

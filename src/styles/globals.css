@@ -124,8 +124,11 @@ a {
   min-height: 40px;
   gap: 10px;
   direction: rtl;
+  align-items: center;
 }
-
+.filtersText{
+  opacity: 70%;
+}
 .filters button, .filters select {
   min-height: 40px;
   font-size: medium;
