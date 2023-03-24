@@ -79,7 +79,7 @@ body {
 
 body {
   color: white;
-  background-color: hsla(222, 52%, 15%, 1);
+  background: linear-gradient(hsla(222, 52%, 15%, 1), hsl(222, 61%, 11%));
 
   font-family: Rubik;
 }
@@ -99,14 +99,51 @@ a {
 
 .pageTop {
   display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+}
+
+.titleBar{
+  display: flex;
   flex-direction: row;
   direction: rtl;
   height: 80px;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 50px;
   width: 100%;
+}
+
+.filters{
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 100%;
+  min-height: 40px;
+  gap: 10px;
+  direction: rtl;
+}
+
+.filters button, .filters select {
+  min-height: 40px;
+  font-size: medium;
+  font-family: 'Rubik';
+  border-radius: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  background-color: hsl(222, 63%, 10%);
+  border: none;
+  outline: 1px solid hsl(222, 50%, 30%);
+  transition: 0.2s ease;
+}
+
+.filters button:hover{
+  background-color: hsl(222, 63%, 15%);
+}
+.filters button:active{
+  background-color: hsl(222, 63%, 20%);
 }
 
 .socialLinks {
@@ -149,32 +186,33 @@ a {
 
 .langsList {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   direction: rtl;
-  gap: 15px;
+  gap: 8px;
 }
 
 .mainContent {
   width: 100%;
+  height: 100vh;
   display: flex;
   overflow-y: auto;
   flex-direction: row;
   direction: rtl;
-  gap: 40px;
+  gap: 10px;
   justify-content: space-between;
 }
 
 .projectGrid {
-  width: 50%;
+  width: 100%;
   display: flex;
   height: auto;
-  flex-direction: row;
+  flex-direction: column;
   direction: rtl;
   overflow-y: auto;
   overflow-x: hidden;
   gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  align-items: center;
 }
 
 
@@ -194,14 +232,17 @@ a {
 
 .projectBlock {
   display: flex;
-  width: calc(50% - 20px);
-  aspect-ratio: 1.6 / 1;
-  flex-direction: column;
-  overflow: hidden;
+  width: calc(100% - 10px);
+  /* aspect-ratio: 1.6 / 1; */
+  flex-direction: row;
+  /* overflow: hidden; */
+  height: fit-content;
+  background: hsl(222, 63%, 10%);
   border-radius: 10px;
-  outline: 1px solid hsl(222, 50%, 30%);
+  border: 1px solid hsl(222, 50%, 30%);
   transition: 0.2s ease;
   -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 
@@ -210,9 +251,7 @@ a {
 }
 
 .projectBlock:hover {
-  transform: scale(1.06);
   box-shadow: 0px 0px 30px hsl(222, 50%, 30%);
-  z-index: 10;
 }
 
 .projectBlock:active {
@@ -220,25 +259,63 @@ a {
 }
 
 .projectBlock>a {
-  width: 100%;
   -webkit-user-drag: none;
 }
 
 .projectPreview {
+  border-radius: 0 10px 10px 0;
+  margin-left: 10px;
   -webkit-user-drag: none;
-  width: 100%;
-  aspect-ratio: 2 / 1;
+  width: 200px;
+  aspect-ratio: 2/1;
   height: 100%;
 }
 
-.projectName {
+.projectValues {
   width: 100%;
-  display: flex;
   height: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  direction: rtl;
+  gap: 10px
+}
+
+.projectNameWithOwner{
+  font-size: large;
+}
+
+.projectName {
+  font-weight: bold;
+}
+
+.projectOwner {
+  font-weight: lighter;
+  opacity: 70%;
+}
+
+.issueCount {
+  direction: ltr;
+}
+
+.projectStats {
+  display: flex;
+  flex-direction: row;
   direction: rtl;
   align-items: center;
-  justify-content: center;
-  background-color: hsl(222, 63%, 10%);
+  gap: 10px;
+  opacity: 80%;
+  font-weight: lighter;
+}
+
+.starsCount {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 5px;
+
 }
 
 .center {
@@ -265,7 +342,7 @@ a {
 }
 
 @media only screen and (max-width: 780px) {
-  .pageTop {
+  .titleBar {
     flex-direction: column-reverse;
   }
 
@@ -303,6 +380,7 @@ a {
   max-width: 980px;
   margin: 0 auto;
   padding: 45px;
+  width: 100%;
 }
 
 @media (max-width: 767px) {
@@ -410,6 +488,7 @@ a {
 .markdown-body {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   margin: 0;
   color: var(--color-fg-default);
   background-color: var(--color-canvas-default);
