@@ -127,6 +127,15 @@ a {
   align-items: center;
 }
 
+.backgroundDarken {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.6);
+  width: 100vw;
+  height: 100vh;
+}
+
+
+
 .filtersText {
   opacity: 70%;
 }
@@ -259,6 +268,16 @@ a {
 
 .projectBlock:hover {
   box-shadow: 0px 0px 30px hsl(222, 50%, 30%);
+}
+
+.langPercent {
+  opacity: 70%;
+  font-size: 0px;
+  transition: 0.2s;
+}
+
+.projectBlock:hover .langPercent {
+  font-size: unset;
 }
 
 .projectBlock:active {

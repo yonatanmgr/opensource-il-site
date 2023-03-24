@@ -27,7 +27,7 @@ type RepoProps = {
   };
 };
 
-type DataProps = {
+export type DataProps = {
   image: string;
   owner: string;
   name: string;
@@ -39,6 +39,7 @@ type DataProps = {
     name: string;
     size: number;
   }[];
+  totalSize: number;
 };
 type orgProps = {
   name: string;
@@ -57,9 +58,7 @@ export default function Home() {
   const [readmePreview, setReadmePreview] = useState("");
   const [sortFunction, setSortFunction] = useState("");
 
-  useEffect(() => {
-    setLoading(true);
-
+  const fetchRepos = () => {
     fetch("https://os-il-api.vercel.app/api/reposdb")
       .then((res) => res.json())
       .then((data) => {
@@ -77,6 +76,7 @@ export default function Home() {
               name: lang.node.name,
               size: lang.size,
             }));
+            const totalSize = repo.languages.totalSize;
 
             return {
               image: image,
@@ -87,6 +87,7 @@ export default function Home() {
               stars: stargazerCount,
               issuesCount: issuesCount,
               languages: languages,
+              totalSize: totalSize
             };
           })
         );
@@ -94,6 +95,11 @@ export default function Home() {
         const placeholder = `<div className="readmePreview">Click a repository to view its README.md</div>`;
         setReadmePreview(placeholder);
       });
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    fetchRepos();
   }, []);
 
   useEffect(() => {
@@ -151,39 +157,8 @@ export default function Home() {
   }, [sortFunction]);
 
   useEffect(() => {
-    if (selectedLang == "") {
-      fetch("https://os-il-api.vercel.app/api/reposdb")
-        .then((res) => res.json())
-        .then((data) => {
-          setData(
-            (data as { repository: RepoProps }[]).map((proj) => {
-              const repo = proj.repository;
-
-              const nameWithOwner = repo.nameWithOwner;
-              const image = repo.openGraphImageUrl;
-              const description = repo.description;
-              const lastCommit = repo.defaultBranchRef.target.committedDate;
-              const stargazerCount = repo.stargazerCount;
-              const issuesCount = repo.openIssues.totalCount;
-              const languages = repo.languages.edges.map((lang) => ({
-                name: lang.node.name,
-                size: lang.size,
-              }));
-
-              return {
-                image: image,
-                owner: nameWithOwner.split("/")[0],
-                name: nameWithOwner.split("/")[1],
-                description: description,
-                lastCommit: lastCommit,
-                stars: stargazerCount,
-                issuesCount: issuesCount,
-                languages: languages,
-              };
-            })
-          );
-        });
-    } else {
+    if (selectedLang == "") fetchRepos();
+    else {
       setData(
         data.filter((repo: DataProps) =>
           repo.languages.find((language) => language.name == selectedLang)
@@ -215,7 +190,9 @@ export default function Home() {
     }
   }, [data, readme]);
 
-  if (isLoading) return <div className="center"></div>;
+  let loader;
+  if (isLoading) loader = <div className="backgroundDarken"><div className="center"></div></div>;
+  else {loader = <></>}
   if (!data) return <p>Error loading data</p>;
 
   return (
@@ -226,6 +203,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {loader}
       <main className={styles.main}>
         <div className="pageTop">
           <div className="titleBar">
@@ -364,16 +342,8 @@ export default function Home() {
               return (
                 <Project
                   setReadme={setReadme}
-                  image={proj.image}
-                  name={proj.name}
-                  owner={proj.owner}
-                  stars={proj.stars}
-                  lastCommit={proj.lastCommit}
-                  issuesCount={proj.issuesCount}
-                  description={proj.description}
-                  url={`https://www.github.com/${proj.owner}/${proj.name}`}
+                  repo={proj}
                   key={proj.image}
-                  languages={proj.languages}
                 />
               );
             })}

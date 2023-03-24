@@ -1,18 +1,11 @@
 import moment from "moment";
 import "moment/locale/he";
 import LangPill from "./Language";
+import { DataProps } from "@/pages";
 
 type ProjectProps = {
   setReadme: (name: string) => void;
-  name: string;
-  owner: string;
-  url: string;
-  image: string;
-  description: string;
-  lastCommit: string;
-  stars: number;
-  issuesCount: number;
-  languages: { name: string; size: number }[];
+  repo: DataProps;
 };
 
 const starSvg = (
@@ -36,48 +29,52 @@ function nFormatter(num: number) {
 }
 
 export default function Project(props: ProjectProps) {
+
+
+  const url = `https://www.github.com/${props.repo.owner}/${props.repo.name}`
+
   return (
-    <div className="projectBlock" onClick={() => props.setReadme(props.url)}>
-      <a href={props.url} target="_blank">
+    <div className="projectBlock" onClick={() => props.setReadme(url)}>
+      <a href={url} target="_blank">
         <img
-          title={props.description}
+          title={props.repo.description}
           width={320}
           height={160}
           className="projectPreview"
-          src={props.image}
-          alt={props.name}
+          src={props.repo.image}
+          alt={props.repo.name}
         />
       </a>
       <div className="projectValues">
         <div className="projectNameWithOwner">
-          <span className="projectOwner">{props.owner}/</span>
-          <span className="projectName">{props.name}</span>
+          <span className="projectOwner">{props.repo.owner}/</span>
+          <span className="projectName">{props.repo.name}</span>
         </div>
 
         <div className="projectStats">
           <span className="starsCount">
-            {nFormatter(props.stars)}
+            {nFormatter(props.repo.stars)}
             {starSvg}
           </span>{" "}
           |
           <span className="issueCount">
-            {props.issuesCount}{" "}
-            {props.issuesCount == 1 ? "Open Issue" : "Open Issues"}
+            {props.repo.issuesCount}{" "}
+            {props.repo.issuesCount == 1 ? "Open Issue" : "Open Issues"}
           </span>{" "}
           |
           <span className="lastCommit">
             גרסה אחרונה:{" "}
-            {moment(props.lastCommit)
+            {moment(props.repo.lastCommit)
               .locale("he")
               .calendar()
               .replace("האחרון ", "")}
           </span>
         </div>
         <div className="langsList">
-          {props.languages ? props.languages
+          {props.repo.languages ? props.repo.languages
             .filter((lang) => lang.name != "Dockerfile")
             .map((lang) => (
-              <LangPill name={lang.name} key={lang.size}></LangPill>
+              <LangPill name={lang.name} size={Math.round((lang.size / props.repo.totalSize) * 1000)/10} key={props.repo.stars+lang.size}></LangPill>
             )): <></>}
         </div>
       </div>
