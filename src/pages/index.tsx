@@ -101,7 +101,8 @@ export default function Home() {
     data.forEach((repo: DataProps) => {
       if (repo.languages) {
         repo.languages.forEach((lang) => {
-          if (!allLangs.includes(lang.name) && lang.name != "Dockerfile") allLangs.push(lang.name);
+          if (!allLangs.includes(lang.name) && lang.name != "Dockerfile")
+            allLangs.push(lang.name);
         });
       }
     });
@@ -150,41 +151,44 @@ export default function Home() {
   }, [sortFunction]);
 
   useEffect(() => {
-    
     if (selectedLang == "") {
       fetch("https://os-il-api.vercel.app/api/reposdb")
-      .then((res) => res.json())
-      .then((data) => {
-        setData(
-          (data as { repository: RepoProps }[]).map((proj) => {
-            const repo = proj.repository;
+        .then((res) => res.json())
+        .then((data) => {
+          setData(
+            (data as { repository: RepoProps }[]).map((proj) => {
+              const repo = proj.repository;
 
-            const nameWithOwner = repo.nameWithOwner;
-            const image = repo.openGraphImageUrl;
-            const description = repo.description;
-            const lastCommit = repo.defaultBranchRef.target.committedDate;
-            const stargazerCount = repo.stargazerCount;
-            const issuesCount = repo.openIssues.totalCount;
-            const languages = repo.languages.edges.map((lang) => ({
-              name: lang.node.name,
-              size: lang.size,
-            }));
+              const nameWithOwner = repo.nameWithOwner;
+              const image = repo.openGraphImageUrl;
+              const description = repo.description;
+              const lastCommit = repo.defaultBranchRef.target.committedDate;
+              const stargazerCount = repo.stargazerCount;
+              const issuesCount = repo.openIssues.totalCount;
+              const languages = repo.languages.edges.map((lang) => ({
+                name: lang.node.name,
+                size: lang.size,
+              }));
 
-            return {
-              image: image,
-              owner: nameWithOwner.split("/")[0],
-              name: nameWithOwner.split("/")[1],
-              description: description,
-              lastCommit: lastCommit,
-              stars: stargazerCount,
-              issuesCount: issuesCount,
-              languages: languages,
-            };
-          })
-        );
-      });
+              return {
+                image: image,
+                owner: nameWithOwner.split("/")[0],
+                name: nameWithOwner.split("/")[1],
+                description: description,
+                lastCommit: lastCommit,
+                stars: stargazerCount,
+                issuesCount: issuesCount,
+                languages: languages,
+              };
+            })
+          );
+        });
     } else {
-      setData(data.filter((repo: DataProps) => repo.languages.find(language => language.name == selectedLang)))
+      setData(
+        data.filter((repo: DataProps) =>
+          repo.languages.find((language) => language.name == selectedLang)
+        )
+      );
     }
   }, [selectedLang]);
 
@@ -294,6 +298,7 @@ export default function Home() {
             </div>
           </div>
           <div className="filters">
+            <span className="filtersText">מסננים (קליק ימני - סדר הפוך): </span>
             <button
               onClick={(e) => {
                 e.currentTarget.innerHTML =
@@ -336,10 +341,15 @@ export default function Home() {
             >
               מיון לפי כמות Issues פתוחים
             </button>
-            <select name="languages" id="selectLang" title="סינון לפי שפה" onChange={(e)=>{
-              setSelectedLang(e.currentTarget.value)
-            }}>
-            <option value="">בחרו שפה...</option>
+            <select
+              name="languages"
+              id="selectLang"
+              title="סינון לפי שפה"
+              onChange={(e) => {
+                setSelectedLang(e.currentTarget.value);
+              }}
+            >
+              <option value="">בחרו שפה...</option>
               {langs.map((lang) => (
                 <option key={lang} value={lang}>
                   {lang}
