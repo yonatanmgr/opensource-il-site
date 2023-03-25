@@ -18,7 +18,9 @@ module.exports = {
         'mydarkblue': "hsl(222, 65%, 10%)",
         'readmedark': "hsl(222, 28%, 7%)",
         'buttonhover': "hsl(222, 63%, 15%)",
-        'buttonactive': "hsl(222, 63%, 20%)"
+        'buttonactive': "hsl(222, 63%, 20%)",
+        'gradientfrom': "hsla(222, 52%, 15%)",
+        'gradientto': "hsl(222, 61%, 11%)",
       }
     },
   },

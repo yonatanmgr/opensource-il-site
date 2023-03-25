@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import ReadmePreview from "@/components/MainContent/ReadmePreview";
 import ReposList from "@/components/MainContent/ReposList/ReposList";
 import SocialLinks from "@/components/Header/SocialLinks";
+import PageTitle from "@/components/Header/PageTitle";
+import Filters from "@/components/Header/Filters";
 
 type RepoProps = {
   openIssues: {
@@ -216,77 +218,10 @@ export default function Home() {
       {loader}
       <main className="sm:p-16 flex flex-col justify-between items-center p-8 pb-0 min-h-screen sm:pb-0 max-h-screen">
         <div className="flex flex-col w-full gap-2.5">
-          <div dir="rtl" className="flex flex-col-reverse md:flex-row h-20 flex-wrap items-center justify-between w-full">
-            <div dir="rtl" className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-right select-none">פרויקטי קוד פתוח ישראלים</div>
-            <SocialLinks/>
-          </div>
-          <div dir="rtl" className="min-h-8 mt-3 sm:mt-0 gap-2.5 mb-5 flex flex-wrap flex-row w-full items-center">
-            <span className="opacity-70">מסננים: </span>
-            <button
-              className="h-8 text-sm font-['Rubik'] rounded-xl px-4 bg-mydarkblue border-none outline outline-1 outline-myblue transition hover:bg-buttonhover active:bg-buttonactive"
-              onClick={(e) => {
-                e.currentTarget.innerHTML =
-                  "זמן גרסה אחרונה (מהחדש לישן)";
-                setSortFunction("lastCommit");
-              }}
-              onContextMenu={(e) => {
-                e.currentTarget.innerHTML =
-                  "זמן גרסה אחרונה (מהישן לחדש)";
-                e.preventDefault();
-                setSortFunction("lastCommitReverse");
-              }}
-            >
-              זמן גרסה אחרונה
-            </button>
-            <button
-              className="h-8 text-sm font-['Rubik'] rounded-xl px-4 bg-mydarkblue border-none outline outline-1 outline-myblue transition hover:bg-buttonhover active:bg-buttonactive"
-              onClick={(e) => {
-                e.currentTarget.innerHTML = "כמות כוכבים";
-                setSortFunction("stars");
-              }}
-              onContextMenu={(e) => {
-                e.preventDefault();
-                e.currentTarget.innerHTML = "כמות כוכבים (סדר עולה)";
-                setSortFunction("starsReverse");
-              }}
-            >
-              כמות כוכבים
-            </button>
-            <button
-              className="h-8 text-sm font-['Rubik'] rounded-xl px-4 bg-mydarkblue border-none outline outline-1 outline-myblue transition hover:bg-buttonhover active:bg-buttonactive"
-              onClick={(e) => {
-                e.currentTarget.innerHTML = "כמות Issues פתוחים";
-                setSortFunction("issues");
-              }}
-              onContextMenu={(e) => {
-                e.currentTarget.innerHTML =
-                  "כמות Issues פתוחים (סדר עולה)";
-                e.preventDefault();
-                setSortFunction("issuesReverse");
-              }}
-            >
-              כמות Issues פתוחים
-            </button>
-            <select
-              className="h-8 text-sm font-['Rubik'] rounded-xl px-4 bg-mydarkblue border-none outline outline-1 outline-myblue transition hover:bg-buttonhover active:bg-buttonactive"
-              name="languages"
-              id="selectLang"
-              title="סינון לפי שפה"
-              onChange={(e) => {
-                setSelectedLang(e.currentTarget.value);
-              }}
-            >
-              <option value="">בחרו שפה...</option>
-              {langs.map((lang) => (
-                <option key={lang} value={lang}>
-                  {lang}
-                </option>
-              ))}
-            </select>
-          </div>
+          <PageTitle/>
+          <Filters setSelectedLang={setSelectedLang} setSortFunction={setSortFunction} langs={langs} />
         </div>
         <div dir="rtl" className="w-full h-screen flex overflow-y-auto flex-row justify-between gap-2.5" >
-          
           <ReposList setReadme={setReadme} showData={showData}/>
           <ReadmePreview readmePreview={readmePreview}/>
         </div>
