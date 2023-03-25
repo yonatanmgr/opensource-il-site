@@ -37,7 +37,7 @@ export default function Project(props: ProjectProps) {
   return (
     <div className="projectBlock" onClick={() => props.setReadme(url)}>
       <a href={url} target="_blank" title={props.repo.description}>
-        <Image
+        <img
           width={320}
           height={160}
           className="projectPreview"
