@@ -2,6 +2,7 @@ import moment from "moment";
 import "moment/locale/he";
 import LangPill from "./Language";
 import { DataProps } from "@/pages";
+import Image from "next/image";
 
 type ProjectProps = {
   setReadme: (name: string) => void;
@@ -35,9 +36,8 @@ export default function Project(props: ProjectProps) {
 
   return (
     <div className="projectBlock" onClick={() => props.setReadme(url)}>
-      <a href={url} target="_blank">
-        <img
-          title={props.repo.description}
+      <a href={url} target="_blank" title={props.repo.description}>
+        <Image
           width={320}
           height={160}
           className="projectPreview"

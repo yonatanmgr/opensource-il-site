@@ -2,6 +2,16 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {github_read_only: process.env.github_read_only},
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'opengraph.githubassets.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+ },
 }
 
 module.exports = nextConfig
