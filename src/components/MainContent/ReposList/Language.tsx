@@ -7,7 +7,7 @@ export default function LangPill(props: { name: string; size: number }) {
         backgroundColor: langsColors[props.name],
         color: setContrast(langsColors[props.name]),
       }}
-      className={`p-0.5 pr-2 pl-2 text-[14px]	rounded`}
+      className={`p-0.5 px-2 text-[14px] rounded`}
     >
       {props.name} <span className="group-hover:text-[14px] opacity-70 text-[0px] duration-200">({props.size}%)</span>
     </div>
