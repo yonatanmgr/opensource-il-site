@@ -30,13 +30,14 @@ function nFormatter(num: number) {
 }
 
 export default function Project(props: ProjectProps) {
-
-
-  const url = `https://www.github.com/${props.repo.owner}/${props.repo.name}`
+  const url = `https://www.github.com/${props.repo.owner}/${props.repo.name}`;
 
   return (
-    <div className="projectBlock" onClick={() => props.setReadme(url)}>
-      <a href={url} target="_blank" title={props.repo.description}>
+    <div
+      className="projectBlock group hover:shadow-3xl active:scale-95 flex w-[calc(100%-10px)] flex-row h-fit bg-mydarkblue rounded-xl border border-myblue transition ease-linear select-none"
+      onClick={() => props.setReadme(url)}
+    >
+      <a href={url} draggable="false" target="_blank" title={props.repo.description}>
         <img
           width={320}
           height={160}
@@ -71,11 +72,21 @@ export default function Project(props: ProjectProps) {
           </span>
         </div>
         <div className="langsList">
-          {props.repo.languages ? props.repo.languages
-            .filter((lang) => lang.name != "Dockerfile")
-            .map((lang) => (
-              <LangPill name={lang.name} size={Math.round((lang.size / props.repo.totalSize) * 1000)/10} key={props.repo.stars+lang.size}></LangPill>
-            )): <></>}
+          {props.repo.languages ? (
+            props.repo.languages
+              .filter((lang) => lang.name != "Dockerfile")
+              .map((lang) => (
+                <LangPill
+                  name={lang.name}
+                  size={
+                    Math.round((lang.size / props.repo.totalSize) * 1000) / 10
+                  }
+                  key={props.repo.stars + lang.size}
+                ></LangPill>
+              ))
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>

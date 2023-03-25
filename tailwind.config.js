@@ -9,7 +9,15 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      boxShadow: {
+        '3xl': '0px 0px 30px hsl(222, 50%, 30%)',
+      },
+      colors: {
+        'myblue': "hsl(222, 50%, 30%)",
+        'mydarkblue': "hsl(222, 65%, 10%)",
+      }
+    },
   },
   plugins: [],
 }
