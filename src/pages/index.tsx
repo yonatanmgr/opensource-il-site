@@ -51,6 +51,7 @@ type orgProps = {
 
 export default function Home() {
   const [data, setData] = useState<any[]>([]);
+  const [showData, setShowData] =  useState<any[]>([]);
   const [langs, setLangs] = useState<string[]>([]);
   const [isLoading, setLoading] = useState(false);
   const [selectedLang, setSelectedLang] = useState("");
@@ -113,53 +114,54 @@ export default function Home() {
       }
     });
     setLangs(allLangs);
+    setShowData(data)
   }, [data]);
 
   useEffect(() => {
     let sorted;
     switch (sortFunction) {
       case "lastCommit":
-        sorted = [...data].sort((b: DataProps, a: DataProps) =>
+        sorted = [...showData].sort((b: DataProps, a: DataProps) =>
           a.lastCommit < b.lastCommit ? -1 : a.lastCommit > b.lastCommit ? 1 : 0
         );
         break;
       case "lastCommitReverse":
-        sorted = [...data].sort((a: DataProps, b: DataProps) =>
+        sorted = [...showData].sort((a: DataProps, b: DataProps) =>
           a.lastCommit < b.lastCommit ? -1 : a.lastCommit > b.lastCommit ? 1 : 0
         );
         break;
       case "stars":
-        sorted = [...data].sort(
+        sorted = [...showData].sort(
           (b: DataProps, a: DataProps) => a.stars - b.stars
         );
         break;
       case "starsReverse":
-        sorted = [...data].sort(
+        sorted = [...showData].sort(
           (a: DataProps, b: DataProps) => a.stars - b.stars
         );
         break;
       case "issues":
-        sorted = [...data].sort(
+        sorted = [...showData].sort(
           (b: DataProps, a: DataProps) => a.issuesCount - b.issuesCount
         );
         break;
       case "issuesReverse":
-        sorted = [...data].sort(
+        sorted = [...showData].sort(
           (a: DataProps, b: DataProps) => a.issuesCount - b.issuesCount
         );
         break;
 
       default:
-        sorted = [...data];
+        sorted = [...showData];
         break;
     }
-    setData(sorted);
+    setShowData(sorted);
   }, [sortFunction]);
 
   useEffect(() => {
     if (selectedLang == "") fetchRepos();
     else {
-      setData(
+      setShowData(
         data.filter((repo: DataProps) =>
           repo.languages.find((language) => language.name == selectedLang)
         )
@@ -338,7 +340,7 @@ export default function Home() {
         </div>
         <div className="mainContent">
           <div className="projectGrid">
-            {data.map((proj) => {
+            {showData.map((proj) => {
               return (
                 <Project
                   setReadme={setReadme}
