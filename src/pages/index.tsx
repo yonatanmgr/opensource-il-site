@@ -2,7 +2,6 @@ import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import ReadmePreview from "@/components/MainContent/ReadmePreview";
 import ReposList from "@/components/MainContent/ReposList/ReposList";
-import SocialLinks from "@/components/Header/SocialLinks";
 import PageTitle from "@/components/Header/PageTitle";
 import Filters from "@/components/Header/Filters";
 
@@ -44,6 +43,7 @@ export type DataProps = {
   }[];
   totalSize: number;
 };
+
 type orgProps = {
   name: string;
   login: string;

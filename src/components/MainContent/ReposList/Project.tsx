@@ -45,7 +45,7 @@ export default function Project(props: ProjectProps) {
         target="_blank"
         title={props.repo.description}
       >
-        <img
+        <Image
           className="max-sm:w-full sm:h-full rounded-tl-xl rounded-tr-xl sm:rounded-tl-none sm:rounded-br-xl aspect-[2/1]"
           width={320}
           height={160}
