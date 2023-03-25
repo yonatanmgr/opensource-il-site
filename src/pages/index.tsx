@@ -216,7 +216,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {loader}
-      <main className="sm:p-16 flex flex-col justify-between items-center p-8 pb-0 min-h-screen sm:pb-0 max-h-screen">
+      <main className="md:p-16 sm:p-8 p-6 pb-0 sm:pb-0 md:pb-0 flex flex-col justify-between items-center  min-h-screen max-h-screen">
         <div className="flex flex-col w-full gap-2.5">
           <PageTitle/>
           <Filters setSelectedLang={setSelectedLang} setSortFunction={setSortFunction} langs={langs} />
