@@ -4,11 +4,11 @@ export default function PageTitle(props: {setView: (arg0: string) => unknown, vi
   return (
     <div
       dir="rtl"
-      className="flex flex-col-reverse md:flex-row h-20 flex-wrap items-center justify-between w-full"
+      className="flex flex-col-reverse sm:flex-row h-20 flex-wrap items-center justify-between w-full"
     >
       <div
         dir="rtl"
-        className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-right select-none"
+        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-right select-none"
       >
         {{
           'repos': <span>פרויקטי קוד פתוח ישראלים</span>,
