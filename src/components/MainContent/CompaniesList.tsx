@@ -1,4 +1,4 @@
-import { CompanyProps, DataProps } from "@/pages";
+import { CompanyProps } from "@/types/index.types";
 import Company from "./Company";
 
 export default function CompaniesList(props: {

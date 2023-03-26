@@ -1,10 +1,10 @@
 import moment from "moment";
 import "moment/locale/he";
 import LangPill from "./Language";
-import { DataProps } from "@/pages";
 import Image from "next/image";
 import TimeIcon from "@/components/Icons/TimeIcon";
 import IssueIcon from "@/components/Icons/IssueIcon";
+import { DataProps } from "@/types/index.types";
 
 type ProjectProps = {
   setReadme: (name: string) => void;
