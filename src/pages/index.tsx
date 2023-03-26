@@ -4,6 +4,7 @@ import ReadmePreview from "@/components/MainContent/ReadmePreview";
 import ReposList from "@/components/MainContent/ReposList/ReposList";
 import PageTitle from "@/components/Header/PageTitle";
 import Filters from "@/components/Header/Filters";
+import CompaniesList from "@/components/MainContent/CompaniesList";
 
 type RepoProps = {
   openIssues: {
@@ -44,23 +45,32 @@ export type DataProps = {
   totalSize: number;
 };
 
-type orgProps = {
+export type CompanyProps = {
   name: string;
   login: string;
-  repositories: {
-    nodes: RepoProps[];
-  };
+  avatar: string;
 };
 
 export default function Home() {
+  const [view, setView] = useState("repos");
+  const [companies, setCompanies] = useState<CompanyProps[]>([]);
   const [data, setData] = useState<DataProps[]>([]);
   const [showData, setShowData] = useState<DataProps[]>([]);
   const [langs, setLangs] = useState<string[]>([]);
   const [isLoading, setLoading] = useState(false);
   const [selectedLang, setSelectedLang] = useState("");
   const [readme, setReadme] = useState("");
+  const [currentCompany, setCurrentCompany] = useState<string>()
   const [readmePreview, setReadmePreview] = useState("");
   const [sortFunction, setSortFunction] = useState("");
+
+  const fetchCompanies = () => {
+    fetch("https://os-il-api.vercel.app/api/allcomps")
+      .then((res) => res.json())
+      .then((data) => {
+        setCompanies(data);
+      });
+  }
 
   const fetchRepos = () => {
     fetch("https://os-il-api.vercel.app/api/reposdb")
@@ -101,9 +111,49 @@ export default function Home() {
       });
   };
 
+  const fetchCompanyRepos = (company: string) => {
+    if (currentCompany) {
+      setLoading(true);
+      fetch(`https://os-il-api.vercel.app/api/company/${company}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setShowData(
+            (data.organization.repositories.nodes as RepoProps[]).map((repo) => {  
+              const nameWithOwner = repo.nameWithOwner;
+              const image = repo.openGraphImageUrl;
+              const description = repo.description ?? "";
+              const lastCommit = repo.defaultBranchRef.target.committedDate;
+              const stargazerCount = repo.stargazerCount;
+              const issuesCount = repo.openIssues.totalCount;
+              const languages = repo.languages.edges.map((lang) => ({
+                name: lang.node.name,
+                size: lang.size,
+              }));
+              const totalSize = repo.languages.totalSize;
+  
+              return {
+                image: image,
+                owner: nameWithOwner.split("/")[0],
+                name: nameWithOwner.split("/")[1],
+                description: description,
+                lastCommit: lastCommit,
+                stars: stargazerCount,
+                issuesCount: issuesCount,
+                languages: languages,
+                totalSize: totalSize,
+              };
+            }).filter((repo: DataProps) => repo.name != ".github")
+          );
+          setView("repos");
+          setLoading(false);
+        });
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
     fetchRepos();
+    fetchCompanies();
   }, []);
 
   useEffect(() => {
@@ -173,10 +223,16 @@ export default function Home() {
   }, [selectedLang]);
 
   useEffect(() => {
-    const foundReadme = data.find(
+    if (currentCompany) fetchCompanyRepos(currentCompany);
+  }, [currentCompany]);
+
+  useEffect(() => {    
+    const foundReadme = showData.find(
       (repo) => `https://www.github.com/${repo.owner}/${repo.name}` == readme
     );
+    console.log(readme);
     if (foundReadme) {
+      
       fetch(
         `https://api.github.com/repos/${foundReadme.owner}/${foundReadme.name}/readme`
       )
@@ -217,12 +273,21 @@ export default function Home() {
       </Head>
       {loader}
       <main className="md:p-16 sm:p-8 p-6 pb-0 sm:pb-0 md:pb-0 flex flex-col justify-between items-center  min-h-screen max-h-screen">
-        <div className="flex flex-col w-full gap-2.5">
-          <PageTitle/>
+        <div className="flex flex-col w-full gap-2.5" onDoubleClick={()=>{
+          if (view == "repos") {
+            setView("companies")
+          } else {
+            setView("repos")
+          }
+        }}>
+          <PageTitle />
           <Filters setSelectedLang={setSelectedLang} setSortFunction={setSortFunction} langs={langs} />
         </div>
         <div dir="rtl" className="w-full h-screen flex overflow-y-auto flex-row justify-between gap-2.5" >
-          <ReposList setReadme={setReadme} showData={showData}/>
+          {{
+            "repos": <ReposList setReadme={setReadme} showData={showData}/>,
+            "companies": <CompaniesList companies={companies} setComp={setCurrentCompany}/>
+          }[view]}
           <ReadmePreview readmePreview={readmePreview}/>
         </div>
       </main>
