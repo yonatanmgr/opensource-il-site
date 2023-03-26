@@ -8,6 +8,8 @@ import CompaniesList from "@/components/MainContent/CompaniesList";
 import { SortTypes } from "@/components/Header/types";
 import { CompanyProps, DataProps, RepoProps, Views } from "@/types/index.types";
 
+const DEFAULT_READ_ME_PLACEHOLDER = `<div>Click a repository to view its README.md</div>`;
+
 export default function Home() {
   const [view, setView] = useState<Views>("repos");
   const [companies, setCompanies] = useState<CompanyProps[]>([]);
@@ -68,8 +70,7 @@ export default function Home() {
         setData(organizedData);
         setShowData(organizedData);
         setLoading(false);
-        const placeholder = `<div>Click a repository to view its README.md</div>`;
-        setReadmePreview(placeholder);
+        setReadmePreview(DEFAULT_READ_ME_PLACEHOLDER);
       });
   };
 
@@ -115,10 +116,10 @@ export default function Home() {
   };
 
   const onSetReadMe = (readme: string) => {
-    const foundReadme = data.find(
+    const foundReadme = showData.find(
       (repo) => `https://www.github.com/${repo.owner}/${repo.name}` === readme
     );
-    console.log(readme);
+    console.log(readme, foundReadme);
     if (foundReadme) {
       fetch(
         `https://api.github.com/repos/${foundReadme.owner}/${foundReadme.name}/readme`
@@ -185,7 +186,7 @@ export default function Home() {
     setSortFunction(sortType);
   };
 
-  const getLangs = useMemo(() => {
+  const allLangs = useMemo(() => {
     return showData.reduce((allLangs: string[], repo: DataProps) => {
       if (repo.languages) {
         repo.languages.forEach((lang) => {
@@ -229,13 +230,19 @@ export default function Home() {
       )}
       <main className='md:p-16 sm:p-8 p-6 pb-0 sm:pb-0 md:pb-0 flex flex-col justify-between items-center  min-h-screen max-h-screen gap-4'>
         <div className='flex flex-col w-full gap-2.5'>
-          <PageTitle view={view} setView={setView} />
+          <PageTitle
+            view={view}
+            setView={(view) => {
+              setReadmePreview(DEFAULT_READ_ME_PLACEHOLDER);
+              setView(view);
+            }}
+          />
           {view === "repos" && (
             <Filters
               activeSortType={activeSortType}
               setSelectedLang={setSelectedLang}
               handleSortChange={handleSortChange}
-              langs={getLangs}
+              langs={allLangs}
             />
           )}
         </div>
