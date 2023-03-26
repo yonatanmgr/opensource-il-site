@@ -1,4 +1,8 @@
-export default function SocialLinks() {
+import OrgIcon from "../Icons/OrgIcon";
+import ReposIcon from "../Icons/ReposIcon";
+
+
+export default function SocialLinks(props: {setView: (arg0: string)=>unknown}) {
   return (
     <div dir="ltr" className="flex flex-row items-center gap-6">
       <a
@@ -65,6 +69,8 @@ export default function SocialLinks() {
           </g>
         </svg>
       </a>
+      <ReposIcon setView={props.setView} />
+      <OrgIcon setView={props.setView} />
     </div>
   );
 }

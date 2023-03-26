@@ -230,6 +230,17 @@ export default function Home() {
 
   useEffect(() => {
     if (currentCompany) fetchCompanyRepos(currentCompany);
+
+    const allLangs: string[] = [];
+    showData.forEach((repo: DataProps) => {
+      if (repo.languages) {
+        repo.languages.forEach((lang) => {
+          if (!allLangs.includes(lang.name) && lang.name != "Dockerfile")
+            allLangs.push(lang.name);
+        });
+      }
+    });
+    setLangs(allLangs);
   }, [currentCompany]);
 
   useEffect(() => {
@@ -255,6 +266,7 @@ export default function Home() {
         });
     }
   }, [data, readme]);
+  
 
   let loader;
   if (isLoading)
@@ -263,9 +275,8 @@ export default function Home() {
         <div className="center h-10 w-10 border-8 border-mydarkblue border-t-myblue bg-transparent fixed left-[49%] top-[45%] rounded-full animate-spin"></div>
       </div>
     );
-  else {
-    loader = <></>;
-  }
+  else {loader = <></>}
+
   if (!data) return <p>Error loading data</p>;
 
   return (
@@ -277,25 +288,16 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {loader}
-      <main className="md:p-16 sm:p-8 p-6 pb-0 sm:pb-0 md:pb-0 flex flex-col justify-between items-center  min-h-screen max-h-screen">
+      <main className="md:p-16 sm:p-8 p-6 pb-0 sm:pb-0 md:pb-0 flex flex-col justify-between items-center  min-h-screen max-h-screen gap-4">
         <div
           className="flex flex-col w-full gap-2.5"
-          onDoubleClick={() => {
-            if (view == "repos") {
-              setView("companies");
-            } else {
-              setCurrentCompany("");
-              setShowData(data);
-              setView("repos");
-            }
-          }}
         >
-          <PageTitle />
-          <Filters
+          <PageTitle view={view} setView={setView} />
+          {view == "repos" ? <Filters
             setSelectedLang={setSelectedLang}
             setSortFunction={setSortFunction}
             langs={langs}
-          />
+          /> : <></>}
         </div>
         <div
           dir="rtl"
