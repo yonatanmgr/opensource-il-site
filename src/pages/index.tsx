@@ -119,7 +119,6 @@ export default function Home() {
     const foundReadme = showData.find(
       (repo) => `https://www.github.com/${repo.owner}/${repo.name}` === readme
     );
-    console.log(readme, foundReadme);
     if (foundReadme) {
       fetch(
         `https://api.github.com/repos/${foundReadme.owner}/${foundReadme.name}/readme`
@@ -129,7 +128,7 @@ export default function Home() {
           fetch(data.download_url)
             .then((res) => res.text())
             .then((data) => {
-              var showdown = require("showdown"),
+              const showdown = require("showdown"),
                 converter = new showdown.Converter(),
                 text = data,
                 html = converter.makeHtml(text);
