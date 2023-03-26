@@ -207,6 +207,13 @@ export default function Home() {
 
   if (!data && !isLoading) return <p>Error loading data</p>;
 
+  const currentView = {
+    repos: <ReposList setReadme={onSetReadMe} showData={dataForDisplay} />,
+    companies: (
+      <CompaniesList companies={companies} setComp={onSelectCompany} />
+    ),
+  }[view];
+
   return (
     <>
       <Head>
@@ -236,19 +243,7 @@ export default function Home() {
           dir='rtl'
           className='w-full h-screen flex overflow-y-auto flex-row justify-between gap-2.5'
         >
-          {
-            {
-              repos: (
-                <ReposList setReadme={onSetReadMe} showData={dataForDisplay} />
-              ),
-              companies: (
-                <CompaniesList
-                  companies={companies}
-                  setComp={onSelectCompany}
-                />
-              ),
-            }[view]
-          }
+          {currentView}
           <ReadmePreview readmePreview={readmePreview} />
         </div>
       </main>
