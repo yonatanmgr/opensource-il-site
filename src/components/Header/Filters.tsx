@@ -9,7 +9,7 @@ export default function Filters(props: {
   return (
     <div
       dir="rtl"
-      className="min-h-8 mt-3 sm:mt-0 gap-2.5 mb-5 flex flex-wrap flex-row w-full items-center"
+      className="min-h-8 mt-3 sm:mt-0 gap-2.5 flex flex-wrap flex-row w-full items-center"
     >
       <span className="opacity-70 h-8 flex flex-row items-center gap-2">
         <input

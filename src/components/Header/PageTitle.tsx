@@ -1,6 +1,6 @@
 import SocialLinks from "./SocialLinks";
 
-export default function PageTitle() {
+export default function PageTitle(props: {setView: (arg0: string) => unknown, view: string}) {
   return (
     <div
       dir="rtl"
@@ -10,9 +10,12 @@ export default function PageTitle() {
         dir="rtl"
         className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-right select-none"
       >
-        פרויקטי קוד פתוח ישראלים
+        {{
+          'repos': <span>פרויקטי קוד פתוח ישראלים</span>,
+          'companies': <span>חברות ישראליות בקוד פתוח</span>,
+        }[props.view]}
       </div>
-      <SocialLinks />
+      <SocialLinks setView={props.setView} />
     </div>
   );
 }

@@ -386,6 +386,7 @@ export const langsColors: { [key: string]: string } = {
     Opa: "#888888",
     Opal: "#f7ede0",
     OpenPolicyAgent: "#7d9199",
+    "Open Policy Agent": "#7d9199",
     OpenAPISpecificationv2: "#85ea2d",
     OpenAPISpecificationv3: "#85ea2d",
     OpenCL: "#ed2e2d",
