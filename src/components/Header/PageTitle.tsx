@@ -15,7 +15,7 @@ export default function PageTitle(props: {setView: (arg0: string) => unknown, vi
           'companies': <span>חברות ישראליות בקוד פתוח</span>,
         }[props.view]}
       </div>
-      <SocialLinks setView={props.setView} />
+      <SocialLinks setView={props.setView} view={props.view} />
     </div>
   );
 }

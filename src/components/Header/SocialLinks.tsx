@@ -2,12 +2,12 @@ import OrgIcon from "../Icons/OrgIcon";
 import ReposIcon from "../Icons/ReposIcon";
 
 
-export default function SocialLinks(props: {setView: (arg0: string)=>unknown}) {
+export default function SocialLinks(props: {setView: (arg0: string)=>unknown, view: string}) {
   return (
     <div dir="ltr" className="flex flex-row items-center gap-6">
       <a
         rel="noopener"
-        title="github"
+        title="awesome-opensource-israel on GitHub"
         href="https://github.com/lirantal/awesome-opensource-israel"
         target="_blank"
         className="overflow-hidden transition hover:scale-105 active:scale-95"
@@ -27,7 +27,7 @@ export default function SocialLinks(props: {setView: (arg0: string)=>unknown}) {
       </a>
       <a
         rel="noopener"
-        title="facebook"
+        title="'Pull Request' Facebook group"
         href="https://www.facebook.com/groups/PullRequest"
         target="_blank"
         className="overflow-hidden transition hover:scale-105 active:scale-95"
@@ -49,7 +49,7 @@ export default function SocialLinks(props: {setView: (arg0: string)=>unknown}) {
       </a>
       <a
         rel="noopener"
-        title="discord"
+        title="'Pull Request' Discord server"
         href="https://discord.com/invite/ZmChMVZxpU"
         target="_blank"
         className="overflow-hidden transition hover:scale-105 active:scale-95"
@@ -69,8 +69,8 @@ export default function SocialLinks(props: {setView: (arg0: string)=>unknown}) {
           </g>
         </svg>
       </a>
-      <ReposIcon setView={props.setView} />
-      <OrgIcon setView={props.setView} />
+      <ReposIcon setView={props.setView} view={props.view} />
+      <OrgIcon setView={props.setView} view={props.view} />
     </div>
   );
 }
