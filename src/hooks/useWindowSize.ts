@@ -6,22 +6,26 @@ interface WindowSize {
   height: number;
 }
 
-const getWindowSize = (): WindowSize => ({
-  //null check for window because window missing in SSR
-  width: window?.innerWidth,
-  height: window?.innerHeight,
-});
+const getWindowSize = (isBrowser: boolean): WindowSize => {
+  return {
+    width: isBrowser ? window.innerWidth : 0,
+    height: isBrowser ? window.innerHeight : 0,
+  };
+};
 
 export const useWindowSize = () => {
-  const [windowSize, setWindowSize] = useState<WindowSize>(getWindowSize());
+  const isBrowser = typeof window !== "undefined";
+  const [windowSize, setWindowSize] = useState<WindowSize>(
+    getWindowSize(isBrowser)
+  );
 
   useEffect(() => {
     const handler = () => {
-      setWindowSize(getWindowSize());
+      setWindowSize(getWindowSize(isBrowser));
     };
     window?.addEventListener("resize", handler);
     return () => window?.removeEventListener("resize", handler);
-  }, []);
+  }, [isBrowser]);
 
   return {
     isMediumUp: windowSize.width > breakpoints.medium,
