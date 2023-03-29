@@ -70,15 +70,13 @@ export default function Filters({
             </div>
           ))}
           <select
-            className="h-8 font-['Rubik'] sm:text-base text-sm focus-visible:ring-2 rounded-xl px-4 bg-mydarkblue border-none outline outline-1 outline-myblue transition hover:bg-buttonhover active:bg-buttonactive text-white"            name="languages"
+            className="h-8 font-['Rubik'] sm:text-base text-sm focus-visible:ring-2 rounded-md px-4 bg-mydarkblue border-none outline outline-1 outline-myblue transition hover:bg-buttonhover active:bg-buttonactive text-white"            name="languages"
             id="selectLang"
             title="סינון לפי שפה"
             value={selectedLang}
             onChange={(e) => {
               setSelectedLang(e.currentTarget.value);
-              if (!isMediumUp) {
-                setShouldShowFilters(false);
-              }
+              if (!isMediumUp) setShouldShowFilters(false);
             }}
           >
             <option value="">כל שפה</option>
