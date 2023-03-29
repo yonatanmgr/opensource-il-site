@@ -11,11 +11,11 @@ export default function PageTitle({ setView, view }: TitleAndSocialLinkProps) {
   return (
     <div
       dir='rtl'
-      className='flex flex-col-reverse sm:flex-row h-20 flex-wrap items-center justify-between w-full'
+      className='flex flex-col-reverse lg:flex-row h-20 flex-wrap items-center justify-between w-full'
     >
       <div
         dir='rtl'
-        className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-right select-none'
+        className='text-xl min-[330px]:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-right select-none'
       >
         {currentView}
       </div>

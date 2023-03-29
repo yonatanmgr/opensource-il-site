@@ -10,7 +10,7 @@ export default function OrgIcon({ setView, view }: TitleAndSocialLinkProps) {
       width='30'
       data-view-component='true'
       fill='currentColor'
-      className={`hover:opacity-100 active:scale-95 transition${
+      className={`hover:opacity-100 active:scale-95 inline transition${
         view == "companies" ? " opacity-100" : " opacity-60"
       }`}
       onClick={() => setView("companies")}

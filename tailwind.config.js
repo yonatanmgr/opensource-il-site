@@ -12,6 +12,7 @@ module.exports = {
     extend: {
       boxShadow: {
         '3xl': '0px 0px 30px hsl(222, 50%, 30%)',
+        '4xl': '0px 0px 30px hsla(1, 0%, 0%, 0.4)',
       },
       colors: {
         'myblue': "hsl(222, 50%, 30%)",

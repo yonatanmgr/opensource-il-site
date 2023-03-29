@@ -5,7 +5,7 @@ import { TitleAndSocialLinkProps } from "./types";
 
 export default function SocialLinks({ setView, view }: TitleAndSocialLinkProps) {
   return (
-    <div dir='ltr' className='flex flex-row items-center gap-6'>
+    <div dir='ltr' className='flex flex-row items-center min-[330px]:gap-6 gap-4'>
       <a
         rel='noopener'
         title='awesome-opensource-israel on GitHub'
