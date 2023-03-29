@@ -239,6 +239,7 @@ export default function Home() {
           {view === "repos" && (
             <Filters
               activeSortType={activeSortType}
+              selectedLang={selectedLang}
               setSelectedLang={setSelectedLang}
               handleSortChange={handleSortChange}
               langs={allLangs}
