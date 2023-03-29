@@ -5,7 +5,7 @@ import ReposList from "@/components/MainContent/ReposList/ReposList";
 import PageTitle from "@/components/Header/PageTitle";
 import Filters from "@/components/Header/Filters/Filters";
 import CompaniesList from "@/components/MainContent/CompaniesList";
-import { AllSortTypes } from "@/components/Header/types";
+import { SortTypes } from "@/components/Header/types";
 import { CompanyProps, DataProps, RepoProps, Views } from "@/types/index.types";
 
 const DEFAULT_READ_ME_PLACEHOLDER = `<div>Click a repository to view its README.md</div>`;
@@ -18,7 +18,7 @@ export default function Home() {
   const [isLoading, setLoading] = useState(false);
   const [selectedLang, setSelectedLang] = useState("");
   const [readmePreview, setReadmePreview] = useState("");
-  const [activeSortType, setSortFunction] = useState<AllSortTypes | undefined>();
+  const [activeSortType, setSortFunction] = useState<SortTypes | undefined>();
 
   useEffect(() => {
     setLoading(true);
@@ -143,7 +143,7 @@ export default function Home() {
     setSelectedLang("");
   };
 
-  const handleSortChange = (sortType: AllSortTypes) => {
+  const handleSortChange = (sortType: SortTypes) => {
     let sorted;
     switch (sortType) {
       case "lastCommit":
