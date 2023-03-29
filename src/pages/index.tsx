@@ -5,10 +5,10 @@ import ReposList from "@/components/MainContent/ReposList/ReposList";
 import PageTitle from "@/components/Header/PageTitle";
 import Filters from "@/components/Header/Filters/Filters";
 import CompaniesList from "@/components/MainContent/CompaniesList";
-import { SortTypes } from "@/components/Header/types";
+import { AllSortTypes, SortTypes } from "@/components/Header/types";
 import { CompanyProps, DataProps, RepoProps, Views } from "@/types/index.types";
 
-const DEFAULT_READ_ME_PLACEHOLDER = `<div>Click a repository to view its README.md</div>`;
+const DEFAULT_READ_ME_PLACEHOLDER = `<div dir="rtl" style="font-size: 18px; font-family: 'Rubik'">בחרו ב-Repository מהרשימה כדי לקרוא את קובץ ה-README שלו!</div>`;
 
 export default function Home() {
   const [view, setView] = useState<Views>("repos");
@@ -18,7 +18,7 @@ export default function Home() {
   const [isLoading, setLoading] = useState(false);
   const [selectedLang, setSelectedLang] = useState("");
   const [readmePreview, setReadmePreview] = useState("");
-  const [activeSortType, setSortFunction] = useState<SortTypes | undefined>();
+  const [activeSortType, setSortFunction] = useState<AllSortTypes | undefined>();
 
   useEffect(() => {
     setLoading(true);
@@ -143,7 +143,7 @@ export default function Home() {
     setSelectedLang("");
   };
 
-  const handleSortChange = (sortType: SortTypes) => {
+  const handleSortChange = (sortType: AllSortTypes) => {
     let sorted;
     switch (sortType) {
       case "lastCommit":
