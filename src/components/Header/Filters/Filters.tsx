@@ -19,7 +19,7 @@ export default function Filters({
   activeSortType,
   selectedLang,
 }: Props) {
-  const [shouldShowFilters, setShouldShowFilters] = useState(false);
+  const [shouldShowFilters, setShouldShowFilters] = useState(true);
   const { isMediumUp } = useWindowSize();
 
   return (
@@ -70,7 +70,8 @@ export default function Filters({
             </div>
           ))}
           <select
-            className="h-8 font-['Rubik'] sm:text-base text-sm focus-visible:ring-2 rounded-md px-4 bg-mydarkblue border-none outline outline-1 outline-myblue transition hover:bg-buttonhover active:bg-buttonactive text-white"            name="languages"
+            className="h-8 font-['Rubik'] sm:text-base text-sm focus-visible:ring-2 rounded-md px-4 bg-mydarkblue border-none outline outline-1 outline-myblue transition hover:bg-buttonhover active:bg-buttonactive text-white"
+            name="languages"
             id="selectLang"
             title="סינון לפי שפה"
             value={selectedLang}
