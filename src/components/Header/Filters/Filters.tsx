@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { sortButtonsTexts } from "../constants";
 import { FilterButton } from "./FilterButton";
 import { AllSortTypes, SortTypes } from "../types";
@@ -19,8 +19,13 @@ export default function Filters({
   activeSortType,
   selectedLang,
 }: Props) {
-  const [shouldShowFilters, setShouldShowFilters] = useState(true);
   const { isMediumUp } = useWindowSize();
+  const [shouldShowFilters, setShouldShowFilters] = useState(true);
+
+  // Hides filters on medium or smaller screens
+  useEffect(() => {
+    setShouldShowFilters(isMediumUp);
+  }, [isMediumUp]);
 
   return (
     <div
