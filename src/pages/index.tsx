@@ -26,6 +26,11 @@ export default function Home() {
     AllSortTypes | undefined
   >();
 
+  const sortByLastCommit = ((b: DataProps, a: DataProps) =>
+    a.lastCommit < b.lastCommit ? -1 : a.lastCommit > b.lastCommit ? 1 : 0)
+
+  const defaultSort = sortByLastCommit;
+
   useEffect(() => {
     setLoading(true);
     fetchRepos();
@@ -73,8 +78,9 @@ export default function Home() {
             totalSize: totalSize,
           };
         });
-        setData(organizedData);
-        setShowData(organizedData);
+
+        setData(organizedData.sort(defaultSort));
+        setShowData(organizedData.sort(defaultSort));
         setLoading(false);
         setReadmePreview(DEFAULT_READ_ME_PLACEHOLDER);
       });
@@ -114,7 +120,7 @@ export default function Home() {
                 totalSize: totalSize,
               };
             })
-            .filter((repo: DataProps) => repo.name != ".github")
+            .filter((repo: DataProps) => repo.name != ".github").sort(defaultSort)
         );
         setView("repos");
         setLoading(false);
