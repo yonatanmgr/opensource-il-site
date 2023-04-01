@@ -10,9 +10,9 @@ export default function ReposList(props: {
       dir='rtl'
       className='w-full flex h-auto flex-col overflow-y-auto overflow-x-hidden flex-no-wrap items-center gap-5 no-scrollbar'
     >
-      {props.showData.map((proj) => {
+      {props.showData.map((proj, idx) => {
         return (
-          <Project setReadme={props.setReadme} repo={proj} key={proj.image} />
+          <Project setReadme={props.setReadme} repo={proj} key={idx} />
         );
       })}
     </div>
