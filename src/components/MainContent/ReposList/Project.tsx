@@ -31,69 +31,61 @@ function nFormatter(num: number) {
   return num;
 }
 
-export default function Project(props: ProjectProps) {
-  const url = `https://www.github.com/${props.repo.owner}/${props.repo.name}`;
+export default function Project({ repo, setReadme }: ProjectProps) {
+  const url = `https://www.github.com/${repo.owner}/${repo.name}`;
 
   return (
     <div
       className="group sm:flex-row flex flex-col hover:shadow-3xl active:scale-95 w-[calc(100%-10px)] bg-mydarkblue rounded-xl border border-myblue transition ease-linear select-none"
-      onClick={() => props.setReadme(url)}
+      onClick={() => setReadme(url)}
     >
-      <a
-        href={url}
-        draggable="false"
-        target="_blank"
-        title={props.repo.description}
-      >
+      <a href={url} draggable="false" target="_blank" title={repo.description}>
         <Image
           className="max-sm:w-full sm:h-full rounded-tl-xl rounded-tr-xl sm:rounded-tl-none sm:rounded-br-xl aspect-[2/1]"
           width={320}
           height={160}
-          src={props.repo.image}
-          alt={props.repo.name}
+          src={repo.image}
+          alt={repo.name}
         />
       </a>
-      <div className="w-full h-full p-2 flex flex-col items-start justify-start gap-2 mr-2">
+      <div className="flex flex-col items-start justify-start w-full h-full gap-2 p-2 mr-2">
         <div className="text-xl">
-          <span className="font-light opacity-70">{props.repo.owner}/</span>
-          <span className="font-bold">{props.repo.name}</span>
+          <span className="font-light opacity-70">{repo.owner}/</span>
+          <span className="font-bold">{repo.name}</span>
         </div>
 
-        <div className="flex flex-row flex-wrap items-center gap-2 opacity-80 font-light">
+        <div className="flex flex-row flex-wrap items-center gap-2 font-light opacity-80">
           <span dir="ltr" className="flex flex-row items-center gap-1">
-            {nFormatter(props.repo.stars)}
-            <span className="group-hover:text-amber-300 transition">
+            {nFormatter(repo.stars)}
+            <span className="transition group-hover:text-amber-300">
               {starSvg}
             </span>
           </span>{" "}
           ·
           <span dir="ltr" className="flex flex-row items-center gap-1">
-            {props.repo.issuesCount}{" "}
-            <IssueIcon/>
+            {repo.issuesCount} <IssueIcon />
             <span className="hidden sm:contents">
-              {props.repo.issuesCount == 1 ? "Open Issue" : "Open Issues"}
+              {repo.issuesCount == 1 ? "Open Issue" : "Open Issues"}
             </span>
           </span>{" "}
           ·
           <span className={`flex flex-row items-center gap-1`}>
             <TimeIcon />
-            {moment(props.repo.lastCommit)
+            {moment(repo.lastCommit)
               .locale("he")
               .calendar()
               .replace("האחרון ", "")}
           </span>
         </div>
         <div className="flex flex-row gap-2">
-          {props.repo.languages ? (
-            props.repo.languages
+          {repo.languages ? (
+            repo.languages
               .filter((lang) => lang.name != "Dockerfile")
               .map((lang) => (
                 <LangPill
                   name={lang.name}
-                  size={
-                    Math.round((lang.size / props.repo.totalSize) * 1000) / 10
-                  }
-                  key={props.repo.stars + lang.size}
+                  size={Math.round((lang.size / repo.totalSize) * 1000) / 10}
+                  key={repo.stars + lang.size}
                 ></LangPill>
               ))
           ) : (
