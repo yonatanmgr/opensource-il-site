@@ -32,7 +32,7 @@ export default function Filters({
       dir="rtl"
       className="min-h-8 mt-3 sm:mt-0 gap-2.5 flex flex-wrap flex-col md:flex-row w-full md:items-center"
     >
-      <label className="opacity-70 h-8 flex flex-row items-center gap-2">
+      <label className="flex flex-row items-center h-8 gap-2 opacity-70">
         <input
           type="checkbox"
           title="הצגת מסננים"
@@ -50,7 +50,7 @@ export default function Filters({
               key={sortType}
               className="flex justify-between flex-row items-center gap-3 h-8 text-base hover:cursor-default focus-visible:ring-2 font-['Rubik'] rounded-md px-4 bg-mydarkblue border-none outline outline-1 outline-myblue transition hover:bg-buttonhover  text-white"
             >
-              <span className="h-full sm:text-base text-sm flex flex-row items-center">
+              <span className="flex flex-row items-center h-full text-sm sm:text-base">
                 {sortButtonsTexts[sortType as SortTypes].title}
               </span>
               <div className="h-full">
@@ -87,7 +87,7 @@ export default function Filters({
           >
             <option value="">כל שפה</option>
             {langs.map((lang) => (
-              <option key={lang} value={lang}>
+              <option key={lang} value={lang} dir="ltr">
                 {lang}
               </option>
             ))}
