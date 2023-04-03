@@ -10,13 +10,9 @@ export default function ReposList(props: {
       dir="rtl"
       className="flex flex-col flex-no-wrap items-center w-full h-auto gap-5 overflow-x-hidden overflow-y-auto no-scrollbar"
     >
-      {props.showData.map((proj) => {
+      {props.showData.map((project) => {
         return (
-          <Project
-            setReadme={props.setReadme}
-            repo={proj}
-            key={proj.owner + "/" + proj.name}
-          />
+          <Project setReadme={props.setReadme} repo={project} key={project.id} />
         );
       })}
     </div>
