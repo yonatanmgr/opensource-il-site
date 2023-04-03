@@ -7,12 +7,12 @@ export default function ReposList(props: {
 }) {
   return (
     <div
-      dir='rtl'
-      className='w-full flex h-auto flex-col overflow-y-auto overflow-x-hidden flex-no-wrap items-center gap-5 no-scrollbar'
+      dir="rtl"
+      className="flex flex-col flex-no-wrap items-center w-full h-auto gap-5 overflow-x-hidden overflow-y-auto no-scrollbar"
     >
-      {props.showData.map((proj, idx) => {
+      {props.showData.map((project) => {
         return (
-          <Project setReadme={props.setReadme} repo={proj} key={idx} />
+          <Project setReadme={props.setReadme} repo={project} key={project.id} />
         );
       })}
     </div>

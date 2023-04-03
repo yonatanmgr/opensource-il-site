@@ -25,6 +25,7 @@ export type RepoProps = {
 export type Views = "repos" | "companies";
 
 export type DataProps = {
+  id:string;
   image: string;
   owner: string;
   name: string;

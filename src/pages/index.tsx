@@ -65,6 +65,7 @@ export default function Home() {
       const totalSize = repo.languages.totalSize;
 
       return {
+        id: crypto.randomUUID(),
         image: image,
         owner: nameWithOwner.split("/")[0],
         name: nameWithOwner.split("/")[1],
@@ -107,6 +108,7 @@ export default function Home() {
           const totalSize = repo.languages.totalSize;
 
           return {
+            id: crypto.randomUUID(),
             image: image,
             owner: nameWithOwner.split("/")[0],
             name: nameWithOwner.split("/")[1],
@@ -199,7 +201,7 @@ export default function Home() {
             allLangs.push(lang.name);
         });
       }
-      return allLangs;
+      return allLangs.sort();
     }, []);
   }, [showData]);
 

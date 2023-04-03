@@ -66,7 +66,7 @@ export default function Filters({
           >
             <option value="">כל שפה</option>
             {langs.map((lang) => (
-              <option key={lang} value={lang}>
+              <option key={lang} value={lang} dir="ltr">
                 {lang}
               </option>
             ))}
