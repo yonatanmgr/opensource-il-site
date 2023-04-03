@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { sortButtonsTexts } from "../constants";
-import { FilterButton } from "./FilterButton";
 import { AllSortTypes, SortTypes } from "../types";
 import { useWindowSize } from "@/hooks/useWindowSize";
+import Filter from "./Filter";
 
-interface Props {
+interface FiltersProps {
   handleSortChange: (sortType: SortTypes) => void;
   setSelectedLang: (lang: string) => void;
   langs: string[];
@@ -18,7 +18,7 @@ export default function Filters({
   handleSortChange,
   activeSortType,
   selectedLang,
-}: Props) {
+}: FiltersProps) {
   const { isMediumUp } = useWindowSize();
   const [shouldShowFilters, setShouldShowFilters] = useState(true);
 
@@ -45,34 +45,13 @@ export default function Filters({
       {shouldShowFilters && (
         <>
           {Object.keys(sortButtonsTexts).map((sortType) => (
-            <div
-              dir="rtl"
+            <Filter
               key={sortType}
-              className="flex justify-between flex-row items-center gap-3 h-8 text-base hover:cursor-default focus-visible:ring-2 font-['Rubik'] rounded-md px-4 bg-mydarkblue border-none outline outline-1 outline-myblue transition hover:bg-buttonhover  text-white"
-            >
-              <span className="flex flex-row items-center h-full text-sm sm:text-base">
-                {sortButtonsTexts[sortType as SortTypes].title}
-              </span>
-              <div className="h-full">
-                {sortButtonsTexts[sortType as SortTypes].buttons.map(
-                  (sortDir: { action: string; text: string }) => {
-                    return (
-                      <FilterButton
-                        isActive={activeSortType === sortDir.action}
-                        key={sortDir.action}
-                        text={sortDir.text}
-                        onClick={() => {
-                          handleSortChange(sortDir.action as SortTypes);
-                          if (!isMediumUp) {
-                            setShouldShowFilters(false);
-                          }
-                        }}
-                      />
-                    );
-                  }
-                )}
-              </div>
-            </div>
+              sortType={sortType}
+              activeSortType={activeSortType}
+              onSortChange={handleSortChange}
+              setShouldShowFilters={setShouldShowFilters}
+            />
           ))}
           <select
             className="h-8 font-['Rubik'] sm:text-base text-sm focus-visible:ring-2 rounded-md px-4 bg-mydarkblue border-none outline outline-1 outline-myblue transition hover:bg-buttonhover active:bg-buttonactive text-white"
