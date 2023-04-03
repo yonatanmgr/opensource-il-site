@@ -199,7 +199,7 @@ export default function Home() {
             allLangs.push(lang.name);
         });
       }
-      return allLangs;
+      return allLangs.sort();
     }, []);
   }, [showData]);
 
