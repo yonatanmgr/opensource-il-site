@@ -47,36 +47,38 @@ export default function Home() {
     const res = await fetch("https://os-il-api.vercel.app/api/reposdb");
     const data: { repository: RepoProps }[] = await res.json();
 
-    const organizedData = data.map((proj) => {
-      const repo = proj.repository;
+    const organizedData = data
+      .filter((proj) => proj !== null)
+      .map((proj) => {
+        const repo = proj.repository;
 
-      const nameWithOwner = repo.nameWithOwner;
-      const image = repo.openGraphImageUrl;
-      const description = repo.description ?? "";
-      const lastCommit = repo.defaultBranchRef
-        ? repo.defaultBranchRef.target.committedDate
-        : "1970-01-01T00:00:00Z";
-      const stargazerCount = repo.stargazerCount;
-      const issuesCount = repo.openIssues.totalCount;
-      const languages = repo.languages.edges.map((lang) => ({
-        name: lang.node.name,
-        size: lang.size,
-      }));
-      const totalSize = repo.languages.totalSize;
+        const nameWithOwner = repo.nameWithOwner;
+        const image = repo.openGraphImageUrl;
+        const description = repo.description ?? "";
+        const lastCommit = repo.defaultBranchRef
+          ? repo.defaultBranchRef.target.committedDate
+          : "1970-01-01T00:00:00Z";
+        const stargazerCount = repo.stargazerCount;
+        const issuesCount = repo.openIssues.totalCount;
+        const languages = repo.languages.edges.map((lang) => ({
+          name: lang.node.name,
+          size: lang.size,
+        }));
+        const totalSize = repo.languages.totalSize;
 
-      return {
-        id: crypto.randomUUID(),
-        image: image,
-        owner: nameWithOwner.split("/")[0],
-        name: nameWithOwner.split("/")[1],
-        description: description,
-        lastCommit: lastCommit,
-        stars: stargazerCount,
-        issuesCount: issuesCount,
-        languages: languages,
-        totalSize: totalSize,
-      };
-    });
+        return {
+          id: crypto.randomUUID(),
+          image: image,
+          owner: nameWithOwner.split("/")[0],
+          name: nameWithOwner.split("/")[1],
+          description: description,
+          lastCommit: lastCommit,
+          stars: stargazerCount,
+          issuesCount: issuesCount,
+          languages: languages,
+          totalSize: totalSize,
+        };
+      });
 
     setData(organizedData.sort(defaultSort));
     setShowData(organizedData.sort(defaultSort));
