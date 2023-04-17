@@ -143,7 +143,7 @@ export default function Home() {
       data = await res.text();
       const showdown = require("showdown"),
         converter = new showdown.Converter(),
-        text = data,
+        text = data.replace(`<nobr>`, ""),
         html = converter.makeHtml(text);
       setReadmePreview(html);
     }
