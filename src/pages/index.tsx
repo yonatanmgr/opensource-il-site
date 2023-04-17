@@ -11,6 +11,7 @@ import Modal from "@/components/HelpModal";
 import OrgIcon from "@/components/Icons/OrgIcon";
 import ReposIcon from "@/components/Icons/ReposIcon";
 
+
 const DEFAULT_READ_ME_PLACEHOLDER = `<div dir="rtl" style="font-size: 18px; font-family: 'Rubik'">בחרו ב-Repository מהרשימה כדי לקרוא את קובץ ה-README שלו!</div>`;
 
 export default function Home() {
@@ -211,8 +212,8 @@ export default function Home() {
     return selectedLang === ""
       ? showData
       : showData.filter((repo: DataProps) =>
-          repo.languages.find((language) => language.name == selectedLang)
-        );
+        repo.languages.find((language) => language.name == selectedLang)
+      );
   }, [showData, selectedLang]);
 
   if (!data && !isLoading) return <p>Error loading data</p>;
@@ -224,62 +225,68 @@ export default function Home() {
     ),
   }[view];
 
+  const handleModalClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation();
+  };
+
   return (
     <>
-      <Modal show={showModal} setShow={setShowModal}>
-        <div dir="rtl" className="flex flex-col h-auto gap-4 text-lg">
-          <p>ברוכים הבאים!</p>
-          <p>
-            באתר זה תוכלו למצוא פרויקטי קוד פתוח ישראליים וחברות ישראליות
-            המתחזקות ספריות קוד פתוח, לקרוא על הפרויקטים ולמצוא את הפרויקט הבא
-            (ואולי גם הראשון 😉) אליו תוכלו לתרום.
-          </p>
-          <p>
-            במסך המאגרים (<ReposIcon setView={setView} view={view} />
-            ), לחיצה על &quot;הצג מסננים&quot;, תפתח בפניכם מספר אפשרויות סינון
-            שיעזרו לכם למצוא את הפרויקט האידיאלי עבורכם: <b>
-              זמן גרסה אחרון
-            </b>, <b>כמות כוכבים</b> ו-<b>כמות Issues פתוחים</b>. בנוסף, תוכלו
-            לסנן את כל הפרויקטים המוצגים לפי שפת התכנות שלהם וכך לדייק את
-            חיפושיכם לפרויקטים המתאימים לכם ביותר.
-          </p>
-          <p>
-            בלחיצה על כפתור החברות ( <OrgIcon setView={setView} view={view} />{" "}
-            ), יוצגו בפניכם עשרות חברות ישראליות המתחזקות ספריות קוד פתוח. בעוד
-            שלחיצה על שם החברה יוביל לדף הבית שלה ב-GitHub, לחיצה על סמליל החברה
-            יפתח בפניכם את כל מאגרי הקוד הפתוח הציבוריים שלה, אליהם תוכלו
-            להצטרף.
-          </p>
-          <p>
-            לחיצה על הקישור ל-GitHub בחלקו העליון של הדף, תוביל אתכם למאגר{" "}
-            <a
-              href="https://github.com/lirantal/awesome-opensource-israel"
-              rel="noopener"
-              target="_blank"
-              className="font-medium text-blue-400 transition hover:underline decoration-dotted"
-            >
-              awesome-opensource-israel
-            </a>
-            , ממנו נמשכים המאגרים והארגונים המוצגים באתר זה.
-          </p>
-          <p>
-            פרויקט נוסף אליו תוכלו לתרום קוד הוא{" "}
-            <a
-              href="https://github.com/yonatanmgr/opensource-il-site"
-              rel="noopener"
-              target="_blank"
-              className="font-medium text-blue-400 transition hover:underline decoration-dotted"
-            >
-              אתר זה ממש
-            </a>
-            ! מוזמנים להצטרף לפיתוח, להוסיף תכולות ולסייע בתיקון תקלות - וכך
-            לעזור לבנות בית לקוד הפתוח בישראל.
-          </p>
-          <p className="text-sm text-center opacity-50">
-            נוצר ע&quot;י יונתן מגר, 2023
-          </p>
-        </div>
-      </Modal>
+      <div onClick={() => setShowModal(false)}>
+        <Modal show={showModal} setShow={setShowModal}>
+          <div dir="rtl" className="flex flex-col h-auto gap-4 text-lg" onClick={(e) => handleModalClick(e)}>
+            <p>ברוכים הבאים!</p>
+            <p>
+              באתר זה תוכלו למצוא פרויקטי קוד פתוח ישראליים וחברות ישראליות
+              המתחזקות ספריות קוד פתוח, לקרוא על הפרויקטים ולמצוא את הפרויקט הבא
+              (ואולי גם הראשון 😉) אליו תוכלו לתרום.
+            </p>
+            <p>
+              במסך המאגרים (<ReposIcon setView={setView} view={view} />
+              ), לחיצה על &quot;הצג מסננים&quot;, תפתח בפניכם מספר אפשרויות סינון
+              שיעזרו לכם למצוא את הפרויקט האידיאלי עבורכם: <b>
+                זמן גרסה אחרון
+              </b>, <b>כמות כוכבים</b> ו-<b>כמות Issues פתוחים</b>. בנוסף, תוכלו
+              לסנן את כל הפרויקטים המוצגים לפי שפת התכנות שלהם וכך לדייק את
+              חיפושיכם לפרויקטים המתאימים לכם ביותר.
+            </p>
+            <p>
+              בלחיצה על כפתור החברות ( <OrgIcon setView={setView} view={view} />{" "}
+              ), יוצגו בפניכם עשרות חברות ישראליות המתחזקות ספריות קוד פתוח. בעוד
+              שלחיצה על שם החברה יוביל לדף הבית שלה ב-GitHub, לחיצה על סמליל החברה
+              יפתח בפניכם את כל מאגרי הקוד הפתוח הציבוריים שלה, אליהם תוכלו
+              להצטרף.
+            </p>
+            <p>
+              לחיצה על הקישור ל-GitHub בחלקו העליון של הדף, תוביל אתכם למאגר{" "}
+              <a
+                href="https://github.com/lirantal/awesome-opensource-israel"
+                rel="noopener"
+                target="_blank"
+                className="font-medium text-blue-400 transition hover:underline decoration-dotted"
+              >
+                awesome-opensource-israel
+              </a>
+              , ממנו נמשכים המאגרים והארגונים המוצגים באתר זה.
+            </p>
+            <p>
+              פרויקט נוסף אליו תוכלו לתרום קוד הוא{" "}
+              <a
+                href="https://github.com/yonatanmgr/opensource-il-site"
+                rel="noopener"
+                target="_blank"
+                className="font-medium text-blue-400 transition hover:underline decoration-dotted"
+              >
+                אתר זה ממש
+              </a>
+              ! מוזמנים להצטרף לפיתוח, להוסיף תכולות ולסייע בתיקון תקלות - וכך
+              לעזור לבנות בית לקוד הפתוח בישראל.
+            </p>
+            <p className="text-sm text-center opacity-50">
+              נוצר ע&quot;י יונתן מגר, 2023
+            </p>
+          </div>
+        </Modal>
+      </div>
       <Head>
         <title>קוד פתוח ישראלי</title>
         <meta name="description" content="Open Source Community Israel" />
