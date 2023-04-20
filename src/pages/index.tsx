@@ -20,6 +20,7 @@ export default function Home() {
   const [data, setData] = useState<DataProps[]>([]);
   const [showData, setShowData] = useState<DataProps[]>([]);
   const [isLoading, setLoading] = useState(false);
+  const [isReadmeLoading, setIsReadmeLoading] = useState(false);
   const [selectedLang, setSelectedLang] = useState("");
   const [readmePreview, setReadmePreview] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -131,6 +132,7 @@ export default function Home() {
   };
 
   const onSetReadMe = async (readme: string) => {
+    setIsReadmeLoading(true);
     const foundReadme = showData.find(
       (repo) => `https://www.github.com/${repo.owner}/${repo.name}` === readme
     );
@@ -146,6 +148,7 @@ export default function Home() {
         text = data.replace(`<nobr>`, ""),
         html = converter.makeHtml(text);
       setReadmePreview(html);
+      setIsReadmeLoading(false);
     }
   };
 
@@ -225,6 +228,12 @@ export default function Home() {
     ),
   }[view];
 
+  const loadingSpinner = (
+        <div className="absolute w-screen h-screen bg-black/50">
+          <div className="center h-10 w-10 border-8 border-mydarkblue border-t-myblue bg-transparent fixed left-[49%] top-[45%] rounded-full animate-spin"></div>
+        </div>
+  );
+
   const handleModalClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
   };
@@ -293,11 +302,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {isLoading && (
-        <div className="absolute w-screen h-screen bg-black/50">
-          <div className="center h-10 w-10 border-8 border-mydarkblue border-t-myblue bg-transparent fixed left-[49%] top-[45%] rounded-full animate-spin"></div>
-        </div>
-      )}
+      {isLoading && loadingSpinner}
       <main className="flex flex-col items-center justify-between max-h-screen min-h-screen gap-4 p-6 pb-0 md:p-16 sm:p-8 sm:pb-0 md:pb-0">
         <div className="flex flex-col w-full gap-2.5">
           <PageTitle
@@ -322,7 +327,7 @@ export default function Home() {
           className="w-full h-screen flex overflow-y-auto flex-row justify-between gap-2.5"
         >
           {currentView}
-          <ReadmePreview readmePreview={readmePreview} />
+          <ReadmePreview readmePreview={readmePreview} loading={isReadmeLoading}/>
         </div>
         <div
           className="fixed flex flex-row items-center justify-center text-3xl transition border rounded-full select-none shadow-4xl left-5 bottom-6 sm:left-9 sm:bottom-10 border-myblue bg-mydarkblue w-14 h-14 hover:bg-buttonhover active:bg-buttonactive cursor-help"
