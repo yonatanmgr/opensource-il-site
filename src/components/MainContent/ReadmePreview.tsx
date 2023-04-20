@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import parse from "html-react-parser";
 
 export default function ReadmePreview(props: { readmePreview: string, loading: boolean }) {
   const [content, setContent] = useState(props.readmePreview)
@@ -20,7 +21,8 @@ export default function ReadmePreview(props: { readmePreview: string, loading: b
     <div
       dir="ltr"
       className="hidden lg:block w-2/4 min-w-[50%] max-w-[50%] h-auto overflow-y-auto markdown-body bg-readmedark border border-myblue border-b-0 rounded-tl-xl rounded-tr-xl no-scrollbar"
-      dangerouslySetInnerHTML={{ __html: content }}
-    ></div>
+    >
+      {parse(content)}
+    </div>
   );
 }
