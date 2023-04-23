@@ -51,7 +51,7 @@ export default function SocialLinks({ setView, view }: TitleAndSocialLinkProps) 
       <a
         rel='noopener'
         title="'Open Source Israel' Discord server"
-        href='https://discord.com/invite/t8XBxeRK'
+        href='https://discord.com/invite/eDywPFYphF'
         target='_blank'
         className='overflow-hidden transition hover:scale-105 active:scale-95'
       >
