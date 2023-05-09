@@ -190,7 +190,9 @@ export default function Home() {
           (a: DataProps, b: DataProps) => a.issuesCount - b.issuesCount
         );
         break;
-
+        case "default":
+          sorted = [...showData].sort(defaultSort);
+          break;
       default:
         sorted = [...showData];
         break;
