@@ -44,15 +44,16 @@ export default function Filters({
       </label>
       {shouldShowFilters && (
         <>
-          {Object.keys(sortButtonsTexts).map((sortType) => (
-            <Filter
+          {Object.keys(sortButtonsTexts).map((sortType) => {
+            if(sortType==='default') return;
+            return <Filter
               key={sortType}
               sortType={sortType}
               activeSortType={activeSortType}
               onSortChange={handleSortChange}
               setShouldShowFilters={setShouldShowFilters}
             />
-          ))}
+          })}
           <select
             className="h-8 font-['Rubik'] sm:text-base text-sm focus-visible:ring-2 rounded-md px-4 bg-mydarkblue border-none outline outline-1 outline-myblue transition hover:bg-buttonhover active:bg-buttonactive text-white"
             name="languages"
@@ -71,6 +72,15 @@ export default function Filters({
               </option>
             ))}
           </select>
+          <button
+            className="flex justify-between flex-row items-center gap-3 h-8 text-sm hover:cursor-default focus-visible:ring-2 font-['Rubik'] rounded-md px-4 bg-mydarkblue border-none outline outline-1 outline-myblue transition hover:bg-buttonhover text-white"
+            onClick={() => {
+              handleSortChange("default");
+              setSelectedLang("");
+            }}
+          >
+            איפוס
+          </button>
         </>
       )}
     </div>

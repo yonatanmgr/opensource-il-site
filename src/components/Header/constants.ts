@@ -20,4 +20,8 @@ export const sortButtonsTexts = {
       { text: "▼", action: "issues" },
     ],
   },
+  default: {
+    title: "איפוס",
+    buttons: [{ text: "איפוס", action: "default" }],
+  },
 } as const;
