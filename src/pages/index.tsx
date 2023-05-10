@@ -152,8 +152,8 @@ export default function Home() {
     }
   };
 
-  const onSelectCompany = (company: string) => {
-    fetchCompanyRepos(company);
+  const onSelectCompany = (company: string[]) => {    
+    fetchCompanyRepos(company[0]);
     setSelectedLang("");
   };
 

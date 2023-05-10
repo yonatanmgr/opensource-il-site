@@ -3,7 +3,7 @@ import Company from "./Company";
 
 export default function CompaniesList(props: {
   companies: CompanyProps[];
-  setComp: (arg0: string) => unknown
+  setComp: (arg0: string[]) => unknown
 }) {
   return (
     <div
