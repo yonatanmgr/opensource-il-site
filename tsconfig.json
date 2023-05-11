@@ -14,10 +14,25 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/declarations.d.ts",
+    "src/types/**/*.d.ts",
+    "src/types/*.d.ts",
+    "next.config.js",
+    "postcss.config.js"
+  ],
   "exclude": ["node_modules"]
 }
