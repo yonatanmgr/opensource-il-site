@@ -1,8 +1,19 @@
 @import "https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap";
+/* we can use these lines instead if we want to support general dark / light modes
+@import url("https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-dark.css") (prefers-color-scheme: dark);
+@import url("https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.css") (prefers-color-scheme: light); */
 @import url("https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-dark.css");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  .markdown-body ul, ol, menu {
+    list-style: revert;
+  }
+}
+
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -21,4 +32,21 @@
 a > img,
 p > img {
   display: inline;
+}
+
+/* we can use these lines instead if we want to support general dark / light modes
+@media (prefers-color-scheme: dark){
+  [href$="#gh-light-mode-only"] {
+    display: none;
+  }
+}
+
+@media (prefers-color-scheme: light){
+  [href$="#gh-dark-mode-only"] {
+    display: none;
+  }
+}
+*/
+[href$="#gh-light-mode-only"] {
+  display: none;
 }

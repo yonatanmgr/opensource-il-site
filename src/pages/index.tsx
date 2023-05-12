@@ -1,5 +1,6 @@
 import Head from "next/head";
 import React, { useEffect, useMemo, useState } from "react";
+import { marked } from "marked";
 import ReadmePreview from "@/components/MainContent/ReadmePreview";
 import ReposList from "@/components/MainContent/ReposList/ReposList";
 import PageTitle from "@/components/Header/PageTitle";
@@ -11,7 +12,12 @@ import Modal from "@/components/HelpModal";
 import OrgIcon from "@/components/Icons/OrgIcon";
 import ReposIcon from "@/components/Icons/ReposIcon";
 
-
+// This silences warnings about deprecated options, which are enabled by default for some reason, taken from:
+// https://github.com/markedjs/marked/issues/2793#issuecomment-1532386286
+marked.use({
+  mangle: false,
+  headerIds: false,
+})
 const DEFAULT_READ_ME_PLACEHOLDER = `<div dir="rtl" style="font-size: 18px; font-family: 'Rubik'">בחרו ב-Repository מהרשימה כדי לקרוא את קובץ ה-README שלו!</div>`;
 
 export default function Home() {
@@ -143,10 +149,8 @@ export default function Home() {
       let data = await res.json();
       res = await fetch(data.download_url);
       data = await res.text();
-      const showdown = require("showdown"),
-        converter = new showdown.Converter(),
-        text = data.replace(`<nobr>`, ""),
-        html = converter.makeHtml(text);
+      const text = data.replace(`<nobr>`, ""),
+        html = marked.parse(text)
       setReadmePreview(html);
       setIsReadmeLoading(false);
     }
@@ -217,8 +221,8 @@ export default function Home() {
     return selectedLang === ""
       ? showData
       : showData.filter((repo: DataProps) =>
-        repo.languages.find((language) => language.name == selectedLang)
-      );
+          repo.languages.find((language) => language.name == selectedLang)
+        );
   }, [showData, selectedLang]);
 
   if (!data && !isLoading) return <p>Error loading data</p>;
@@ -231,9 +235,9 @@ export default function Home() {
   }[view];
 
   const loadingSpinner = (
-        <div className="absolute w-screen h-screen bg-black/50">
-          <div className="center h-10 w-10 border-8 border-mydarkblue border-t-myblue bg-transparent fixed left-[49%] top-[45%] rounded-full animate-spin"></div>
-        </div>
+    <div className="absolute w-screen h-screen bg-black/50">
+      <div className="center h-10 w-10 border-8 border-mydarkblue border-t-myblue bg-transparent fixed left-[49%] top-[45%] rounded-full animate-spin"></div>
+    </div>
   );
 
   const handleModalClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -255,7 +259,7 @@ export default function Home() {
               במסך המאגרים (<ReposIcon setView={setView} view={view} />
               ), לחיצה על &quot;הצג מסננים&quot;, תפתח בפניכם מספר אפשרויות סינון
               שיעזרו לכם למצוא את הפרויקט האידיאלי עבורכם: <b>
-                זמן גרסה אחרון
+              זמן גרסה אחרון
               </b>, <b>כמות כוכבים</b> ו-<b>כמות Issues פתוחים</b>. בנוסף, תוכלו
               לסנן את כל הפרויקטים המוצגים לפי שפת התכנות שלהם וכך לדייק את
               חיפושיכם לפרויקטים המתאימים לכם ביותר.
@@ -293,7 +297,7 @@ export default function Home() {
               לעזור לבנות בית לקוד הפתוח בישראל.
             </p>
             <p className="text-sm text-center opacity-50">
-              נוצר ע&quot;י יונתן מגר, 2023
+              נוצר ע&quot;י יונתן מגר, 2023. ממשיך להתקיים <a href="https://github.com/yonatanmgr/opensource-il-site/graphs/contributors" rel="noopener" target="_blank" className="font-medium text-blue-400 transition hover:underline decoration-dotted">בזכותכם</a>.
             </p>
           </div>
         </Modal>
