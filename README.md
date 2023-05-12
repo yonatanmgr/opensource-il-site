@@ -5,15 +5,15 @@ Want to get started contributing to open source and not sure where to begin? You
 Open Source Israeli website scrapes [awesome-opensource-israel](https://github.com/lirantal/awesome-opensource-israel) github and displays every open source Israeli projects.
 
 How to contribute to this project:
-Prequsties: Have Node.js and NPM installed on your machine
+Prequsties: You must have [Node.js](https://nodejs.org/en/download) and NPM installed on your machine
 
-1. Fork the project to create your own copy of the repository
-2. Create a local directory inside your computer to clone the project to
-3. Copy the project "Clone" URL: https://github.com/*your_git_user*/opensource-il-site.git
-4. Open the terminal from your local directory
-5. Type the command "git clone" *Clone_url* in the terminal
-6. Install the project's dependecies using either the "npm i" or "yarn install" in the terminal
-7. Make sure the installation was successful by using the "npm run dev" or "yarn run dev" in the terminal
+1. Fork the project to create your own copy of the repository at github (by pressing `fork` button)   
+2. Navigate to some directory where you plan the project to be cloned    
+3. Clone the project by running `git clone https://github.com/<YOUR-GIT-USER>/opensource-il-site.git` in terminal  
+4. Navigate to project directory  
+5. `cd opensource-il-site`   
+6. Install the project's dependecies by running `npm i` command in the terminal
+7. Make sure the installation was successful by using the `npm run dev` in the terminal
 
 Want to contribute to the Open Source Israeli website? Visited the site and still unsure where to begin? Facing an issue?
 Drop by the [Discord community](https://discordapp.com/channels/1089589164707684443/1102155816750022657) and leave a comment
