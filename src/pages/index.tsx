@@ -300,7 +300,7 @@ export default function Home() {
               לעזור לבנות בית לקוד הפתוח בישראל.
             </p>
             <p className="text-sm text-center opacity-50">
-              נוצר ע&quot;י יונתן מגר, 2023
+              נוצר ע&quot;י יונתן מגר, 2023. ממשיך להתקיים <a href="https://github.com/yonatanmgr/opensource-il-site/graphs/contributors" rel="noopener" target="_blank" className="font-medium text-blue-400 transition hover:underline decoration-dotted">בזכותכם</a>.
             </p>
           </div>
         </Modal>
