@@ -313,7 +313,7 @@ export default function Home() {
       </Head>
       {isLoading && loadingSpinner}
       <main className="flex flex-col items-center justify-between max-h-screen min-h-screen gap-4 p-6 pb-0 md:p-16 sm:p-8 sm:pb-0 md:pb-0">
-        <div className="flex flex-col w-full gap-2.5">
+        <div className="flex flex-col w-full lg:gap-2.5 md:gap-6 gap-2">
           <PageTitle
             view={view}
             setView={(view) => {

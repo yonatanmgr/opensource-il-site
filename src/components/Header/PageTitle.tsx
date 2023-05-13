@@ -11,7 +11,7 @@ export default function PageTitle({ setView, view }: TitleAndSocialLinkProps) {
   return (
     <div
       dir='rtl'
-      className='flex flex-col-reverse lg:flex-row h-20 flex-wrap items-center justify-between w-full'
+      className='flex flex-col-reverse gap-3 lg:flex-row lg:h-24 flex-wrap items-center justify-between w-full'
     >
       <div
         dir='rtl'
