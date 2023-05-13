@@ -1,8 +1,9 @@
+import getUuid from '@/server/utils/uuid';
 import cron from 'node-cron';
 import { logger } from '../utils/logger';
 import { ReademGithubCompany, ReademGithubProject } from '@/types/index.type';
 import { queryPrismaDb } from '../db/prisma';
-// import { getFromRedis, storeInRedis } from '../db/redis';
+import { isDateOlderThanDays } from '../utils/isDateOld';
 
 class ActiveMemoryStore {
   private static instance: ActiveMemoryStore | null = null;
@@ -18,10 +19,6 @@ class ActiveMemoryStore {
   }
 
   public getData(key: string) {
-    console.log(
-      '🚀 ~ file: dataManager.service.ts:21 ~ ActiveMemoryStore ~ getData ~ key:',
-      key
-    );
     return this.fileStore[key];
   }
   public setData(key: string, value: any) {
@@ -34,7 +31,42 @@ class ActiveMemoryStore {
   }
 }
 
-const fileStorage = ActiveMemoryStore.getInstance();
+export const fileStorage = ActiveMemoryStore.getInstance();
+export class GetDataCronSingleton {
+  private static instance: GetDataCronSingleton | null = null;
+  private cronJob;
+
+  private constructor() {
+    // Start job
+    if (!this.cronJob) {
+      this.cronJob = cron.schedule('0 0 */3 * * *', () => this.populateData());
+    }
+    this.populateData();
+  }
+
+  public static getInstance(): GetDataCronSingleton {
+    if (!GetDataCronSingleton.instance) {
+      GetDataCronSingleton.instance = new GetDataCronSingleton();
+    }
+
+    return GetDataCronSingleton.instance;
+  }
+
+  public async populateData(): Promise<void> {
+    try {
+      await mainDataFetch();
+    } catch (error) {
+      logger.error(
+        '🚀 ~ file: githubMdParser.ts:235 ~ CronSingleTon ~ getData ~ error:',
+        error
+      );
+    }
+  }
+}
+
+export const JSON_DATA_STORE_KEY = 'jsonData';
+export const COMPANIES_STORE_KEY = 'companies';
+export const PROJECTS_STORE_KEY = 'projects';
 
 const langsToListRegex = /^\s?#{3}([^#{3}]+?)\n([^]+?)(?=^\s?#{3}[^#{3}])/gm;
 const splitProjectRegex = /\[(.+)\]\((.+)\) - (.+)/;
@@ -280,7 +312,26 @@ async function storeFiles(data: {
 
 export async function mainDataFetch() {
   try {
-    console.log(Date.now(), 'will execute every minute until stopped');
+    logger.info(
+      Date.now(),
+      getUuid,
+      'Initiating search for existing store in memory...'
+    );
+
+    const data = fileStorage.getData(JSON_DATA_STORE_KEY);
+    const projects = fileStorage.getData(PROJECTS_STORE_KEY);
+    const companies = fileStorage.getData(COMPANIES_STORE_KEY);
+    if (
+      data &&
+      projects &&
+      companies &&
+      !isDateOlderThanDays(fileStorage.getLastUpdated(), 3)
+    ) {
+      logger.info(Date.now(), 'Fetching from memory...');
+      return { success: true, data, projects, companies };
+    }
+
+    logger.info(Date.now(), 'Fetching from github...');
     const result = await fetchGithubMd();
     if (!result) {
       throw new Error('Failed to fetch from github readme!');
@@ -315,13 +366,16 @@ export async function mainDataFetch() {
       throw new Error('store in db failed!');
     }
 
-    fileStorage.setData('jsonData', dbStoreResult);
-    const storedFileData = fileStorage.getData('jsonData');
+    logger.info(Date.now(), 'Setting to memory...');
+    fileStorage.setData(JSON_DATA_STORE_KEY, dbStoreResult);
+    fileStorage.setData(PROJECTS_STORE_KEY, allGqlProjects);
+    fileStorage.setData(COMPANIES_STORE_KEY, allGqlCompanies);
+    const storedFileData = fileStorage.getData(JSON_DATA_STORE_KEY);
     return {
       success,
       allComps,
-      allGqlProjects,
-      allGqlCompanies,
+      projects: allGqlProjects,
+      companies: allGqlCompanies,
       allLanguages,
       dbStoreResult,
       storedFileData
@@ -334,34 +388,42 @@ export async function mainDataFetch() {
   }
 }
 
-export class GetDataCronSingleton {
-  private static instance: GetDataCronSingleton | null = null;
-  private cronJob;
-
-  private constructor() {
-    // Start job
-    if (!this.cronJob) {
-      this.cronJob = cron.schedule('0 0 */3 * * *', this.getData);
-    }
-    this.getData();
+export async function fetchCompany(companyId: string) {
+  try {
+    await mainDataFetch();
+    const companies = fileStorage.getData(COMPANIES_STORE_KEY);
+    const target = companies.find(
+      (company: any) => company?.organization?.login === companyId
+    );
+    return target !== -1 ? target : null;
+  } catch (error) {
+    logger.error(
+      '🚀 ~ file: dataManager.service.ts:397 ~ fetchCompany ~ error:',
+      error
+    );
   }
+}
 
-  public static getInstance(): GetDataCronSingleton {
-    if (!GetDataCronSingleton.instance) {
-      GetDataCronSingleton.instance = new GetDataCronSingleton();
-    }
-
-    return GetDataCronSingleton.instance;
+export async function fetchAllCompanies() {
+  try {
+    await mainDataFetch();
+    return fileStorage.getData(COMPANIES_STORE_KEY);
+  } catch (error) {
+    logger.error(
+      '🚀 ~ file: dataManager.service.ts:416 ~ fetchAllCompanies ~ error:',
+      error
+    );
   }
+}
 
-  public async getData(): Promise<void> {
-    try {
-      mainDataFetch();
-    } catch (error) {
-      logger.error(
-        '🚀 ~ file: githubMdParser.ts:235 ~ CronSingleTon ~ getData ~ error:',
-        error
-      );
-    }
+export async function fetchAllRepositories() {
+  try {
+    await mainDataFetch();
+    return fileStorage.getData(PROJECTS_STORE_KEY);
+  } catch (error) {
+    logger.error(
+      '🚀 ~ file: dataManager.service.ts:429 ~ fetchAllRepositories ~ error:',
+      error
+    );
   }
 }
