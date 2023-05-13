@@ -430,7 +430,7 @@ export async function mainDataFetch() {
 export async function fetchCompany(companyId: string) {
   try {
     await mainDataFetch();
-    const companies = fileStorage.getData(COMPANIES_STORE_KEY);
+    const companies = await mainDataFetch().then((data) => data?.companies);
     const target = companies.find(
       (company: any) => company?.organization?.login === companyId
     );
