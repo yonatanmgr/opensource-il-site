@@ -1,9 +1,6 @@
 import Head from 'next/head';
 import './globals.css';
-
-import { Inter } from 'next/font/google';
-
-const inter = Inter({ subsets: ['latin'] });
+import { Analytics } from '@vercel/analytics/react';
 
 export const metadata = {
   title: 'Create Next App',
@@ -20,7 +17,10 @@ export default function RootLayout({
       <Head>
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
-      <body className={inter.className}>{children}</body>
+      <body className='w-screen overflow-x-hidden bg-gradient-to-b from-gradientfrom to-gradientto font-["Rubik"] text-white'>
+        {children}
+      </body>
+      <Analytics />
     </html>
   );
 }
