@@ -3,7 +3,7 @@ import Company from "./Company";
 
 export default function CompaniesList(props: {
   companies: CompanyProps[];
-  setComp: (arg0: string[]) => unknown
+  setComp: (company: CompanyProps) => void;
 }) {
   return (
     <div
@@ -12,7 +12,13 @@ export default function CompaniesList(props: {
     >
       {props.companies.map((comp) => {
         return (
-          <Company logo={comp.avatar} name={comp.name} login={comp.login} key={comp.login} setComp={props.setComp} />
+          <Company
+            name={comp.name}
+            login={comp.login}
+            avatar={comp.avatar}
+            key={comp.login}
+            setComp={props.setComp}
+          />
         );
       })}
     </div>

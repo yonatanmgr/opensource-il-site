@@ -17,12 +17,13 @@ import ReposIcon from "@/components/Icons/ReposIcon";
 marked.use({
   mangle: false,
   headerIds: false,
-})
+});
 const DEFAULT_READ_ME_PLACEHOLDER = `<div dir="rtl" style="font-size: 18px; font-family: 'Rubik'">בחרו ב-Repository מהרשימה כדי לקרוא את קובץ ה-README שלו!</div>`;
 
 export default function Home() {
   const [view, setView] = useState<Views>("repos");
   const [companies, setCompanies] = useState<CompanyProps[]>([]);
+  const [currentCompanyName, setCurrentCompanyName] = useState<string>();
   const [data, setData] = useState<DataProps[]>([]);
   const [showData, setShowData] = useState<DataProps[]>([]);
   const [isLoading, setLoading] = useState(false);
@@ -150,14 +151,15 @@ export default function Home() {
       res = await fetch(data.download_url);
       data = await res.text();
       const text = data.replace(`<nobr>`, ""),
-        html = marked.parse(text)
+        html = marked.parse(text);
       setReadmePreview(html);
       setIsReadmeLoading(false);
     }
   };
 
-  const onSelectCompany = (company: string[]) => {    
-    fetchCompanyRepos(company[0]);
+  const onSelectCompany = (company: CompanyProps) => {
+    fetchCompanyRepos(company.login);
+    setCurrentCompanyName(company.name);
     setSelectedLang("");
   };
 
@@ -194,9 +196,9 @@ export default function Home() {
           (a: DataProps, b: DataProps) => a.issuesCount - b.issuesCount
         );
         break;
-        case "default":
-          sorted = [...showData].sort(defaultSort);
-          break;
+      case "default":
+        sorted = [...showData].sort(defaultSort);
+        break;
       default:
         sorted = [...showData];
         break;
@@ -240,7 +242,9 @@ export default function Home() {
     </div>
   );
 
-  const handleModalClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleModalClick = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
     e.stopPropagation();
   };
 
@@ -248,7 +252,11 @@ export default function Home() {
     <>
       <div onClick={() => setShowModal(false)}>
         <Modal show={showModal} setShow={setShowModal}>
-          <div dir="rtl" className="flex flex-col h-auto gap-4 text-lg" onClick={(e) => handleModalClick(e)}>
+          <div
+            dir="rtl"
+            className="flex flex-col h-auto gap-4 text-lg"
+            onClick={(e) => handleModalClick(e)}
+          >
             <p>ברוכים הבאים!</p>
             <p>
               באתר זה תוכלו למצוא פרויקטי קוד פתוח ישראליים וחברות ישראליות
@@ -257,19 +265,19 @@ export default function Home() {
             </p>
             <p>
               במסך המאגרים (<ReposIcon setView={setView} view={view} />
-              ), לחיצה על &quot;הצג מסננים&quot;, תפתח בפניכם מספר אפשרויות סינון
-              שיעזרו לכם למצוא את הפרויקט האידיאלי עבורכם: <b>
-              זמן גרסה אחרון
-              </b>, <b>כמות כוכבים</b> ו-<b>כמות Issues פתוחים</b>. בנוסף, תוכלו
-              לסנן את כל הפרויקטים המוצגים לפי שפת התכנות שלהם וכך לדייק את
-              חיפושיכם לפרויקטים המתאימים לכם ביותר.
+              ), לחיצה על &quot;הצג מסננים&quot;, תפתח בפניכם מספר אפשרויות
+              סינון שיעזרו לכם למצוא את הפרויקט האידיאלי עבורכם:{" "}
+              <b>זמן גרסה אחרון</b>, <b>כמות כוכבים</b> ו-
+              <b>כמות Issues פתוחים</b>. בנוסף, תוכלו לסנן את כל הפרויקטים
+              המוצגים לפי שפת התכנות שלהם וכך לדייק את חיפושיכם לפרויקטים
+              המתאימים לכם ביותר.
             </p>
             <p>
               בלחיצה על כפתור החברות ( <OrgIcon setView={setView} view={view} />{" "}
-              ), יוצגו בפניכם עשרות חברות ישראליות המתחזקות ספריות קוד פתוח. בעוד
-              שלחיצה על שם החברה יוביל לדף הבית שלה ב-GitHub, לחיצה על סמליל החברה
-              יפתח בפניכם את כל מאגרי הקוד הפתוח הציבוריים שלה, אליהם תוכלו
-              להצטרף.
+              ), יוצגו בפניכם עשרות חברות ישראליות המתחזקות ספריות קוד פתוח.
+              בעוד שלחיצה על שם החברה יוביל לדף הבית שלה ב-GitHub, לחיצה על
+              סמליל החברה יפתח בפניכם את כל מאגרי הקוד הפתוח הציבוריים שלה,
+              אליהם תוכלו להצטרף.
             </p>
             <p>
               לחיצה על הקישור ל-GitHub בחלקו העליון של הדף, תוביל אתכם למאגר{" "}
@@ -297,7 +305,16 @@ export default function Home() {
               לעזור לבנות בית לקוד הפתוח בישראל.
             </p>
             <p className="text-sm text-center opacity-50">
-              נוצר ע&quot;י יונתן מגר, 2023. ממשיך להתקיים <a href="https://github.com/yonatanmgr/opensource-il-site/graphs/contributors" rel="noopener" target="_blank" className="font-medium text-blue-400 transition hover:underline decoration-dotted">בזכותכם</a>.
+              נוצר ע&quot;י יונתן מגר, 2023. ממשיך להתקיים{" "}
+              <a
+                href="https://github.com/yonatanmgr/opensource-il-site/graphs/contributors"
+                rel="noopener"
+                target="_blank"
+                className="font-medium text-blue-400 transition hover:underline decoration-dotted"
+              >
+                בזכותכם
+              </a>
+              .
             </p>
           </div>
         </Modal>
@@ -317,6 +334,7 @@ export default function Home() {
               setReadmePreview(DEFAULT_READ_ME_PLACEHOLDER);
               setView(view);
             }}
+            companyName={currentCompanyName}
           />
           {view === "repos" && (
             <Filters
@@ -333,7 +351,10 @@ export default function Home() {
           className="w-full h-screen flex overflow-y-auto flex-row justify-between gap-2.5"
         >
           {currentView}
-          <ReadmePreview readmePreview={readmePreview} loading={isReadmeLoading}/>
+          <ReadmePreview
+            readmePreview={readmePreview}
+            loading={isReadmeLoading}
+          />
         </div>
         <div
           className="fixed flex flex-row items-center justify-center text-3xl transition border rounded-full select-none shadow-4xl left-5 bottom-6 sm:left-9 sm:bottom-10 border-myblue bg-mydarkblue w-14 h-14 hover:bg-buttonhover active:bg-buttonactive cursor-help"
