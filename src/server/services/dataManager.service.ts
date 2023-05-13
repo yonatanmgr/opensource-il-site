@@ -351,7 +351,7 @@ export async function mainDataFetch() {
       return {
         success,
         allComps,
-        projects: allGqlProjects,
+        projects: allGqlProjects.filter((project: any) => project !== null),
         companies: allGqlCompanies,
         allLanguages
       };
