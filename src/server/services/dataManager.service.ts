@@ -168,22 +168,6 @@ export async function fetchGithubMd() {
   }
 }
 
-export async function fetchProjects(
-  allProjects: { name: string; description: string }[]
-) {
-  const requests: any[] = [];
-  const results: any[] = [];
-
-  allProjects.forEach((project: { name: string; description: string }) => {
-    requests.push(getProject(project));
-  });
-  return new Promise((resolve) => {
-    Promise.all(requests)
-      .then((proms) => proms.forEach((p) => results.push(p.data)))
-      .then(() => resolve(results));
-  });
-}
-
 async function getCompany(company: { name: string }) {
   const gqlBody: { query: string; variables: { login: string } } = {
     query: `query ($login: String!) {
@@ -240,7 +224,7 @@ async function getCompany(company: { name: string }) {
 async function getProject(project: { name: string }) {
   const gqlBody = {
     query: `query ($repoOwner: String!, $repoName: String!) {
-    repository(owner: $repoOwner, name: $repoName) {
+      repository(owner: $repoOwner, name: $repoName) {
       openIssues: issues(states:OPEN) {
         totalCount
       }
@@ -281,6 +265,39 @@ async function getProject(project: { name: string }) {
   }).then((res) => res.json());
 }
 
+export async function fetchProjects(
+  allProjects: { name: string; description: string }[]
+) {
+  const requests: any[] = [];
+  const results: any[] = [];
+
+  allProjects.forEach((project: { name: string; description: string }) => {
+    requests.push(getProject(project));
+  });
+
+  return await new Promise((resolve) => {
+    Promise.all(requests)
+      .then((proms) => proms.forEach((p) => results.push(p.data)))
+      .then(() => resolve(results));
+  });
+
+  // const allResponses = await Promise.allSettled(requests);
+
+  // for (const response of allResponses) {
+  //   if (response.status === 'fulfilled') {
+  //     console.log(
+  //       '🚀 ~ file: dataManager.service.ts:288 ~ response:',
+  //       response
+  //     );
+  //     results.push(response.value.data);
+  //   } else {
+  //     console.error(response.reason);
+  //   }
+  // }
+
+  // return results;
+}
+
 export async function fetchComps(allComps: { name: string }[]) {
   const requests: any[] = [];
   const results: any[] = [];
@@ -288,7 +305,7 @@ export async function fetchComps(allComps: { name: string }[]) {
   allComps.forEach((company: { name: string }) => {
     requests.push(getCompany(company));
   });
-  return new Promise((resolve) => {
+  return await new Promise((resolve) => {
     Promise.all(requests)
       .then((proms) => proms.forEach((p) => results.push(p.data)))
       .then(() => resolve(results));
@@ -302,12 +319,16 @@ async function storeFiles(data: {
   allGqlCompanies: unknown[];
   allLanguages: string[];
 }) {
+  await queryPrismaDb('fileStore', 'deleteMany', {}, true);
   return await queryPrismaDb('fileStore', 'create', {
     data: {
       filename: 'JSON' + Date.now(),
       file: JSON.stringify(data)
     }
   });
+}
+async function getFiles() {
+  return await queryPrismaDb('fileStore', 'find', {});
 }
 
 export async function mainDataFetch() {
@@ -317,6 +338,24 @@ export async function mainDataFetch() {
       getUuid,
       'Initiating search for existing store in memory...'
     );
+
+    const dbData = await getFiles();
+    if (dbData?.file) {
+      const {
+        success,
+        allComps,
+        allGqlProjects,
+        allGqlCompanies,
+        allLanguages
+      } = JSON.parse(dbData?.file as string);
+      return {
+        success,
+        allComps,
+        projects: allGqlProjects,
+        companies: allGqlCompanies,
+        allLanguages
+      };
+    }
 
     const data = fileStorage.getData(JSON_DATA_STORE_KEY);
     const projects = fileStorage.getData(PROJECTS_STORE_KEY);
@@ -406,8 +445,9 @@ export async function fetchCompany(companyId: string) {
 
 export async function fetchAllCompanies() {
   try {
-    await mainDataFetch();
-    return fileStorage.getData(COMPANIES_STORE_KEY);
+    // await mainDataFetch();
+    return await mainDataFetch().then((data) => data?.companies);
+    // return fileStorage.getData(COMPANIES_STORE_KEY);
   } catch (error) {
     logger.error(
       '🚀 ~ file: dataManager.service.ts:416 ~ fetchAllCompanies ~ error:',
@@ -418,8 +458,8 @@ export async function fetchAllCompanies() {
 
 export async function fetchAllRepositories() {
   try {
-    await mainDataFetch();
-    return fileStorage.getData(PROJECTS_STORE_KEY);
+    return await mainDataFetch().then((data) => data?.projects);
+    // return fileStorage.getData(PROJECTS_STORE_KEY);
   } catch (error) {
     logger.error(
       '🚀 ~ file: dataManager.service.ts:429 ~ fetchAllRepositories ~ error:',
