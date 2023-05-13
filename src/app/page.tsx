@@ -85,7 +85,23 @@ export default function Home() {
 
     // const data = await fetchAllCompanies();
     console.log('🚀 ~ file: page.tsx:55 ~ fetchCompanies ~ data:', data);
-    setCompanies(data);
+    setCompanies(
+      data.companies
+        .filter(
+          (company: { organization: { [key: string]: string } }) =>
+            company.organization?.name?.length &&
+            company.organization?.avatarUrl?.length
+        )
+        .map(
+          ({ organization }: { organization: { [key: string]: string } }) => {
+            return {
+              name: organization.name,
+              login: organization.login,
+              avatar: organization.avatarUrl
+            };
+          }
+        )
+    );
   };
 
   const fetchRepos = async () => {
@@ -94,8 +110,8 @@ export default function Home() {
     console.log('🚀 ~ file: page.tsx:93 ~ fetchRepos ~ data:', data);
 
     const organizedData = data.repositories
-      .filter((proj) => proj !== null)
-      .map((proj) => {
+      .filter((proj: RepoProps) => proj !== null)
+      .map((proj: { repository: RepoProps }) => {
         const repo = proj.repository;
 
         const nameWithOwner = repo.nameWithOwner;
@@ -139,10 +155,14 @@ export default function Home() {
     // );
     // const data = await res.json();
 
-    const res = await fetch('/company/' + company);
+    const res = await fetch('/api/company/' + company);
     const data = await res.json();
+    console.log('🚀 ~ file: page.tsx:159 ~ fetchCompanyRepos ~ data:', {
+      company,
+      data
+    });
     setShowData(
-      (data.organization.repositories.nodes as RepoProps[])
+      (data.company.organization.repositories.nodes as RepoProps[])
         .map((repo) => {
           const nameWithOwner = repo.nameWithOwner;
           const image = repo.openGraphImageUrl;
