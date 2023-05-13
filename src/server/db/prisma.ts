@@ -3,12 +3,18 @@ import { logger } from '../utils/logger';
 
 export async function queryPrismaDb(
   table: 'fileStore',
-  action: 'create' | 'find',
-  payload: any
+  action: 'create' | 'find' | 'deleteMany',
+  payload: any,
+  clear = false
 ) {
   const prisma = new PrismaClient();
   try {
     const prismaClient = prisma[table];
+    // case 'deleteMany':
+    if (clear) {
+      await prismaClient.deleteMany({});
+    }
+
     switch (action) {
       case 'create':
         return await prismaClient.create(payload);
