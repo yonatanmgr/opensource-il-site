@@ -10,17 +10,21 @@ export default function CompaniesList(props: {
       dir="rtl"
       className="no-scrollbar flex h-auto w-full flex-row flex-wrap items-center justify-around gap-6 overflow-y-auto"
     >
-      {props.companies.map((comp) => {
-        return (
-          <Company
-            logo={comp.avatar}
-            name={comp.name}
-            login={comp.login}
-            key={comp.login}
-            setComp={props.setComp}
-          />
-        );
-      })}
+      {props.companies?.length ? (
+        props.companies.map((comp) => {
+          return (
+            <Company
+              logo={comp.avatar}
+              name={comp.name}
+              login={comp.login}
+              key={comp.login}
+              setComp={props.setComp}
+            />
+          );
+        })
+      ) : (
+        <>Error fetching companies</>
+      )}
     </div>
   );
 }
