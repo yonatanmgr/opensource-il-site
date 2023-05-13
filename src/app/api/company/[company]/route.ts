@@ -7,6 +7,7 @@ import { fetchCompany } from '@/server/services/dataManager.service';
 export async function GET(req: NextRequest) {
   const uuid = getUuid();
   const companyId = extractParamFromUrl(req);
+  console.log('🚀 ~ file: route.ts:10 ~ GET ~ companyId:', companyId);
   if (!companyId) {
     throw new Error('no valid companyid');
   }

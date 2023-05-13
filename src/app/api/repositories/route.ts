@@ -11,6 +11,10 @@ export async function GET() {
     repositories,
     success: repositories?.length ? true : false
   };
-  logger.info('request company', payload);
+  logger.info('request repository', {
+    uuid,
+    success: repositories?.length ? true : false,
+    repositories: repositories?.length
+  });
   return NextResponse.json(payload);
 }

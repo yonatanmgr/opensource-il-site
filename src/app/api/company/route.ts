@@ -16,6 +16,10 @@ export async function GET(req: NextRequest) {
     companies,
     success: companies?.length ? true : false
   };
-  logger.info('request company', payload);
+  logger.info('request company', {
+    uuid,
+    success: companies?.length ? true : false,
+    companies: companies?.length
+  });
   return NextResponse.json(payload);
 }
