@@ -21,8 +21,15 @@ export default function PageTitle({
     >
       <div
         dir="rtl"
-        className="text-xl min-[330px]:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-right select-none"
+        className={`flex flex-row ${
+          companyName ? "gap-3" : ""
+        } items-end text-2xl min-[330px]:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-right select-none`}
       >
+        {companyName && (
+          <div className="lg:text-3xl border border-myblue px-4 rounded-xl bg-mydarkblue">
+            &lt;
+          </div>
+        )}
         {currentView}
       </div>
       <SocialLinks setView={setView} view={view} />
