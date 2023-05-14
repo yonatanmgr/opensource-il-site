@@ -16,6 +16,7 @@ module.exports = {
       },
       colors: {
         'myblue': "hsl(222, 50%, 30%)",
+        'mylightblue': "hsl(222, 50%, 40%)",
         'mydarkblue': "hsl(222, 65%, 10%)",
         'readmedark': "hsl(222, 28%, 7%)",
         'buttonhover': "hsl(222, 63%, 15%)",

@@ -9,14 +9,14 @@ export default function SocialLinks({
   return (
     <div
       dir="ltr"
-      className="flex flex-row items-center min-[330px]:gap-4 gap-3"
+      className="flex flex-row items-center min-[330px]:gap-5 gap-3"
     >
       <a
         rel="noopener"
         title="Social Links"
         href="https://bento.me/osil"
         target="_blank"
-        className="overflow-hidden flex flex-row text-lg border border-myblue hover:font-medium bg-mydarkblue px-4 py-2 rounded-xl items-center gap-4 transition hover:scale-105 active:scale-95"
+        className="overflow-hidden flex flex-row text-lg border border-myblue hover:font-medium bg-mydarkblue px-4 py-2 rounded-xl items-center gap-4 transition hover:scale-[1.02] active:scale-95"
       >
         <svg
           width="30"
