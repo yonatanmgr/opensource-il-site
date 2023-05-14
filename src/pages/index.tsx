@@ -19,6 +19,7 @@ const DEFAULT_READ_ME_PLACEHOLDER = `<div dir="rtl" style="font-size: 18px; font
 export default function Home() {
   const [view, setView] = useState<Views>("repos");
   const [companies, setCompanies] = useState<CompanyProps[]>([]);
+  const [currentCompanyName, setCurrentCompanyName] = useState<string>();
   const [data, setData] = useState<DataProps[]>([]);
   const [showData, setShowData] = useState<DataProps[]>([]);
   const [isLoading, setLoading] = useState(false);
@@ -157,9 +158,16 @@ export default function Home() {
     }
   };
 
-  const onSelectCompany = (company: string[]) => {
-    fetchCompanyRepos(company[0]);
+  const onSelectCompany = (company: CompanyProps) => {
+    fetchCompanyRepos(company.login);
+    setCurrentCompanyName(company.name);
     setSelectedLang("");
+  };
+
+  const resetPage = () => {
+    setLoading(true);
+    setCurrentCompanyName(undefined);
+    fetchRepos();
   };
 
   const handleSortChange = (sortType: AllSortTypes) => {
@@ -332,6 +340,8 @@ export default function Home() {
             setView={(view) => {
               setView(view);
             }}
+            companyName={currentCompanyName}
+            onResetPage={resetPage}
           />
           {view === "repos" && (
             <Filters
