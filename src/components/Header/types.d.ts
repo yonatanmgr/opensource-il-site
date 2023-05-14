@@ -7,4 +7,5 @@ export interface TitleAndSocialLinkProps {
   setView: (view: Views) => void;
   view: string;
   companyName?: string;
+  onResetPage?: () => void;
 }

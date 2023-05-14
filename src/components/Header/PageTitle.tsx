@@ -5,6 +5,7 @@ export default function PageTitle({
   setView,
   view,
   companyName,
+  onResetPage,
 }: TitleAndSocialLinkProps) {
   const currentView = {
     repos: (
@@ -26,9 +27,14 @@ export default function PageTitle({
         } items-end text-2xl min-[330px]:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-right select-none`}
       >
         {companyName && (
-          <div className="lg:text-3xl border border-myblue px-4 rounded-xl bg-mydarkblue">
+          <button
+            onClick={() => {
+              onResetPage && onResetPage();
+            }}
+            className="lg:text-3xl border border-myblue px-4 rounded-xl bg-mydarkblue"
+          >
             &lt;
-          </div>
+          </button>
         )}
         {currentView}
       </div>

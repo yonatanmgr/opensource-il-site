@@ -160,6 +160,12 @@ export default function Home() {
     setSelectedLang("");
   };
 
+  const resetPage = () => {
+    setLoading(true);
+    setCurrentCompanyName(undefined);
+    fetchRepos();
+  };
+
   const handleSortChange = (sortType: AllSortTypes) => {
     let sorted;
     switch (sortType) {
@@ -332,6 +338,7 @@ export default function Home() {
               setView(view);
             }}
             companyName={currentCompanyName}
+            onResetPage={resetPage}
           />
           {view === "repos" && (
             <Filters
