@@ -7,6 +7,7 @@ export default function PageTitle({
   companyName,
   onResetPage,
 }: TitleAndSocialLinkProps) {
+
   const currentView = {
     repos: (
       <span>

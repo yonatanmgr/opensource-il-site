@@ -13,6 +13,7 @@ import OrgIcon from "@/components/Icons/OrgIcon";
 import ReposIcon from "@/components/Icons/ReposIcon";
 import useMarkdown from "@/hooks/useMarkdown";
 
+const COMPANIES_READ_ME_PLACEHOLDER = `<div dir="rtl" style="font-size: 18px; font-family: 'Rubik'">בחרו בחברה מהרשימה כדי להיכנס לרשימת ה-Repositories שלה</div>`;
 const DEFAULT_READ_ME_PLACEHOLDER = `<div dir="rtl" style="font-size: 18px; font-family: 'Rubik'">בחרו ב-Repository מהרשימה כדי לקרוא את קובץ ה-README שלו!</div>`;
 
 export default function Home() {
@@ -42,7 +43,11 @@ export default function Home() {
     fetchRepos();
     fetchCompanies();
   }, []);
-
+  useEffect(() => {
+    view === "companies"
+      ? setReadmePreview(COMPANIES_READ_ME_PLACEHOLDER)
+      : setReadmePreview(DEFAULT_READ_ME_PLACEHOLDER);
+  }, [view]);
   const fetchCompanies = async () => {
     const res = await fetch("https://os-il-api.vercel.app/api/allcomps");
     const data = await res.json();
@@ -89,7 +94,6 @@ export default function Home() {
     setData(organizedData.sort(defaultSort));
     setShowData(organizedData.sort(defaultSort));
     setLoading(false);
-    setReadmePreview(DEFAULT_READ_ME_PLACEHOLDER);
   };
 
   const fetchCompanyRepos = async (company: string) => {
@@ -334,7 +338,6 @@ export default function Home() {
           <PageTitle
             view={view}
             setView={(view) => {
-              setReadmePreview(DEFAULT_READ_ME_PLACEHOLDER);
               setView(view);
             }}
             companyName={currentCompanyName}
