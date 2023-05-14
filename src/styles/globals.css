@@ -9,7 +9,9 @@
 @tailwind utilities;
 
 @layer base {
-  .markdown-body ul, ol, menu {
+  .markdown-body ul,
+  ol,
+  menu {
     list-style: revert;
   }
 }
