@@ -18,6 +18,7 @@ const DEFAULT_READ_ME_PLACEHOLDER = `<div dir="rtl" style="font-size: 18px; font
 export default function Home() {
   const [view, setView] = useState<Views>("repos");
   const [companies, setCompanies] = useState<CompanyProps[]>([]);
+  const [currentCompanyName, setCurrentCompanyName] = useState<string>();
   const [data, setData] = useState<DataProps[]>([]);
   const [showData, setShowData] = useState<DataProps[]>([]);
   const [isLoading, setLoading] = useState(false);
@@ -153,8 +154,9 @@ export default function Home() {
     }
   };
 
-  const onSelectCompany = (company: string[]) => {
-    fetchCompanyRepos(company[0]);
+  const onSelectCompany = (company: CompanyProps) => {
+    fetchCompanyRepos(company.login);
+    setCurrentCompanyName(company.name);
     setSelectedLang("");
   };
 
@@ -300,7 +302,16 @@ export default function Home() {
               לעזור לבנות בית לקוד הפתוח בישראל.
             </p>
             <p className="text-sm text-center opacity-50">
-              נוצר ע&quot;י יונתן מגר, 2023. ממשיך להתקיים <a href="https://github.com/yonatanmgr/opensource-il-site/graphs/contributors" rel="noopener" target="_blank" className="font-medium text-blue-400 transition hover:underline decoration-dotted">בזכותכם</a>.
+              נוצר ע&quot;י יונתן מגר, 2023. ממשיך להתקיים{" "}
+              <a
+                href="https://github.com/yonatanmgr/opensource-il-site/graphs/contributors"
+                rel="noopener"
+                target="_blank"
+                className="font-medium text-blue-400 transition hover:underline decoration-dotted"
+              >
+                בזכותכם
+              </a>
+              .
             </p>
           </div>
         </Modal>
@@ -320,6 +331,7 @@ export default function Home() {
               setReadmePreview(DEFAULT_READ_ME_PLACEHOLDER);
               setView(view);
             }}
+            companyName={currentCompanyName}
           />
           {view === "repos" && (
             <Filters
