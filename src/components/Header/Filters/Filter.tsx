@@ -27,10 +27,15 @@ export default function Filter({
   return (
     <div
       dir="rtl"
-      className={`flex justify-between flex-row items-center select-none h-8 text-base hover:cursor-default focus-visible:ring-2 font-['Rubik'] rounded-md px-4 bg-mydarkblue border-none outline outline-1 outline-myblue transition hover:bg-buttonhover text-white ${isActive ? "ring-2 ring-indigo-600 gap-3" : "outline outline-1"}`}
+      className={`flex justify-between flex-row items-center select-none h-8 text-base hover:cursor-default focus-visible:ring-2 font-['Rubik'] rounded-md px-4 bg-mydarkblue border-none outline outline-1 outline-myblue transition hover:bg-buttonhover active:bg-buttonactive text-white ${
+        isActive ? "ring-2 ring-mylightblue gap-3" : "outline outline-1"
+      }`}
       onClick={() => {
-        setActiveIndex(() => activeIndex === 1 ? 0 : 1)
-        onSortChange(sortButtonsTexts[sortType as SortTypes].buttons[activeIndex].action as SortTypes);
+        setActiveIndex(() => (activeIndex === 1 ? 0 : 1));
+        onSortChange(
+          sortButtonsTexts[sortType as SortTypes].buttons[activeIndex]
+            .action as SortTypes
+        );
         if (!isMediumUp) {
           setShouldShowFilters(false);
         }
@@ -40,7 +45,7 @@ export default function Filter({
         {sortButtonsTexts[sortType as SortTypes].title}
       </span>
       <div className="h-full">
-        {isActive && <i className={`arrow ${activeIndex ? `down` : `up`}`}/>}
+        {isActive && <i className={`arrow ${activeIndex ? `down` : `up`}`} />}
       </div>
     </div>
   );

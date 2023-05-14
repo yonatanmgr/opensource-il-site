@@ -11,7 +11,7 @@ export default function PageTitle({
   const currentView = {
     repos: (
       <span>
-        {companyName ? `${companyName} - פרויקטים` : "פרויקטי קוד פתוח ישראלים"}
+        {companyName ? <>{companyName}<span className="font-light opacity-60"> / פרויקטים</span></> : "פרויקטי קוד פתוח ישראלים"}
       </span>
     ),
     companies: <span>חברות ישראליות בקוד פתוח</span>,
@@ -24,15 +24,15 @@ export default function PageTitle({
       <div
         dir="rtl"
         className={`flex flex-row ${
-          companyName ? "gap-3" : ""
+          companyName ? "gap-4" : ""
         } items-end text-2xl min-[330px]:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-right select-none`}
       >
-        {companyName && (
+        {companyName && view == "repos" && (
           <button
             onClick={() => {
               onResetPage && onResetPage();
             }}
-            className="lg:text-3xl border border-myblue px-4 rounded-xl bg-mydarkblue"
+            className="lg:text-2xl md:text-xl sm:text-lg text-base flex flex-row items-center py-0.5 lg:py-1 border transition hover:bg-buttonhover active:bg-buttonactive border-myblue px-4 rounded-xl bg-mydarkblue cursor-default"
           >
             &lt;
           </button>
