@@ -9,7 +9,9 @@
 @tailwind utilities;
 
 @layer base {
-  .markdown-body ul, ol, menu {
+  .markdown-body ul,
+  ol,
+  menu {
     list-style: revert;
   }
 }
@@ -34,6 +36,9 @@ p > img {
   display: inline;
 }
 
+.none {
+  display: none !important;
+}
 /* we can use these lines instead if we want to support general dark / light modes
 @media (prefers-color-scheme: dark){
   [href$="#gh-light-mode-only"] {
