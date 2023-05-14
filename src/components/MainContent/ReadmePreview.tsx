@@ -4,7 +4,6 @@ import parse from "html-react-parser";
 export default function ReadmePreview(props: {
   readmePreview: string;
   loading: boolean;
-  view: any;
 }) {
   const [content, setContent] = useState(props.readmePreview);
 
@@ -26,12 +25,8 @@ export default function ReadmePreview(props: {
   return (
     <div
       dir="ltr"
-      onClick={() => {
-        console.log(props.view);
-      }}
-      className={` lg:block w-2/4 min-w-[50%] max-w-[50%] h-auto overflow-y-auto markdown-body bg-readmedark border border-myblue border-b-0 rounded-tl-xl rounded-tr-xl no-scrollbar ${
-        props.view === "companies" && "lg:hidden"
-      }`}
+      className={` lg:block w-2/4 min-w-[50%] max-w-[50%] h-auto overflow-y-auto markdown-body bg-readmedark border border-myblue border-b-0 rounded-tl-xl rounded-tr-xl no-scrollbar 
+      `}
     >
       {parse(content)}
     </div>
