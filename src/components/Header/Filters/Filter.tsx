@@ -45,7 +45,7 @@ export default function Filter({
         {sortButtonsTexts[sortType as SortTypes].title}
       </span>
       <div className="h-full">
-        {isActive && <i className={`arrow ${activeIndex ? `down` : `up`}`} />}
+        {isActive && <i className={`arrow ${activeIndex ? `up` : `down`}`} />}
       </div>
     </div>
   );
