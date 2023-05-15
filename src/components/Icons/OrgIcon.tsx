@@ -2,7 +2,7 @@ import { TitleAndSocialLinkProps } from "../Header/types";
 
 export default function OrgIcon({ setView, view }: TitleAndSocialLinkProps) {
   return (
-    <span title="Israeli open source organizations">
+    <span title="Israeli open source organizations" className="cursor-pointer">
       <svg
         aria-hidden="true"
         height="30"
@@ -11,7 +11,7 @@ export default function OrgIcon({ setView, view }: TitleAndSocialLinkProps) {
         width="30"
         data-view-component="true"
         fill="currentColor"
-        className={`hover:opacity-100 active:scale-95 inline transition${
+        className={`inline hover:opacity-100 active:scale-95 transition${
           view == "companies" ? " opacity-100" : " opacity-60"
         }`}
         onClick={() => setView("companies")}

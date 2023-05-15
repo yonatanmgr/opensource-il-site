@@ -36,19 +36,19 @@ export default function Project({ repo, setReadme }: ProjectProps) {
 
   return (
     <div
-      className="group sm:flex-row flex flex-col hover:shadow-3xl active:scale-95 w-[calc(100%-10px)] bg-mydarkblue rounded-xl border border-myblue transition ease-linear select-none"
+      className="group flex w-[calc(100%-10px)] cursor-pointer select-none flex-col rounded-xl border border-myblue bg-mydarkblue transition ease-linear hover:shadow-3xl active:scale-95 sm:flex-row"
       onClick={() => setReadme(url)}
     >
       <a href={url} draggable="false" target="_blank" title={repo.description}>
         <Image
-          className="max-sm:w-full sm:h-full rounded-tl-xl rounded-tr-xl sm:rounded-tl-none sm:rounded-br-xl aspect-[2/1]"
+          className="aspect-[2/1] rounded-tl-xl rounded-tr-xl max-sm:w-full sm:h-full sm:rounded-br-xl sm:rounded-tl-none"
           width={320}
           height={160}
           src={repo.image}
           alt={repo.name}
         />
       </a>
-      <div className="flex flex-col items-start justify-start w-full h-full gap-2 p-2 mr-2">
+      <div className="mr-2 flex h-full w-full flex-col items-start justify-start gap-2 p-2">
         <div className="text-xl">
           <span className="font-light opacity-70">{repo.owner}/</span>
           <span className="font-bold">{repo.name}</span>
