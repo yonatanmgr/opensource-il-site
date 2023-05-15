@@ -4,6 +4,8 @@ import getUuid from '@/server/utils/uuid';
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchCompany } from '@/server/services/dataManager.service';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: NextRequest) {
   const uuid = getUuid();
   const companyId = extractParamFromUrl(req);

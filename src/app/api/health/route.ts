@@ -4,6 +4,8 @@ import { logger } from '@/server/utils/logger';
 import getUuid from '@/server/utils/uuid';
 import { getRedisVal } from '@/server/db/redis-vercel-kv';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   const data = {
     requestId: getUuid(),
