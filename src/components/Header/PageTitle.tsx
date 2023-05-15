@@ -1,4 +1,3 @@
-import { Views } from '@/types/index.type';
 import SocialLinks from './SocialLinks';
 import { TitleAndSocialLinkProps } from './types';
 

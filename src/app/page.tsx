@@ -77,6 +77,7 @@ export default function Home() {
     setLoading(true);
     fetchRepos();
     fetchCompanies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchCompanies = async () => {
