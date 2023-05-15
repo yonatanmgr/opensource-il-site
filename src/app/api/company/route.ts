@@ -6,10 +6,6 @@ import { fetchAllCompanies } from '@/server/services/dataManager.service';
 
 export async function GET(req: NextRequest) {
   const uuid = getUuid();
-  const companyId = extractParamFromUrl(req);
-  if (!companyId) {
-    throw new Error('no valid companyid');
-  }
   const companies = await fetchAllCompanies();
   const payload = {
     uuid,

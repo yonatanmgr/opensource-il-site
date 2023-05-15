@@ -9,7 +9,8 @@ export async function GET(req: NextRequest) {
   const companyId = extractParamFromUrl(req);
   console.log('🚀 ~ file: route.ts:10 ~ GET ~ companyId:', companyId);
   if (!companyId) {
-    throw new Error('no valid companyid');
+    // throw new Error('no valid companyid');
+    return NextResponse.json({ error: 'no valid companyid' });
   }
   const company = await fetchCompany(companyId);
   const payload = { uuid, company: company || null, success: !!company };
