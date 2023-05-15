@@ -1,10 +1,9 @@
-import { extractParamFromUrl } from '@/server/utils/extractParamFromUrl';
 import { logger } from '@/server/utils/logger';
 import getUuid from '@/server/utils/uuid';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { fetchAllCompanies } from '@/server/services/dataManager.service';
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const uuid = getUuid();
   const companies = await fetchAllCompanies();
   const payload = {

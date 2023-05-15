@@ -2,8 +2,7 @@ import getUuid from '@/server/utils/uuid';
 import cron from 'node-cron';
 import { logger } from '../utils/logger';
 import { ReademGithubCompany, ReademGithubProject } from '@/types/index.type';
-import { queryPrismaDb } from '../db/prisma';
-import { isDateOlderThanDays } from '../utils/isDateOld';
+import { getRedisVal, setRedisVal } from '../db/redis-vercel-kv';
 
 class ActiveMemoryStore {
   private static instance: ActiveMemoryStore | null = null;
@@ -312,25 +311,6 @@ export async function fetchComps(allComps: { name: string }[]) {
   });
 }
 
-async function storeFiles(data: {
-  success: boolean;
-  allComps: ReademGithubCompany[];
-  allGqlProjects: ReademGithubProject[];
-  allGqlCompanies: unknown[];
-  allLanguages: string[];
-}) {
-  await queryPrismaDb('fileStore', 'deleteMany', {}, true);
-  return await queryPrismaDb('fileStore', 'create', {
-    data: {
-      filename: 'JSON' + Date.now(),
-      file: JSON.stringify(data)
-    }
-  });
-}
-async function getFiles() {
-  return await queryPrismaDb('fileStore', 'find', {});
-}
-
 export async function mainDataFetch() {
   try {
     logger.info(
@@ -339,35 +319,24 @@ export async function mainDataFetch() {
       'Initiating search for existing store in memory...'
     );
 
-    const dbData = await getFiles();
-    if (dbData?.file) {
+    const dbData: any = await getRedisVal(JSON_DATA_STORE_KEY);
+    if (dbData) {
       const {
         success,
         allComps,
         allGqlProjects,
         allGqlCompanies,
-        allLanguages
-      } = JSON.parse(dbData?.file as string);
+        allLanguages,
+        createDate
+      } = dbData;
       return {
         success,
         allComps,
         projects: allGqlProjects.filter((project: any) => project !== null),
         companies: allGqlCompanies,
-        allLanguages
+        allLanguages,
+        createDate
       };
-    }
-
-    const data = fileStorage.getData(JSON_DATA_STORE_KEY);
-    const projects = fileStorage.getData(PROJECTS_STORE_KEY);
-    const companies = fileStorage.getData(COMPANIES_STORE_KEY);
-    if (
-      data &&
-      projects &&
-      companies &&
-      !isDateOlderThanDays(fileStorage.getLastUpdated(), 3)
-    ) {
-      logger.info(Date.now(), 'Fetching from memory...');
-      return { success: true, data, projects, companies };
     }
 
     logger.info(Date.now(), 'Fetching from github...');
@@ -394,30 +363,29 @@ export async function mainDataFetch() {
     if (!allGqlProjects.length) {
       throw new Error('Error fetching GQL projects');
     }
-    const dbStoreResult = await storeFiles({
+
+    const saveResult = await setRedisVal(JSON_DATA_STORE_KEY, {
       success,
       allComps,
       allGqlProjects,
       allGqlCompanies,
-      allLanguages
+      allLanguages,
+      createDate: new Date()
     });
-    if (!dbStoreResult?.id || !dbStoreResult?.file) {
-      throw new Error('store in db failed!');
+
+    if (saveResult !== 'OK') {
+      throw new Error('store in KV REDIS failed!');
     }
 
     logger.info(Date.now(), 'Setting to memory...');
-    fileStorage.setData(JSON_DATA_STORE_KEY, dbStoreResult);
-    fileStorage.setData(PROJECTS_STORE_KEY, allGqlProjects);
-    fileStorage.setData(COMPANIES_STORE_KEY, allGqlCompanies);
-    const storedFileData = fileStorage.getData(JSON_DATA_STORE_KEY);
+
     return {
       success,
       allComps,
       projects: allGqlProjects,
       companies: allGqlCompanies,
       allLanguages,
-      dbStoreResult,
-      storedFileData
+      saveResult
     };
   } catch (error) {
     logger.error(
@@ -445,9 +413,7 @@ export async function fetchCompany(companyId: string) {
 
 export async function fetchAllCompanies() {
   try {
-    // await mainDataFetch();
     return await mainDataFetch().then((data) => data?.companies);
-    // return fileStorage.getData(COMPANIES_STORE_KEY);
   } catch (error) {
     logger.error(
       '🚀 ~ file: dataManager.service.ts:416 ~ fetchAllCompanies ~ error:',
@@ -459,7 +425,6 @@ export async function fetchAllCompanies() {
 export async function fetchAllRepositories() {
   try {
     return await mainDataFetch().then((data) => data?.projects);
-    // return fileStorage.getData(PROJECTS_STORE_KEY);
   } catch (error) {
     logger.error(
       '🚀 ~ file: dataManager.service.ts:429 ~ fetchAllRepositories ~ error:',
