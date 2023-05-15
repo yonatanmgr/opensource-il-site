@@ -10,6 +10,7 @@ export async function GET() {
     uptime: process.uptime(),
     message: 'Ok',
     date: new Date(),
+    apiRedis: process.env.KV_REST_API_URL,
     redis: await getRedisVal('test')
   };
   logger.info(data);
