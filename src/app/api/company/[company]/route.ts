@@ -1,4 +1,4 @@
-import { extractParamFromUrl } from '@/server/utils/extractParamFromUrl';
+import { extractLastParamFromUrl } from '@/server/utils/extractParamFromUrl';
 import { logger } from '@/server/utils/logger';
 import getUuid from '@/server/utils/uuid';
 import { NextRequest, NextResponse } from 'next/server';
@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
   const uuid = getUuid();
-  const companyId = extractParamFromUrl(req);
+  const companyId = extractLastParamFromUrl(req);
   if (!companyId) {
     logger.error('missing companyId', { companyId });
     return NextResponse.json({ error: 'no valid companyid' });
