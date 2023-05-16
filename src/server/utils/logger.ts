@@ -1,6 +1,5 @@
 import winston, { transports } from 'winston';
 import 'winston-mongodb';
-import { MONGODB_URI } from '../config';
 
 const loggerInstance = winston.createLogger({
   format: winston.format.json(),
@@ -8,7 +7,7 @@ const loggerInstance = winston.createLogger({
     new transports.Console({ level: 'info' }),
     new transports.Console({ level: 'warn', stderrLevels: ['warn'] }),
     new transports.MongoDB({
-      db: MONGODB_URI,
+      db: process.env.MONGODB_URI as string,
       options: {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -21,15 +20,6 @@ const loggerInstance = winston.createLogger({
     })
   ]
 });
-
-// Usage
-// logger.info('Hello world'); // Will be logged to console stdout
-// logger.warn('Warning message'); // Will be logged to console stderr
-// logger.error('Error message', { custom: 'Some custom metadata' }); // Will be logged to MongoDB
-
-// if (process.env.NODE_ENV === 'test') {
-//   logger.transports.forEach((t) => (t.silent = true));
-// }
 
 /**
  * A Logger type extension to be used project wide.
@@ -53,12 +43,6 @@ interface AppLogger {
   warn: AppLoggerMethod;
   error: AppLoggerMethod;
 }
-
-// const stringifyArgs = (args: unknown[]): string => {
-//   return args
-//     .map((arg) => (typeof arg === 'string' ? arg : JSON.stringify(arg)))
-//     .join(' ');
-// };
 
 const logger: AppLogger = {
   info: (message: string, data = {}) => {
