@@ -4,7 +4,7 @@ const nextConfig = {
     appDir: true
   },
   reactStrictMode: true,
-  env: { github_read_only: process.env.github_read_only },
+  env: { github_read_only: process.env.GITHUB_READ_ONLY },
   images: {
     remotePatterns: [
       {

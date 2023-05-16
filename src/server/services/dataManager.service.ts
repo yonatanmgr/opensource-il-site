@@ -17,7 +17,7 @@ const compsTitleRegex = /(?:^|\n)## Companies\s?[^\n]*\n(.*?)(?=\n##?\s|$)/gs;
 
 const headersList = {
   Accept: '*/*',
-  Authorization: 'bearer ' + process.env.github_read_only,
+  Authorization: 'bearer ' + process.env.GITHUB_READ_ONLY,
   'Content-Type': 'application/json'
 };
 
