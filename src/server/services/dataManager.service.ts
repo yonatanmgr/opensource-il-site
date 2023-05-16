@@ -275,8 +275,9 @@ export async function mainDataFetch() {
   try {
     logger.info('Initiating search for existing store in memory...');
 
+    await setRedisVal(JSON_DATA_STORE_KEY, '');
     const dbData: any = await getRedisVal(JSON_DATA_STORE_KEY);
-    if (dbData) {
+    if (dbData?.allComps?.length) {
       const {
         success,
         allComps,
