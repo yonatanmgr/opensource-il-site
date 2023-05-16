@@ -1,5 +1,5 @@
-import { CompanyProps } from "@/types/index.types";
-import Image from "next/image";
+import { CompanyProps } from '@/types/index.type';
+import Image from 'next/image';
 
 export default function Project(props: {
   name: string;
@@ -16,11 +16,11 @@ export default function Project(props: {
           props.setComp({
             name: props.name,
             login: props.login,
-            avatar: props.avatar,
+            avatar: props.avatar
           });
         }}
         draggable={false}
-        className="rounded-xl aspect-square border border-myblue group-hover:scale-105 group-hover:shadow-3xl group-active:scale-95 transition"
+        className="aspect-square rounded-xl border border-myblue transition group-hover:scale-105 group-hover:shadow-3xl group-active:scale-95"
         width={120}
         height={120}
         src={props.avatar}
@@ -29,8 +29,9 @@ export default function Project(props: {
       <span dir="ltr" className="flex flex-row text-center">
         <a
           href={url}
+          rel="noreferrer"
           target="_blank"
-          className="break-normal w-full transition"
+          className="w-full break-normal transition"
         >
           {props.name}
         </a>

@@ -1,22 +1,22 @@
-import OrgIcon from "../Icons/OrgIcon";
-import ReposIcon from "../Icons/ReposIcon";
-import { TitleAndSocialLinkProps } from "./types";
+import OrgIcon from '../Icons/OrgIcon';
+import ReposIcon from '../Icons/ReposIcon';
+import { TitleAndSocialLinkProps } from './types';
 
 export default function SocialLinks({
   setView,
-  view,
+  view
 }: TitleAndSocialLinkProps) {
   return (
     <div
       dir="ltr"
-      className="flex flex-row items-center min-[330px]:gap-5 gap-3"
+      className="flex flex-row items-center gap-3 min-[330px]:gap-5"
     >
       <a
-        rel="noopener"
+        rel="noreferrer"
         title="Social Links"
         href="https://bento.me/osil"
         target="_blank"
-        className="overflow-hidden flex flex-row text-lg border border-myblue hover:font-medium bg-mydarkblue px-4 py-2 rounded-xl items-center gap-4 transition hover:scale-[1.02] active:scale-95"
+        className="flex flex-row items-center gap-4 overflow-hidden rounded-xl border border-myblue bg-mydarkblue px-4 py-2 text-lg transition hover:scale-[1.02] hover:font-medium active:scale-95"
       >
         <svg
           width="30"
