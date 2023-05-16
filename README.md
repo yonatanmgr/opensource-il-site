@@ -29,8 +29,11 @@ Drop by the [Discord community](https://discordapp.com/channels/1089589164707684
 קפצו [לקהילת הדיסקורד](https://discordapp.com/channels/1089589164707684443/1102155816750022657) וכתבו הודעה
 
 
-כיצד לתרום לפרויקט זה:
-דרישות מקדימות: גרסה של Node.js ו-npm מותקנות על המערכת
+כיצד לתרום לפרויקט זה:   
+דרישות מקדימות:  
+[Node.js](https://nodejs.org/en/download) ו-npm גרסה של   
+מותקנות על המערכת   
+
 1. צרו העתק משלכם של מאגר הפרויקט באמצעות Fork 
 2. צרו תיקיה מקומית על מחשבכם שאליה תעתיקו את הפרויקט
 3. העתיקו את קישור ה- "Clone" URL של הפרויקט: https://github.com/*משתמש_הגיט_שלכם*/opensource-il-site.git
