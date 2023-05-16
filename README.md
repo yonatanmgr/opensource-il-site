@@ -19,7 +19,7 @@ Want to contribute to the Open Source Israeli website? Visited the site and stil
 Drop by the [Discord community](https://discordapp.com/channels/1089589164707684443/1102155816750022657) and leave a comment
 
 ### עברית
-ברוכים הבאים למאגר של אתר הקוד הפתוח הישראלי
+ברוכים הבאים למאגר של אתר הקוד הפתוח הישראלי   
 
 רוצים לתרום לקוד פתוח ולא בטוחים כיצד להתחיל? הגעתם למקום הנכון
 אתר הקוד הפתוח הישראלי סורק את המאגר של פרויקט הגיטהאב [awesome-opensource-israel](https://github.com/lirantal/awesome-opensource-israel)
@@ -35,9 +35,9 @@ Drop by the [Discord community](https://discordapp.com/channels/1089589164707684
 2. צרו תיקיה מקומית על מחשבכם שאליה תעתיקו את הפרויקט
 3. העתיקו את קישור ה- "Clone" URL של הפרויקט: https://github.com/*משתמש_הגיט_שלכם*/opensource-il-site.git
 4. פתחו את הטרמינל בתוך התיקייה שיצרתם
-5. כתבו את הפקודה "git clone *Clone_url*" בתוך הטרמינל
-6. התקינו את התלויות של הפרויקט באמצעות הפקודה "npm i" או "yarn install" בתוך הטרמינל
-7. ודאו שההתקנה הצליחה על ידי הרצת הפקודה "npm run dev" או "yarn run dev" בטרמינל
+5. כתבו את הפקודה `git clone https://github.com/<שם מתשמש>/opensource-il-site.git` בתוך הטרמינל
+6. התקינו את התלויות של הפרויקט באמצעות הפקודה `npm i` בתוך הטרמינל
+7. ודאו שההתקנה הצליחה על ידי הרצת הפקודה `npm run dev` בטרמינל
 
 ### Projects
 
