@@ -163,7 +163,8 @@ async function getCompany(company: { name: string }) {
         '🚀 ~ file: dataManager.service.ts:162 ~ getCompany ~ gqlResult:',
         {
           company,
-          gqlResult
+          gqlResult,
+          gqlResultText: res.text()
         }
       );
       return gqlResult;
@@ -219,7 +220,8 @@ async function getProject(project: { name: string }) {
         '🚀 ~ file: dataManager.service.ts:212 ~ getProject ~ gqlResult:',
         {
           project,
-          gqlResult
+          gqlResult,
+          gqlResultText: res.text()
         }
       );
       return gqlResult;
