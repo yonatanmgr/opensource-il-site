@@ -1,76 +1,35 @@
-import { existsSync, mkdirSync } from 'fs';
-import { join } from 'path';
-import winston from 'winston';
-import winstonDaily from 'winston-daily-rotate-file';
-import { LOG_DIR, NODE_ENV } from '../config';
+import winston, { transports } from 'winston';
+import 'winston-mongodb';
+import { MONGODB_URI } from '../config';
 
-// logs dir
-const logDir: string = join(__dirname, LOG_DIR || 'logs');
-const logLevel = NODE_ENV === 'tests' ? 'error' : 'debug';
-
-if (!existsSync(logDir)) {
-  mkdirSync(logDir);
-}
-
-// Define log format
-const logFormat = winston.format.printf(
-  ({ timestamp, level, message }) => `${timestamp} ${level}: ${message}`
-);
-
-/*
- * Log Level
- * error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6
- */
 const loggerInstance = winston.createLogger({
-  format: winston.format.combine(
-    winston.format.timestamp({
-      format: 'YYYY-MM-DD HH:mm:ss'
-    }),
-    logFormat
-  ),
+  format: winston.format.json(),
   transports: [
-    // debug log setting
-    new winstonDaily({
-      level: logLevel,
-      datePattern: 'YYYY-MM-DD',
-      dirname: logDir + '/debug', // log file /logs/debug/*.log in save
-      filename: `%DATE%.log`,
-      maxFiles: 30, // 30 Days saved
-      json: false,
-      zippedArchive: true
-    }),
-    // error log setting
-    new winstonDaily({
-      level: 'error',
-      datePattern: 'YYYY-MM-DD',
-      dirname: logDir + '/error', // log file /logs/error/*.log in save
-      filename: `%DATE%.log`,
-      maxFiles: 30, // 30 Days saved
-      handleExceptions: true,
-      json: false,
-      zippedArchive: true
+    new transports.Console({ level: 'info' }),
+    new transports.Console({ level: 'warn', stderrLevels: ['warn'] }),
+    new transports.MongoDB({
+      db: MONGODB_URI,
+      options: {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      },
+      dbName: 'opensource-logs',
+      collection: 'logs',
+      label: 'vercel',
+      level: 'info',
+      metaKey: 'meta'
     })
   ]
 });
 
-loggerInstance.add(
-  new winston.transports.Console({
-    format: winston.format.combine(
-      winston.format.splat(),
-      winston.format.colorize()
-    )
-  })
-);
+// Usage
+// logger.info('Hello world'); // Will be logged to console stdout
+// logger.warn('Warning message'); // Will be logged to console stderr
+// logger.error('Error message', { custom: 'Some custom metadata' }); // Will be logged to MongoDB
 
 // if (process.env.NODE_ENV === 'test') {
 //   logger.transports.forEach((t) => (t.silent = true));
 // }
-
-const stream = {
-  write: (message: string) => {
-    loggerInstance.info(message.substring(0, message.lastIndexOf('\n')));
-  }
-};
 
 /**
  * A Logger type extension to be used project wide.
@@ -87,31 +46,30 @@ const stream = {
  *  log.error("Error message");
  * ```
  */
+type AppLoggerMethod = (message: string, data?: unknown) => void;
+
 interface AppLogger {
-  info: (...args: unknown[]) => void;
-  warn: (...args: unknown[]) => void;
-  error: (...args: unknown[]) => void;
+  info: AppLoggerMethod;
+  warn: AppLoggerMethod;
+  error: AppLoggerMethod;
 }
 
-const stringifyArgs = (args: unknown[]): string => {
-  return args
-    .map((arg) => (typeof arg === 'string' ? arg : JSON.stringify(arg)))
-    .join(' ');
-};
+// const stringifyArgs = (args: unknown[]): string => {
+//   return args
+//     .map((arg) => (typeof arg === 'string' ? arg : JSON.stringify(arg)))
+//     .join(' ');
+// };
 
 const logger: AppLogger = {
-  info: (...args) => {
-    const message = stringifyArgs(args);
-    loggerInstance.info(message);
+  info: (message: string, data = {}) => {
+    loggerInstance.info('info', { message, meta: { data } });
   },
-  warn: (...args) => {
-    const message = stringifyArgs(args);
-    loggerInstance.warn(message);
+  warn: (message: string, data = {}) => {
+    loggerInstance.warn('warn', { message, meta: { data } });
   },
-  error: (...args) => {
-    const message = stringifyArgs(args);
-    loggerInstance.error(message);
+  error: (message: string, data = {}) => {
+    loggerInstance.error('error', { message, meta: { data } });
   }
 };
 
-export { logger, stream };
+export { logger };

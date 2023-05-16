@@ -1,67 +1,6 @@
-import getUuid from '@/server/utils/uuid';
-import cron from 'node-cron';
 import { logger } from '../utils/logger';
 import { ReademGithubCompany, ReademGithubProject } from '@/types/index.type';
 import { getRedisVal, setRedisVal } from '../db/redis-vercel-kv';
-
-class ActiveMemoryStore {
-  private static instance: ActiveMemoryStore | null = null;
-  private fileStore: { [key: string]: any } = {};
-  private lastUpdated = new Date();
-
-  public static getInstance(): ActiveMemoryStore {
-    if (!ActiveMemoryStore.instance) {
-      ActiveMemoryStore.instance = new ActiveMemoryStore();
-    }
-
-    return ActiveMemoryStore.instance;
-  }
-
-  public getData(key: string) {
-    return this.fileStore[key];
-  }
-  public setData(key: string, value: any) {
-    this.lastUpdated = new Date();
-    this.fileStore[key] = value;
-  }
-
-  public getLastUpdated(): Date {
-    return this.lastUpdated;
-  }
-}
-
-export const fileStorage = ActiveMemoryStore.getInstance();
-export class GetDataCronSingleton {
-  private static instance: GetDataCronSingleton | null = null;
-  private cronJob;
-
-  private constructor() {
-    // Start job
-    if (!this.cronJob) {
-      this.cronJob = cron.schedule('0 0 */3 * * *', () => this.populateData());
-    }
-    this.populateData();
-  }
-
-  public static getInstance(): GetDataCronSingleton {
-    if (!GetDataCronSingleton.instance) {
-      GetDataCronSingleton.instance = new GetDataCronSingleton();
-    }
-
-    return GetDataCronSingleton.instance;
-  }
-
-  public async populateData(): Promise<void> {
-    try {
-      await mainDataFetch();
-    } catch (error) {
-      logger.error(
-        '🚀 ~ file: githubMdParser.ts:235 ~ CronSingleTon ~ getData ~ error:',
-        error
-      );
-    }
-  }
-}
 
 export const JSON_DATA_STORE_KEY = 'jsonData';
 export const COMPANIES_STORE_KEY = 'companies';
@@ -312,12 +251,9 @@ export async function fetchComps(allComps: { name: string }[]) {
 }
 
 export async function mainDataFetch() {
+  let isFromDB = false;
   try {
-    logger.info(
-      Date.now(),
-      getUuid,
-      'Initiating search for existing store in memory...'
-    );
+    logger.info('Initiating search for existing store in memory...');
 
     const dbData: any = await getRedisVal(JSON_DATA_STORE_KEY);
     if (dbData) {
@@ -329,17 +265,19 @@ export async function mainDataFetch() {
         allLanguages,
         createDate
       } = dbData;
+      isFromDB = true;
       return {
         success,
         allComps,
         projects: allGqlProjects.filter((project: any) => project !== null),
         companies: allGqlCompanies,
         allLanguages,
+        isFromDB,
         createDate
       };
     }
 
-    logger.info(Date.now(), 'Fetching from github...');
+    logger.info('Fetching from github...');
     const result = await fetchGithubMd();
     if (!result) {
       throw new Error('Failed to fetch from github readme!');
@@ -377,7 +315,7 @@ export async function mainDataFetch() {
       throw new Error('store in KV REDIS failed!');
     }
 
-    logger.info(Date.now(), 'Setting to memory...');
+    logger.info('Setting to memory...');
 
     return {
       success,
@@ -385,7 +323,9 @@ export async function mainDataFetch() {
       projects: allGqlProjects,
       companies: allGqlCompanies,
       allLanguages,
-      saveResult
+      saveResult,
+      isFromDB,
+      createDate: new Date()
     };
   } catch (error) {
     logger.error(

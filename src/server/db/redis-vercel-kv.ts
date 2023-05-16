@@ -12,7 +12,7 @@ export async function getRedisVal(key: string) {
     if (!payload?.data) throw new Error('error fetching data');
     return payload.data;
   } catch (error) {
-    logger.warn(error, 'payload is null');
+    logger.warn('payload is null', error);
     return null;
   }
 }

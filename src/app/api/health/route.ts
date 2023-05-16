@@ -15,6 +15,6 @@ export async function GET() {
     apiRedis: process.env.KV_REST_API_URL,
     redis: await getRedisVal('test')
   };
-  logger.info(data);
+  logger.info('/api/health', data);
   return NextResponse.json(data);
 }

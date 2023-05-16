@@ -9,9 +9,8 @@ export const dynamic = 'force-dynamic';
 export async function GET(req: NextRequest) {
   const uuid = getUuid();
   const companyId = extractParamFromUrl(req);
-  console.log('🚀 ~ file: route.ts:10 ~ GET ~ companyId:', companyId);
   if (!companyId) {
-    // throw new Error('no valid companyid');
+    logger.error('missing companyId', { companyId });
     return NextResponse.json({ error: 'no valid companyid' });
   }
   const company = await fetchCompany(companyId);
