@@ -9,6 +9,7 @@ type ConfigVars = {
   GITHUB_READ_ONLY: string;
   UPDATE_PASSWORD: string;
   MONGODB_URI: string;
+  TRIGGER_DATA_REFETCH: string;
 };
 
 export const {
@@ -19,7 +20,8 @@ export const {
   MONGODB_URI,
   SECRET_KEY,
   LOG_FORMAT,
-  LOG_DIR
+  LOG_DIR,
+  TRIGGER_DATA_REFETCH
 } = process.env as ConfigVars;
 
 const testVars: ConfigVars = {
@@ -30,7 +32,8 @@ const testVars: ConfigVars = {
   LOG_DIR,
   GITHUB_READ_ONLY,
   UPDATE_PASSWORD,
-  MONGODB_URI
+  MONGODB_URI,
+  TRIGGER_DATA_REFETCH
 };
 
 for (const key in testVars) {
