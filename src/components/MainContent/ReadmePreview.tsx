@@ -26,7 +26,8 @@ export default function ReadmePreview(props: {
   return (
     <div
       dir="ltr"
-      className="markdown-body no-scrollbar hidden h-auto w-2/4 min-w-[50%] max-w-[50%] overflow-y-auto rounded-tl-xl rounded-tr-xl border border-b-0 border-myblue bg-readmedark lg:block"
+      className={`markdown-body no-scrollbar hidden h-auto w-2/4 min-w-[50%] max-w-[50%] overflow-y-auto rounded-tl-xl rounded-tr-xl border border-b-0 border-myblue bg-readmedark lg:block 
+      `}
     >
       {parse(content)}
     </div>

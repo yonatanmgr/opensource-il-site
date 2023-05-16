@@ -1,7 +1,6 @@
 'use client';
 import Head from 'next/head';
 import React, { useEffect, useMemo, useState } from 'react';
-import { marked } from 'marked';
 import ReadmePreview from '@/components/MainContent/ReadmePreview';
 import ReposList from '@/components/MainContent/ReposList/ReposList';
 import PageTitle from '@/components/Header/PageTitle';
@@ -13,7 +12,8 @@ import Modal from '@/components/HelpModal';
 import OrgIcon from '@/components/Icons/OrgIcon';
 import ReposIcon from '@/components/Icons/ReposIcon';
 import axios from 'axios';
-// 
+import useMarkdown from '@/hooks/useMarkdown';
+//
 const BASE_URL = `/api/`;
 const axiosInstance = axios.create({
   baseURL: BASE_URL
@@ -46,13 +46,8 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-// This silences warnings about deprecated options, which are enabled by default for some reason, taken from:
-// https://github.com/markedjs/marked/issues/2793#issuecomment-1532386286
-marked.use({
-  mangle: false,
-  headerIds: false
-});
 const DEFAULT_READ_ME_PLACEHOLDER = `<div dir="rtl" style="font-size: 18px; font-family: 'Rubik'">בחרו ב-Repository מהרשימה כדי לקרוא את קובץ ה-README שלו!</div>`;
+const COMPANIES_READ_ME_PLACEHOLDER = `<div dir="rtl" style="font-size: 18px; font-family: 'Rubik'"><p>בחרו בחברה מהרשימה כדי להיכנס לרשימת ה-Repositories שלה,</p><p>או לחצו על שם החברה כדי לראות את עמוד ה-GitHub שלה!</p></div>`;
 
 export default function Home() {
   const [view, setView] = useState<Views>('repos');
@@ -68,6 +63,8 @@ export default function Home() {
     AllSortTypes | undefined
   >();
 
+  const { parseMarkdown } = useMarkdown();
+
   const sortByLastCommit = (b: DataProps, a: DataProps) =>
     a.lastCommit < b.lastCommit ? -1 : a.lastCommit > b.lastCommit ? 1 : 0;
 
@@ -80,12 +77,16 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    view === 'companies'
+      ? setReadmePreview(COMPANIES_READ_ME_PLACEHOLDER)
+      : setReadmePreview(DEFAULT_READ_ME_PLACEHOLDER);
+  }, [view]);
+
   const fetchCompanies = async () => {
     const res = await fetch('/api/company');
     const data = await res.json();
 
-    // const data = await fetchAllCompanies();
-    console.log('🚀 ~ file: page.tsx:55 ~ fetchCompanies ~ data:', data);
     setCompanies(
       data.companies
         .filter(
@@ -198,6 +199,7 @@ export default function Home() {
     setView('repos');
     setLoading(false);
   };
+
   const onSetReadMe = async (readme: string) => {
     setIsReadmeLoading(true);
     const foundReadme = showData.find(
@@ -210,15 +212,15 @@ export default function Home() {
       let data = await res.json();
       res = await fetch(data.download_url);
       data = await res.text();
-      const text = data.replace(`<nobr>`, ''),
-        html = marked.parse(text);
+      const text = data.replace(`<nobr>`, '');
+      const html = parseMarkdown(text);
       setReadmePreview(html);
       setIsReadmeLoading(false);
     }
   };
 
-  const onSelectCompany = (company: string[]) => {
-    fetchCompanyRepos(company[0]);
+  const onSelectCompany = (company: CompanyProps) => {
+    fetchCompanyRepos(company.login);
     setSelectedLang('');
   };
 

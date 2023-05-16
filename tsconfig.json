@@ -35,7 +35,8 @@
     "src/server/types/**/*.d.ts",
     "src/server/types/*.d.ts",
     "next.config.js",
-    "postcss.config.js"
+    "postcss.config.js",
+    "tailwind.config.js"
   ],
   "exclude": ["node_modules"]
 }

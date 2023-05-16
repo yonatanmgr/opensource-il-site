@@ -75,7 +75,7 @@ export default function Filters({
             ))}
           </select>
           <button
-            className="flex h-8 flex-row items-center justify-between gap-3 rounded-md border-none bg-mydarkblue px-4 font-['Rubik'] text-sm text-white outline outline-1 outline-myblue transition hover:cursor-default hover:bg-buttonhover focus-visible:ring-2"
+            className="flex h-8 flex-row items-center justify-between gap-3 rounded-md border-none bg-mydarkblue px-4 font-['Rubik'] text-sm text-white outline outline-1 outline-myblue transition hover:cursor-default hover:bg-buttonhover focus-visible:ring-2 sm:text-base"
             onClick={() => {
               handleSortChange('default');
               setSelectedLang('');

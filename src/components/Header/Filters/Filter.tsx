@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { sortButtonsTexts } from '../constants';
 import { AllSortTypes, SortTypes } from '../types';
-import { FilterButton } from './FilterButton';
 import { useWindowSize } from '@/hooks/useWindowSize';
 
 interface FilterProps {
@@ -22,35 +21,30 @@ export default function Filter({
   const isActive = sortButtonsTexts[sortType as SortTypes].buttons?.some(
     (tp: any) => tp.action === activeSortType
   );
+  const [activeIndex, setActiveIndex] = useState<number>(0);
 
   return (
     <div
       dir="rtl"
-      className={`flex h-8 flex-row items-center justify-between gap-3 rounded-md border-none bg-mydarkblue px-4 font-['Rubik'] text-base text-white outline outline-1 outline-myblue transition hover:cursor-default hover:bg-buttonhover focus-visible:ring-2 ${
-        isActive ? 'ring-2 ring-indigo-600' : 'outline outline-1'
+      className={`flex h-8 select-none flex-row items-center justify-between rounded-md border-none bg-mydarkblue px-4 font-['Rubik'] text-base text-white outline outline-1 outline-myblue transition hover:cursor-default hover:bg-buttonhover focus-visible:ring-2 active:bg-buttonactive ${
+        isActive ? 'gap-3 ring-2 ring-mylightblue' : 'outline outline-1'
       }`}
+      onClick={() => {
+        setActiveIndex(() => (activeIndex === 1 ? 0 : 1));
+        onSortChange(
+          sortButtonsTexts[sortType as SortTypes].buttons[activeIndex]
+            .action as SortTypes
+        );
+        if (!isMediumUp) {
+          setShouldShowFilters(false);
+        }
+      }}
     >
       <span className="flex h-full flex-row items-center text-sm sm:text-base">
         {sortButtonsTexts[sortType as SortTypes].title}
       </span>
       <div className="h-full">
-        {sortButtonsTexts[sortType as SortTypes].buttons.map(
-          (sortDir: { action: string; text: string }) => {
-            return (
-              <FilterButton
-                isActive={activeSortType === sortDir.action}
-                key={sortDir.action}
-                text={sortDir.text}
-                onClick={() => {
-                  onSortChange(sortDir.action as SortTypes);
-                  if (!isMediumUp) {
-                    setShouldShowFilters(false);
-                  }
-                }}
-              />
-            );
-          }
-        )}
+        {isActive && <i className={`arrow ${activeIndex ? `down` : `up`}`} />}
       </div>
     </div>
   );

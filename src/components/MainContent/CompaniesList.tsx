@@ -3,28 +3,24 @@ import Company from './Company';
 
 export default function CompaniesList(props: {
   companies: CompanyProps[];
-  setComp: (arg0: string[]) => unknown;
+  setComp: (company: CompanyProps) => void;
 }) {
   return (
     <div
       dir="rtl"
       className="no-scrollbar flex h-auto w-full flex-row flex-wrap items-center justify-around gap-6 overflow-y-auto"
     >
-      {props.companies?.length ? (
-        props.companies.map((comp) => {
-          return (
-            <Company
-              logo={comp.avatar}
-              name={comp.name}
-              login={comp.login}
-              key={comp.login}
-              setComp={props.setComp}
-            />
-          );
-        })
-      ) : (
-        <>Error fetching companies</>
-      )}
+      {props.companies.map((comp) => {
+        return (
+          <Company
+            name={comp.name}
+            login={comp.login}
+            avatar={comp.avatar}
+            key={comp.login}
+            setComp={props.setComp}
+          />
+        );
+      })}
     </div>
   );
 }
