@@ -9,7 +9,8 @@ export async function setRedisVal(key: string, value: unknown) {
 export async function getRedisVal(key: string) {
   try {
     const payload: { data: unknown } | null = await kv.get(key);
-    if (!payload?.data) throw new Error('error fetching data');
+    if (!payload?.data) return null;
+    // if (!payload?.data) throw new Error('error fetching data');
     return payload.data;
   } catch (error) {
     logger.warn('payload is null', error);
