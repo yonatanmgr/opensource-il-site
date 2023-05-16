@@ -156,17 +156,19 @@ async function getCompany(company: { name: string }) {
     mode: 'cors',
     headers: headersList,
     body: JSON.stringify(gqlBody)
-  }).then((res) => {
-    const gqlResult = res.json();
-    logger.info(
-      '🚀 ~ file: dataManager.service.ts:162 ~ getCompany ~ gqlResult:',
-      {
-        company,
-        gqlResult
-      }
-    );
-    return gqlResult;
-  });
+  })
+    .then((res) => {
+      const gqlResult = res.json();
+      logger.info(
+        '🚀 ~ file: dataManager.service.ts:162 ~ getCompany ~ gqlResult:',
+        {
+          company,
+          gqlResult
+        }
+      );
+      return gqlResult;
+    })
+    .catch((err) => logger.error('gqlErr for:' + company.name, err));
 }
 
 async function getProject(project: { name: string }) {
@@ -210,17 +212,19 @@ async function getProject(project: { name: string }) {
     mode: 'cors',
     headers: headersList,
     body: JSON.stringify(gqlBody)
-  }).then((res) => {
-    const gqlResult = res.json();
-    logger.info(
-      '🚀 ~ file: dataManager.service.ts:212 ~ getProject ~ gqlResult:',
-      {
-        project,
-        gqlResult
-      }
-    );
-    return gqlResult;
-  });
+  })
+    .then((res) => {
+      const gqlResult = res.json();
+      logger.info(
+        '🚀 ~ file: dataManager.service.ts:212 ~ getProject ~ gqlResult:',
+        {
+          project,
+          gqlResult
+        }
+      );
+      return gqlResult;
+    })
+    .catch((err) => logger.error('gqlErr for:' + project.name, err));
 }
 
 export async function fetchProjects(
