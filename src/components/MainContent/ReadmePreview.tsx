@@ -18,12 +18,10 @@ export default function ReadmePreview(props: {
 
   useEffect(() => {
     props.loading
-     
       ? setContent(readmeLoadingSpinner)
-     
       : setContent(props.readmePreview);
-    // eslint-disable-next-line react-hooks/exhaustive-deps;
-  }, [props.loading, props.readmePreview]);;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.loading, props.readmePreview]);
 
   return (
     <div

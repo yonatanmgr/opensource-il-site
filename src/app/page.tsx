@@ -148,6 +148,7 @@ export default function Home() {
     setData(organizedData.sort(defaultSort));
     setShowData(organizedData.sort(defaultSort));
     setLoading(false);
+    setReadmePreview(DEFAULT_READ_ME_PLACEHOLDER);
   };
 
   const fetchCompanyRepos = async (company: string) => {
