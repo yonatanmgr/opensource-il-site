@@ -12,7 +12,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@prisma/client": "^4.14.0",
     "@types/marked": "^4.3.0",
     "@types/node": "18.15.3",
     "@types/react": "18.0.28",
@@ -27,22 +26,18 @@
     "marked": "^5.0.2",
     "moment": "^2.29.4",
     "next": "13.2.4",
-    "node-cron": "^3.0.2",
     "octokit": "^2.0.14",
-    "prisma": "^4.14.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "redis": "^4.6.6",
     "sass": "^1.60.0",
     "showdown": "^2.1.0",
-    "typeorm": "^0.3.16",
     "typescript": "5.0.2",
     "uuid": "^9.0.0",
     "winston": "^3.8.2",
-    "winston-daily-rotate-file": "^4.7.1"
+    "winston-mongodb": "^5.1.1"
   },
   "devDependencies": {
-    "@types/node-cron": "^3.0.7",
     "@types/redis": "^4.0.11",
     "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.59.5",
