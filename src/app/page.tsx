@@ -13,7 +13,7 @@ import Modal from '@/components/HelpModal';
 import OrgIcon from '@/components/Icons/OrgIcon';
 import ReposIcon from '@/components/Icons/ReposIcon';
 import axios from 'axios';
-// 
+//
 const BASE_URL = `/api/`;
 const axiosInstance = axios.create({
   baseURL: BASE_URL
@@ -79,7 +79,7 @@ export default function Home() {
     fetchCompanies();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+// 
   const fetchCompanies = async () => {
     const res = await fetch('/api/company');
     const data = await res.json();
