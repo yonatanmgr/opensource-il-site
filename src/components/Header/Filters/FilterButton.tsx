@@ -7,12 +7,12 @@ interface FilterButtonProps {
 export const FilterButton = ({
   onClick,
   text,
-  isActive,
+  isActive
 }: FilterButtonProps) => {
   return (
     <button
-      className={`cursor-default focus-visible:ring-2 w-12 sm:w-8 h-full font-['Rubik'] px-1 border-x border-myblue hover:text-white/90 transition active:text-sm ${
-        isActive ? "text-white" : "text-white/70"
+      className={`h-full w-12 cursor-default border-x border-myblue px-1 font-['Rubik'] transition hover:text-white/90 focus-visible:ring-2 active:text-sm sm:w-8 ${
+        isActive ? 'text-white' : 'text-white/70'
       }`}
       onClick={onClick}
     >

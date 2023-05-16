@@ -1,31 +1,64 @@
-import Head from "next/head";
-import React, { useEffect, useMemo, useState } from "react";
-import { marked } from "marked";
-import ReadmePreview from "@/components/MainContent/ReadmePreview";
-import ReposList from "@/components/MainContent/ReposList/ReposList";
-import PageTitle from "@/components/Header/PageTitle";
-import Filters from "@/components/Header/Filters/Filters";
-import CompaniesList from "@/components/MainContent/CompaniesList";
-import { AllSortTypes } from "@/components/Header/types";
-import { CompanyProps, DataProps, RepoProps, Views } from "@/types/index.types";
-import Modal from "@/components/HelpModal";
-import OrgIcon from "@/components/Icons/OrgIcon";
-import ReposIcon from "@/components/Icons/ReposIcon";
-import useMarkdown from "@/hooks/useMarkdown";
+'use client';
+import Head from 'next/head';
+import React, { useEffect, useMemo, useState } from 'react';
+import ReadmePreview from '@/components/MainContent/ReadmePreview';
+import ReposList from '@/components/MainContent/ReposList/ReposList';
+import PageTitle from '@/components/Header/PageTitle';
+import Filters from '@/components/Header/Filters/Filters';
+import CompaniesList from '@/components/MainContent/CompaniesList';
+import { AllSortTypes } from '@/components/Header/types';
+import { CompanyProps, DataProps, RepoProps, Views } from '@/types/index.type';
+import Modal from '@/components/HelpModal';
+import OrgIcon from '@/components/Icons/OrgIcon';
+import ReposIcon from '@/components/Icons/ReposIcon';
+import axios from 'axios';
+import useMarkdown from '@/hooks/useMarkdown';
+//
+const BASE_URL = `/api/`;
+const axiosInstance = axios.create({
+  baseURL: BASE_URL
+});
 
-const COMPANIES_READ_ME_PLACEHOLDER = `<div dir="rtl" style="font-size: 18px; font-family: 'Rubik'"><p>בחרו בחברה מהרשימה כדי להיכנס לרשימת ה-Repositories שלה,</p><p>או לחצו על שם החברה כדי לראות את עמוד ה-GitHub שלה!</p></div>`;
+axiosInstance.interceptors.request.use((config) => {
+  // const token = LocalStorageService.get(TOKEN_LS_KEY);
+  // if (token) {
+  //   config.headers = config.headers || {};
+  //   (config.headers as any)['Authorization'] = `Bearer ${token}`;
+  // }
+
+  return config;
+});
+
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    console.log('🚀 ~ file: HttpService.ts:39 ~ error:', error);
+    // if (error.response.status === 401) {
+    //   // dispatch the logout action
+    //   store.dispatch(logoutAction())
+    //   LocalStorageService.delete(TOKEN_LS_KEY)
+    //   LocalStorageService.delete(ROLE_LS_KEY)
+    //   LocalStorageService.delete(USERNAME_LS_KEY)
+    // }
+    return Promise.reject(error);
+  }
+);
+
 const DEFAULT_READ_ME_PLACEHOLDER = `<div dir="rtl" style="font-size: 18px; font-family: 'Rubik'">בחרו ב-Repository מהרשימה כדי לקרוא את קובץ ה-README שלו!</div>`;
+const COMPANIES_READ_ME_PLACEHOLDER = `<div dir="rtl" style="font-size: 18px; font-family: 'Rubik'"><p>בחרו בחברה מהרשימה כדי להיכנס לרשימת ה-Repositories שלה,</p><p>או לחצו על שם החברה כדי לראות את עמוד ה-GitHub שלה!</p></div>`;
 
 export default function Home() {
-  const [view, setView] = useState<Views>("repos");
+  const [view, setView] = useState<Views>('repos');
   const [companies, setCompanies] = useState<CompanyProps[]>([]);
   const [currentCompanyName, setCurrentCompanyName] = useState<string>();
   const [data, setData] = useState<DataProps[]>([]);
   const [showData, setShowData] = useState<DataProps[]>([]);
   const [isLoading, setLoading] = useState(false);
   const [isReadmeLoading, setIsReadmeLoading] = useState(false);
-  const [selectedLang, setSelectedLang] = useState("");
-  const [readmePreview, setReadmePreview] = useState("");
+  const [selectedLang, setSelectedLang] = useState('');
+  const [readmePreview, setReadmePreview] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [activeSortType, setSortFunction] = useState<
     AllSortTypes | undefined
@@ -42,54 +75,73 @@ export default function Home() {
     setLoading(true);
     fetchRepos();
     fetchCompanies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    view === "companies"
+    view === 'companies'
       ? setReadmePreview(COMPANIES_READ_ME_PLACEHOLDER)
       : setReadmePreview(DEFAULT_READ_ME_PLACEHOLDER);
   }, [view]);
-  
+
   const fetchCompanies = async () => {
-    const res = await fetch("https://os-il-api.vercel.app/api/allcomps");
+    const res = await fetch('/api/company');
     const data = await res.json();
-    setCompanies(data);
+
+    setCompanies(
+      data.companies
+        .filter(
+          (company: { organization: { [key: string]: string } }) =>
+            company.organization?.name?.length &&
+            company.organization?.avatarUrl?.length
+        )
+        .map(
+          ({ organization }: { organization: { [key: string]: string } }) => {
+            return {
+              name: organization.name,
+              login: organization.login,
+              avatar: organization.avatarUrl
+            };
+          }
+        )
+    );
   };
 
   const fetchRepos = async () => {
-    const res = await fetch("https://os-il-api.vercel.app/api/reposdb");
-    const data: { repository: RepoProps }[] = await res.json();
+    const res = await fetch('/api/repositories');
+    const data: any /*{ repository: RepoProps }[]*/ = await res.json();
+    console.log('🚀 ~ file: page.tsx:93 ~ fetchRepos ~ data:', data);
 
-    const organizedData = data
-      .filter((proj) => proj !== null)
-      .map((proj) => {
+    const organizedData = data.repositories
+      .filter((proj: RepoProps) => proj !== null)
+      .map((proj: { repository: RepoProps }) => {
         const repo = proj.repository;
 
         const nameWithOwner = repo.nameWithOwner;
         const image = repo.openGraphImageUrl;
-        const description = repo.description ?? "";
+        const description = repo.description ?? '';
         const lastCommit = repo.defaultBranchRef
           ? repo.defaultBranchRef.target.committedDate
-          : "1970-01-01T00:00:00Z";
+          : '1970-01-01T00:00:00Z';
         const stargazerCount = repo.stargazerCount;
         const issuesCount = repo.openIssues.totalCount;
         const languages = repo.languages.edges.map((lang) => ({
           name: lang.node.name,
-          size: lang.size,
+          size: lang.size
         }));
         const totalSize = repo.languages.totalSize;
 
         return {
           id: crypto.randomUUID(),
           image: image,
-          owner: nameWithOwner.split("/")[0],
-          name: nameWithOwner.split("/")[1],
+          owner: nameWithOwner.split('/')[0],
+          name: nameWithOwner.split('/')[1],
           description: description,
           lastCommit: lastCommit,
           stars: stargazerCount,
           issuesCount: issuesCount,
           languages: languages,
-          totalSize: totalSize,
+          totalSize: totalSize
         };
       });
 
@@ -100,44 +152,51 @@ export default function Home() {
 
   const fetchCompanyRepos = async (company: string) => {
     setLoading(true);
-    const res = await fetch(
-      `https://os-il-api.vercel.app/api/company/${company}`
-    );
+    // const res = await fetch(
+    //   `https://os-il-api.vercel.app/api/company/${company}`
+    // );
+    // const data = await res.json();
+
+    const res = await fetch('/api/company/' + company);
     const data = await res.json();
+    console.log('🚀 ~ file: page.tsx:159 ~ fetchCompanyRepos ~ data:', {
+      company,
+      data
+    });
     setShowData(
-      (data.organization.repositories.nodes as RepoProps[])
+      (data.company.organization.repositories.nodes as RepoProps[])
         .map((repo) => {
           const nameWithOwner = repo.nameWithOwner;
           const image = repo.openGraphImageUrl;
-          const description = repo.description ?? "";
+          const description = repo.description ?? '';
           const lastCommit = repo.defaultBranchRef
             ? repo.defaultBranchRef.target.committedDate
-            : "1970-01-01T00:00:00Z";
+            : '1970-01-01T00:00:00Z';
           const stargazerCount = repo.stargazerCount;
           const issuesCount = repo.openIssues.totalCount;
           const languages = repo.languages.edges.map((lang) => ({
             name: lang.node.name,
-            size: lang.size,
+            size: lang.size
           }));
           const totalSize = repo.languages.totalSize;
 
           return {
             id: crypto.randomUUID(),
             image: image,
-            owner: nameWithOwner.split("/")[0],
-            name: nameWithOwner.split("/")[1],
+            owner: nameWithOwner.split('/')[0],
+            name: nameWithOwner.split('/')[1],
             description: description,
             lastCommit: lastCommit,
             stars: stargazerCount,
             issuesCount: issuesCount,
             languages: languages,
-            totalSize: totalSize,
+            totalSize: totalSize
           };
         })
-        .filter((repo: DataProps) => repo.name != ".github")
+        .filter((repo: DataProps) => repo.name != '.github')
         .sort(defaultSort)
     );
-    setView("repos");
+    setView('repos');
     setLoading(false);
   };
 
@@ -153,8 +212,8 @@ export default function Home() {
       let data = await res.json();
       res = await fetch(data.download_url);
       data = await res.text();
-      const text = data.replace(`<nobr>`, ""),
-        html = parseMarkdown(text);
+      const text = data.replace(`<nobr>`, '');
+      const html = parseMarkdown(text);
       setReadmePreview(html);
       setIsReadmeLoading(false);
     }
@@ -175,37 +234,37 @@ export default function Home() {
   const handleSortChange = (sortType: AllSortTypes) => {
     let sorted;
     switch (sortType) {
-      case "lastCommit":
+      case 'lastCommit':
         sorted = [...showData].sort((b: DataProps, a: DataProps) =>
           a.lastCommit < b.lastCommit ? -1 : a.lastCommit > b.lastCommit ? 1 : 0
         );
         break;
-      case "lastCommitReverse":
+      case 'lastCommitReverse':
         sorted = [...showData].sort((a: DataProps, b: DataProps) =>
           a.lastCommit < b.lastCommit ? -1 : a.lastCommit > b.lastCommit ? 1 : 0
         );
         break;
-      case "stars":
+      case 'stars':
         sorted = [...showData].sort(
           (b: DataProps, a: DataProps) => a.stars - b.stars
         );
         break;
-      case "starsReverse":
+      case 'starsReverse':
         sorted = [...showData].sort(
           (a: DataProps, b: DataProps) => a.stars - b.stars
         );
         break;
-      case "issues":
+      case 'issues':
         sorted = [...showData].sort(
           (b: DataProps, a: DataProps) => a.issuesCount - b.issuesCount
         );
         break;
-      case "issuesReverse":
+      case 'issuesReverse':
         sorted = [...showData].sort(
           (a: DataProps, b: DataProps) => a.issuesCount - b.issuesCount
         );
         break;
-      case "default":
+      case 'default':
         sorted = [...showData].sort(defaultSort);
         break;
       default:
@@ -220,7 +279,7 @@ export default function Home() {
     return showData.reduce((allLangs: string[], repo: DataProps) => {
       if (repo.languages) {
         repo.languages.forEach((lang) => {
-          if (!allLangs.includes(lang.name) && lang.name != "Dockerfile")
+          if (!allLangs.includes(lang.name) && lang.name != 'Dockerfile')
             allLangs.push(lang.name);
         });
       }
@@ -229,7 +288,7 @@ export default function Home() {
   }, [showData]);
 
   const dataForDisplay = useMemo(() => {
-    return selectedLang === ""
+    return selectedLang === ''
       ? showData
       : showData.filter((repo: DataProps) =>
           repo.languages.find((language) => language.name == selectedLang)
@@ -240,14 +299,12 @@ export default function Home() {
 
   const currentView = {
     repos: <ReposList setReadme={onSetReadMe} showData={dataForDisplay} />,
-    companies: (
-      <CompaniesList companies={companies} setComp={onSelectCompany} />
-    ),
+    companies: <CompaniesList companies={companies} setComp={onSelectCompany} />
   }[view];
 
   const loadingSpinner = (
-    <div className="absolute w-screen h-screen bg-black/50">
-      <div className="center h-10 w-10 border-8 border-mydarkblue border-t-myblue bg-transparent fixed left-[49%] top-[45%] rounded-full animate-spin"></div>
+    <div className="absolute h-screen w-screen bg-black/50">
+      <div className="center fixed left-[49%] top-[45%] h-10 w-10 animate-spin rounded-full border-8 border-mydarkblue border-t-myblue bg-transparent"></div>
     </div>
   );
 
@@ -263,7 +320,7 @@ export default function Home() {
         <Modal show={showModal} setShow={setShowModal}>
           <div
             dir="rtl"
-            className="flex flex-col h-auto gap-4 text-lg"
+            className="flex h-auto flex-col gap-4 text-lg"
             onClick={(e) => handleModalClick(e)}
           >
             <p>ברוכים הבאים!</p>
@@ -275,51 +332,51 @@ export default function Home() {
             <p>
               במסך המאגרים (<ReposIcon setView={setView} view={view} />
               ), לחיצה על &quot;הצג מסננים&quot;, תפתח בפניכם מספר אפשרויות
-              סינון שיעזרו לכם למצוא את הפרויקט האידיאלי עבורכם:{" "}
+              סינון שיעזרו לכם למצוא את הפרויקט האידיאלי עבורכם:{' '}
               <b>זמן גרסה אחרון</b>, <b>כמות כוכבים</b> ו-
               <b>כמות Issues פתוחים</b>. בנוסף, תוכלו לסנן את כל הפרויקטים
               המוצגים לפי שפת התכנות שלהם וכך לדייק את חיפושיכם לפרויקטים
               המתאימים לכם ביותר.
             </p>
             <p>
-              בלחיצה על כפתור החברות ( <OrgIcon setView={setView} view={view} />{" "}
+              בלחיצה על כפתור החברות ( <OrgIcon setView={setView} view={view} />{' '}
               ), יוצגו בפניכם עשרות חברות ישראליות המתחזקות ספריות קוד פתוח.
               בעוד שלחיצה על שם החברה יוביל לדף הבית שלה ב-GitHub, לחיצה על
               סמליל החברה יפתח בפניכם את כל מאגרי הקוד הפתוח הציבוריים שלה,
               אליהם תוכלו להצטרף.
             </p>
             <p>
-              לחיצה על הקישור ל-GitHub בחלקו העליון של הדף, תוביל אתכם למאגר{" "}
+              לחיצה על הקישור ל-GitHub בחלקו העליון של הדף, תוביל אתכם למאגר{' '}
               <a
                 href="https://github.com/lirantal/awesome-opensource-israel"
-                rel="noopener"
                 target="_blank"
-                className="font-medium text-blue-400 transition hover:underline decoration-dotted"
+                rel="noreferrer"
+                className="font-medium text-blue-400 decoration-dotted transition hover:underline"
               >
                 awesome-opensource-israel
               </a>
               , ממנו נמשכים המאגרים והארגונים המוצגים באתר זה.
             </p>
             <p>
-              פרויקט נוסף אליו תוכלו לתרום קוד הוא{" "}
+              פרויקט נוסף אליו תוכלו לתרום קוד הוא{' '}
               <a
                 href="https://github.com/yonatanmgr/opensource-il-site"
-                rel="noopener"
+                rel="noreferrer"
                 target="_blank"
-                className="font-medium text-blue-400 transition hover:underline decoration-dotted"
+                className="font-medium text-blue-400 decoration-dotted transition hover:underline"
               >
                 אתר זה ממש
               </a>
               ! מוזמנים להצטרף לפיתוח, להוסיף תכולות ולסייע בתיקון תקלות - וכך
               לעזור לבנות בית לקוד הפתוח בישראל.
             </p>
-            <p className="text-sm text-center opacity-50">
-              נוצר ע&quot;י יונתן מגר, 2023. ממשיך להתקיים{" "}
+            <p className="text-center text-sm opacity-50">
+              נוצר ע&quot;י יונתן מגר, 2023. ממשיך להתקיים{' '}
               <a
                 href="https://github.com/yonatanmgr/opensource-il-site/graphs/contributors"
-                rel="noopener"
+                rel="noreferrer"
                 target="_blank"
-                className="font-medium text-blue-400 transition hover:underline decoration-dotted"
+                className="font-medium text-blue-400 decoration-dotted transition hover:underline"
               >
                 בזכותכם
               </a>
@@ -335,8 +392,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {isLoading && loadingSpinner}
-      <main className="flex flex-col items-center justify-between max-h-screen min-h-screen gap-4 p-6 pb-0 md:p-16 sm:p-8 sm:pb-0 md:pb-0">
-        <div className="flex flex-col w-full lg:gap-2.5 md:gap-6 gap-2">
+      <main className="flex max-h-screen min-h-screen flex-col items-center justify-between gap-4 p-6 pb-0 sm:p-8 sm:pb-0 md:p-16 md:pb-0">
+        <div className="flex w-full flex-col gap-2.5">
           <PageTitle
             view={view}
             setView={(view) => {
@@ -345,7 +402,7 @@ export default function Home() {
             companyName={currentCompanyName}
             onResetPage={resetPage}
           />
-          {view === "repos" && (
+          {view === 'repos' && (
             <Filters
               activeSortType={activeSortType}
               selectedLang={selectedLang}
@@ -357,7 +414,7 @@ export default function Home() {
         </div>
         <div
           dir="rtl"
-          className="w-full h-screen flex overflow-y-auto flex-row justify-between gap-2.5"
+          className="flex h-screen w-full flex-row justify-between gap-2.5 overflow-y-auto"
         >
           {currentView}
           <ReadmePreview
@@ -366,7 +423,7 @@ export default function Home() {
           />
         </div>
         <div
-          className="fixed flex flex-row items-center justify-center text-3xl transition border rounded-full select-none shadow-4xl left-5 bottom-6 sm:left-9 sm:bottom-10 border-myblue bg-mydarkblue w-14 h-14 hover:bg-buttonhover active:bg-buttonactive cursor-help"
+          className="fixed bottom-6 left-5 flex h-14 w-14 cursor-help select-none flex-row items-center justify-center rounded-full border border-myblue bg-mydarkblue text-3xl shadow-4xl transition hover:bg-buttonhover active:bg-buttonactive sm:bottom-10 sm:left-9"
           onClick={() => setShowModal(true)}
         >
           ?
