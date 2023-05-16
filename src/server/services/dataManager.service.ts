@@ -156,7 +156,17 @@ async function getCompany(company: { name: string }) {
     mode: 'cors',
     headers: headersList,
     body: JSON.stringify(gqlBody)
-  }).then((res) => res.json());
+  }).then((res) => {
+    const gqlResult = res.json();
+    logger.info(
+      '🚀 ~ file: dataManager.service.ts:162 ~ getCompany ~ gqlResult:',
+      {
+        company,
+        gqlResult
+      }
+    );
+    return gqlResult;
+  });
 }
 
 async function getProject(project: { name: string }) {
@@ -200,7 +210,17 @@ async function getProject(project: { name: string }) {
     mode: 'cors',
     headers: headersList,
     body: JSON.stringify(gqlBody)
-  }).then((res) => res.json());
+  }).then((res) => {
+    const gqlResult = res.json();
+    logger.info(
+      '🚀 ~ file: dataManager.service.ts:212 ~ getProject ~ gqlResult:',
+      {
+        project,
+        gqlResult
+      }
+    );
+    return gqlResult;
+  });
 }
 
 export async function fetchProjects(
