@@ -270,12 +270,13 @@ export async function fetchComps(allComps: { name: string }[]) {
   });
 }
 
-export async function mainDataFetch() {
+export async function mainDataFetch(resetData?: boolean) {
   let isFromDB = false;
   try {
     logger.info('Initiating search for existing store in memory...');
-
-    await setRedisVal(JSON_DATA_STORE_KEY, '');
+    if (resetData) {
+      await setRedisVal(JSON_DATA_STORE_KEY, '');
+    }
     const dbData: any = await getRedisVal(JSON_DATA_STORE_KEY);
     if (dbData?.allComps?.length) {
       const {
