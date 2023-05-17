@@ -20,6 +20,7 @@ export default function RootLayout({
       </Head>
       <body className='w-screen overflow-x-hidden bg-gradient-to-b from-gradientfrom to-gradientto font-["Rubik"] text-white'>
         {children}
+        <div id="modal-root"></div>
       </body>
       <Analytics />
     </html>

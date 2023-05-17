@@ -8,8 +8,6 @@ import CompaniesList from '@/components/MainContent/CompaniesList';
 import { AllSortTypes } from '@/components/Header/types';
 import { CompanyProps, DataProps, RepoProps, Views } from '@/types/index.type';
 import Modal from '@/components/Modal';
-import OrgIcon from '@/components/Icons/OrgIcon';
-import ReposIcon from '@/components/Icons/ReposIcon';
 import useMarkdown from '@/hooks/useMarkdown';
 import HelpModalContent from '@/components/MainContent/HelpModalContent';
 
@@ -292,16 +290,10 @@ export default function Home() {
 
   return (
     <>
-      <Modal show={showModal} setShow={setShowModal}>
-        <HelpModalContent
-          handleModalClick={handleModalClick}
-          setView={setView}
-          view={view}
-        />
-      </Modal>
-
       {isLoading && loadingSpinner}
+
       <main className="flex max-h-screen min-h-screen flex-col items-center justify-between gap-4 p-6 pb-0 sm:p-8 sm:pb-0 md:p-16 md:pb-0">
+        {/* page nav title,socials,filters */}
         <div className="flex w-full flex-col gap-2.5">
           <PageTitle
             view={view}
@@ -311,6 +303,7 @@ export default function Home() {
             companyName={currentCompanyName}
             onResetPage={resetPage}
           />
+          {/* filters */}
           {view === 'repos' && (
             <Filters
               activeSortType={activeSortType}
@@ -321,6 +314,7 @@ export default function Home() {
             />
           )}
         </div>
+        {/* README PANEL */}
         <div
           dir="rtl"
           className="flex h-screen w-full flex-row justify-between gap-2.5 overflow-y-auto"
@@ -331,6 +325,7 @@ export default function Home() {
             loading={isReadmeLoading}
           />
         </div>
+        {/* Help icon -- triggers show of modal */}
         <div
           className="fixed bottom-6 left-5 flex h-14 w-14 cursor-help select-none flex-row items-center justify-center rounded-full border border-myblue bg-mydarkblue text-3xl shadow-4xl transition hover:bg-buttonhover active:bg-buttonactive sm:bottom-10 sm:left-9"
           onClick={() => setShowModal(true)}
@@ -338,6 +333,14 @@ export default function Home() {
           ?
         </div>
       </main>
+
+      <Modal show={showModal} setShow={setShowModal}>
+        <HelpModalContent
+          handleModalClick={handleModalClick}
+          setView={setView}
+          view={view}
+        />
+      </Modal>
     </>
   );
 }
