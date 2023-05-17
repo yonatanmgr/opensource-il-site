@@ -1,5 +1,4 @@
 'use client';
-import Head from 'next/head';
 import React, { useEffect, useMemo, useState } from 'react';
 import ReadmePreview from '@/components/MainContent/ReadmePreview';
 import ReposList from '@/components/MainContent/ReposList/ReposList';
@@ -8,43 +7,11 @@ import Filters from '@/components/Header/Filters/Filters';
 import CompaniesList from '@/components/MainContent/CompaniesList';
 import { AllSortTypes } from '@/components/Header/types';
 import { CompanyProps, DataProps, RepoProps, Views } from '@/types/index.type';
-import Modal from '@/components/HelpModal';
+import Modal from '@/components/Modal';
 import OrgIcon from '@/components/Icons/OrgIcon';
 import ReposIcon from '@/components/Icons/ReposIcon';
-import axios from 'axios';
 import useMarkdown from '@/hooks/useMarkdown';
-//
-const BASE_URL = `/api/`;
-const axiosInstance = axios.create({
-  baseURL: BASE_URL
-});
-
-axiosInstance.interceptors.request.use((config) => {
-  // const token = LocalStorageService.get(TOKEN_LS_KEY);
-  // if (token) {
-  //   config.headers = config.headers || {};
-  //   (config.headers as any)['Authorization'] = `Bearer ${token}`;
-  // }
-
-  return config;
-});
-
-axiosInstance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    console.log('🚀 ~ file: HttpService.ts:39 ~ error:', error);
-    // if (error.response.status === 401) {
-    //   // dispatch the logout action
-    //   store.dispatch(logoutAction())
-    //   LocalStorageService.delete(TOKEN_LS_KEY)
-    //   LocalStorageService.delete(ROLE_LS_KEY)
-    //   LocalStorageService.delete(USERNAME_LS_KEY)
-    // }
-    return Promise.reject(error);
-  }
-);
+import HelpModalContent from '@/components/MainContent/HelpModalContent';
 
 const DEFAULT_READ_ME_PLACEHOLDER = `<div dir="rtl" style="font-size: 18px; font-family: 'Rubik'">בחרו ב-Repository מהרשימה כדי לקרוא את קובץ ה-README שלו!</div>`;
 const COMPANIES_READ_ME_PLACEHOLDER = `<div dir="rtl" style="font-size: 18px; font-family: 'Rubik'"><p>בחרו בחברה מהרשימה כדי להיכנס לרשימת ה-Repositories שלה,</p><p>או לחצו על שם החברה כדי לראות את עמוד ה-GitHub שלה!</p></div>`;
@@ -325,75 +292,14 @@ export default function Home() {
 
   return (
     <>
-      <div onClick={() => setShowModal(false)}>
-        <Modal show={showModal} setShow={setShowModal}>
-          <div
-            dir="rtl"
-            className="flex h-auto flex-col gap-4 text-lg"
-            onClick={(e) => handleModalClick(e)}
-          >
-            <p>ברוכים הבאים!</p>
-            <p>
-              באתר זה תוכלו למצוא פרויקטי קוד פתוח ישראליים וחברות ישראליות
-              המתחזקות ספריות קוד פתוח, לקרוא על הפרויקטים ולמצוא את הפרויקט הבא
-              (ואולי גם הראשון 😉) אליו תוכלו לתרום.
-            </p>
-            <p>
-              במסך המאגרים (<ReposIcon setView={setView} view={view} />
-              ), לחיצה על &quot;הצג מסננים&quot;, תפתח בפניכם מספר אפשרויות
-              סינון שיעזרו לכם למצוא את הפרויקט האידיאלי עבורכם:{' '}
-              <b>זמן גרסה אחרון</b>, <b>כמות כוכבים</b> ו-
-              <b>כמות Issues פתוחים</b>. בנוסף, תוכלו לסנן את כל הפרויקטים
-              המוצגים לפי שפת התכנות שלהם וכך לדייק את חיפושיכם לפרויקטים
-              המתאימים לכם ביותר.
-            </p>
-            <p>
-              בלחיצה על כפתור החברות ( <OrgIcon setView={setView} view={view} />{' '}
-              ), יוצגו בפניכם עשרות חברות ישראליות המתחזקות ספריות קוד פתוח.
-              בעוד שלחיצה על שם החברה יוביל לדף הבית שלה ב-GitHub, לחיצה על
-              סמליל החברה יפתח בפניכם את כל מאגרי הקוד הפתוח הציבוריים שלה,
-              אליהם תוכלו להצטרף.
-            </p>
-            <p>
-              לחיצה על הקישור ל-GitHub בחלקו העליון של הדף, תוביל אתכם למאגר{' '}
-              <a
-                href="https://github.com/lirantal/awesome-opensource-israel"
-                target="_blank"
-                rel="noreferrer"
-                className="font-medium text-blue-400 decoration-dotted transition hover:underline"
-              >
-                awesome-opensource-israel
-              </a>
-              , ממנו נמשכים המאגרים והארגונים המוצגים באתר זה.
-            </p>
-            <p>
-              פרויקט נוסף אליו תוכלו לתרום קוד הוא{' '}
-              <a
-                href="https://github.com/yonatanmgr/opensource-il-site"
-                rel="noreferrer"
-                target="_blank"
-                className="font-medium text-blue-400 decoration-dotted transition hover:underline"
-              >
-                אתר זה ממש
-              </a>
-              ! מוזמנים להצטרף לפיתוח, להוסיף תכולות ולסייע בתיקון תקלות - וכך
-              לעזור לבנות בית לקוד הפתוח בישראל.
-            </p>
-            <p className="text-center text-sm opacity-50">
-              נוצר ע&quot;י יונתן מגר, 2023. ממשיך להתקיים{' '}
-              <a
-                href="https://github.com/yonatanmgr/opensource-il-site/graphs/contributors"
-                rel="noreferrer"
-                target="_blank"
-                className="font-medium text-blue-400 decoration-dotted transition hover:underline"
-              >
-                בזכותכם
-              </a>
-              .
-            </p>
-          </div>
-        </Modal>
-      </div>
+      <Modal show={showModal} setShow={setShowModal}>
+        <HelpModalContent
+          handleModalClick={handleModalClick}
+          setView={setView}
+          view={view}
+        />
+      </Modal>
+
       {isLoading && loadingSpinner}
       <main className="flex max-h-screen min-h-screen flex-col items-center justify-between gap-4 p-6 pb-0 sm:p-8 sm:pb-0 md:p-16 md:pb-0">
         <div className="flex w-full flex-col gap-2.5">
