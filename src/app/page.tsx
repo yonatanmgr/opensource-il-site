@@ -314,12 +314,14 @@ export default function Home() {
             />
           )}
         </div>
-        {/* README PANEL */}
+        {/* companies/repos view && README PANEL*/}
         <div
           dir="rtl"
           className="flex h-screen w-full flex-row justify-between gap-2.5 overflow-y-auto"
         >
+          {/* companies/repos view */}
           {currentView}
+          {/* README PANEL */}
           <ReadmePreview
             readmePreview={readmePreview}
             loading={isReadmeLoading}
