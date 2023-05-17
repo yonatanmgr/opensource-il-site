@@ -52,12 +52,14 @@ const COMPANIES_READ_ME_PLACEHOLDER = `<div dir="rtl" style="font-size: 18px; fo
 export default function Home() {
   const [view, setView] = useState<Views>('repos');
   const [companies, setCompanies] = useState<CompanyProps[]>([]);
+  const [currentCompanyName, setCurrentCompanyName] = useState<string>();
   const [data, setData] = useState<DataProps[]>([]);
   const [showData, setShowData] = useState<DataProps[]>([]);
   const [isLoading, setLoading] = useState(false);
   const [isReadmeLoading, setIsReadmeLoading] = useState(false);
   const [selectedLang, setSelectedLang] = useState('');
   const [readmePreview, setReadmePreview] = useState('');
+  const [currentRepo, setCurrentRepo] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [activeSortType, setSortFunction] = useState<
     AllSortTypes | undefined
@@ -201,27 +203,41 @@ export default function Home() {
   };
 
   const onSetReadMe = async (readme: string) => {
-    setIsReadmeLoading(true);
-    const foundReadme = showData.find(
-      (repo) => `https://www.github.com/${repo.owner}/${repo.name}` === readme
-    );
-    if (foundReadme) {
-      let res = await fetch(
-        `https://api.github.com/repos/${foundReadme.owner}/${foundReadme.name}/readme`
+    if (currentRepo !== readme) {
+      setIsReadmeLoading(true);
+      const foundReadme = showData.find(
+        (repo) => `https://www.github.com/${repo.owner}/${repo.name}` === readme
       );
-      let data = await res.json();
-      res = await fetch(data.download_url);
-      data = await res.text();
-      const text = data.replace(`<nobr>`, '');
-      const html = parseMarkdown(text);
-      setReadmePreview(html);
-      setIsReadmeLoading(false);
+
+      setCurrentRepo(
+        `https://www.github.com/${foundReadme?.owner}/${foundReadme?.name}`
+      );
+
+      if (foundReadme) {
+        let res = await fetch(
+          `https://api.github.com/repos/${foundReadme.owner}/${foundReadme.name}/readme`
+        );
+        let data = await res.json();
+        res = await fetch(data.download_url);
+        data = await res.text();
+        const text = data.replace(`<nobr>`, '');
+        const html = parseMarkdown(text);
+        setReadmePreview(html);
+        setIsReadmeLoading(false);
+      }
     }
   };
 
   const onSelectCompany = (company: CompanyProps) => {
     fetchCompanyRepos(company.login);
+    setCurrentCompanyName(company.name);
     setSelectedLang('');
+  };
+
+  const resetPage = () => {
+    setLoading(true);
+    setCurrentCompanyName(undefined);
+    fetchRepos();
   };
 
   const handleSortChange = (sortType: AllSortTypes) => {
@@ -390,9 +406,10 @@ export default function Home() {
           <PageTitle
             view={view}
             setView={(view) => {
-              setReadmePreview(DEFAULT_READ_ME_PLACEHOLDER);
               setView(view);
             }}
+            companyName={currentCompanyName}
+            onResetPage={resetPage}
           />
           {view === 'repos' && (
             <Filters
