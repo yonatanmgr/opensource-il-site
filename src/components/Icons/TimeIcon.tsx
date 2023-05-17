@@ -1,7 +1,7 @@
 export default function TimeIcon() {
   return (
     <>
-    <span className="hidden sm:contents">גרסה אחרונה: </span>
+      <span className="hidden sm:contents">גרסה אחרונה: </span>
       <svg
         className="sm:hidden"
         aria-hidden="true"

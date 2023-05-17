@@ -1,27 +1,27 @@
 export const sortButtonsTexts = {
   lastCommit: {
-    title: "זמן גרסה אחרונה",
+    title: 'זמן גרסה אחרונה',
     buttons: [
-      { text: "▲", action: "lastCommitReverse" },
-      { text: "▼", action: "lastCommit" },
-    ],
+      { text: '▲', action: 'lastCommitReverse' },
+      { text: '▼', action: 'lastCommit' }
+    ]
   },
   stars: {
-    title: "כמות כוכבים",
+    title: 'כמות כוכבים',
     buttons: [
-      { text: "▲", action: "starsReverse" },
-      { text: "▼", action: "stars" },
-    ],
+      { text: '▲', action: 'starsReverse' },
+      { text: '▼', action: 'stars' }
+    ]
   },
   issues: {
-    title: "כמות Issues פתוחים",
+    title: 'כמות Issues פתוחים',
     buttons: [
-      { text: "▲", action: "issuesReverse" },
-      { text: "▼", action: "issues" },
-    ],
+      { text: '▲', action: 'issuesReverse' },
+      { text: '▼', action: 'issues' }
+    ]
   },
   default: {
-    title: "איפוס",
-    buttons: [{ text: "איפוס", action: "default" }],
-  },
+    title: 'איפוס',
+    buttons: [{ text: 'איפוס', action: 'default' }]
+  }
 } as const;

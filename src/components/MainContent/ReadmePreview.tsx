@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import parse from "html-react-parser";
+import { useEffect, useState } from 'react';
+import parse from 'html-react-parser';
 
 export default function ReadmePreview(props: {
   readmePreview: string;
@@ -20,12 +20,13 @@ export default function ReadmePreview(props: {
     props.loading
       ? setContent(readmeLoadingSpinner)
       : setContent(props.readmePreview);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.loading, props.readmePreview]);
 
   return (
     <div
       dir="ltr"
-      className={`hidden lg:block w-2/4 min-w-[50%] max-w-[50%] h-auto overflow-y-auto markdown-body bg-readmedark border border-myblue border-b-0 rounded-tl-xl rounded-tr-xl no-scrollbar 
+      className={`markdown-body no-scrollbar hidden h-auto w-2/4 min-w-[50%] max-w-[50%] overflow-y-auto rounded-tl-xl rounded-tr-xl border border-b-0 border-myblue bg-readmedark lg:block 
       `}
     >
       {parse(content)}
