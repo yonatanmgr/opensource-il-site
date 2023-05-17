@@ -4,10 +4,13 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import CompaniesList from '@/components/MainContent/CompaniesList';
 import ReadmePanel from '@/components/ReadmePanel';
 import PageContainer from '@/components/PageContainer';
+import { useRouter } from 'next/navigation';
 import { CompanyProps } from '@/types/index.type';
 import { useEffect, useState } from 'react';
 
-function ReposNavbar() {
+function CompanyNavbar() {
+  const router = useRouter();
+
   return (
     <div
       dir="rtl"
@@ -19,9 +22,9 @@ function ReposNavbar() {
 
       <SocialLinks
         setView={(view) => {
-          console.log('🚀 ~ file: page.tsx:16 ~ ReposNavbar ~ view:', view);
+          if (view === 'repos') router.push('/repositories');
         }}
-        view={'repos'}
+        view={'companies'}
       />
     </div>
   );
@@ -70,7 +73,7 @@ export default function CompanyPage() {
   return (
     <PageContainer>
       <LoadingSpinner show={isLoading} />
-      <ReposNavbar />
+      <CompanyNavbar />
       <div
         dir="rtl"
         className="flex h-screen w-full flex-row justify-between gap-2.5 overflow-y-auto"
