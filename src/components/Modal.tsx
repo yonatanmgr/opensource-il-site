@@ -1,4 +1,5 @@
-import React from 'react';
+'use client';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 type ModalProps = {
@@ -8,7 +9,13 @@ type ModalProps = {
 };
 
 export default function Modal({ setShow, show, children }: ModalProps) {
-  const modalRoot = document.getElementById('modal-root');
+  let modalRoot = null;
+
+  useEffect(() => {
+    if (document) {
+      modalRoot = document?.getElementById('modal-root');
+    }
+  }, []);
 
   if (!modalRoot || !show) {
     return null;
