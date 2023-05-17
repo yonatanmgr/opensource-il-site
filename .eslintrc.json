@@ -20,6 +20,7 @@
   },
   "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
+    "@next/next/no-html-link-for-pages": ["error", "./src/app"],
     "@typescript-eslint/no-explicit-any": "off",
     "react/react-in-jsx-scope": "off",
     "prettier/prettier": [
