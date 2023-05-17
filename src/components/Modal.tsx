@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 
 type ModalProps = {
@@ -9,15 +9,15 @@ type ModalProps = {
 };
 
 export default function Modal({ setShow, show, children }: ModalProps) {
-  let modalRoot = null;
+  const modalRoot = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (document) {
-      modalRoot = document?.getElementById('modal-root');
+      modalRoot.current = document?.getElementById('modal-root');
     }
   }, []);
 
-  if (!modalRoot || !show) {
+  if (!modalRoot.current || !show) {
     return null;
   }
 
@@ -39,6 +39,6 @@ export default function Modal({ setShow, show, children }: ModalProps) {
         </section>
       </div>
     </div>,
-    modalRoot
+    modalRoot.current
   );
 }
