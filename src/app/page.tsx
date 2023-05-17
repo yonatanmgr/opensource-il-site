@@ -394,12 +394,6 @@ export default function Home() {
           </div>
         </Modal>
       </div>
-      <Head>
-        <title>קוד פתוח ישראלי</title>
-        <meta name="description" content="Open Source Community Israel" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       {isLoading && loadingSpinner}
       <main className="flex max-h-screen min-h-screen flex-col items-center justify-between gap-4 p-6 pb-0 sm:p-8 sm:pb-0 md:p-16 md:pb-0">
         <div className="flex w-full flex-col gap-2.5">
