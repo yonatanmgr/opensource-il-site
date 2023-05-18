@@ -1,6 +1,15 @@
 export type ReademGithubCompany = { name: string };
 export type ReademGithubProject = { name: string; description: string };
 
+export type Organization = {
+  name: string;
+  avatarUrl: string;
+  login: string;
+  repositories: {
+    nodes: RepoProps[];
+  };
+};
+
 export type RepoProps = {
   openIssues: {
     totalCount: number;
