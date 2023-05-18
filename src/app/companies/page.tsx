@@ -35,6 +35,7 @@ const COMPANIES_READ_ME_PLACEHOLDER = `<div dir="rtl" style="font-size: 18px; fo
 export default function CompanyPage() {
   const [companies, setCompanies] = useState([]);
   const [isLoading, setLoading] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     fetchCompanies();
@@ -69,6 +70,9 @@ export default function CompanyPage() {
   const onSelectCompany = (company: CompanyProps): void => {
     console.log('🚀 ~ file: page.tsx:38 ~ onSelectCompany ~ company:', company);
     // redirect to company page
+    router.push(
+      `/companies/${company.login}?name=${company.name}&avatarUrl=${company.avatar}`
+    );
   };
   return (
     <PageContainer>
