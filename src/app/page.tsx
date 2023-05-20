@@ -43,15 +43,13 @@ export default function RepositoryPage() {
   const [selectedLang, setSelectedLang] = useState('');
   const [repositories, setRepositories] = useState<DataProps[]>([]);
   const [showData, setShowData] = useState<DataProps[]>([]);
-  const [isReadmeLoading, setIsReadmeLoading] = useState(false);
   const [currentRepo, setCurrentRepo] = useState('');
-  const { parseMarkdown } = useMarkdown();
+  const { fetchMarkedDown, readMe, isReadmeLoading } = useMarkdown(
+    DEFAULT_READ_ME_PLACEHOLDER
+  );
   const [activeSortType, setSortFunction] = useState<
     AllSortTypes | undefined
   >();
-  const [readmePreview, setReadmePreview] = useState(
-    DEFAULT_READ_ME_PLACEHOLDER
-  );
 
   useEffect(() => {
     setLoading(true);
@@ -116,7 +114,6 @@ export default function RepositoryPage() {
 
   const onSetReadMe = async (readme: string) => {
     if (currentRepo !== readme) {
-      setIsReadmeLoading(true);
       const foundReadme = showData.find(
         (repo) => `https://www.github.com/${repo.owner}/${repo.name}` === readme
       );
@@ -127,16 +124,7 @@ export default function RepositoryPage() {
       );
 
       if (foundReadme) {
-        let res = await fetch(
-          `https://api.github.com/repos/${foundReadme.owner}/${foundReadme.name}/readme`
-        );
-        let data = await res.json();
-        res = await fetch(data.download_url);
-        data = await res.text();
-        const text = data.replace(`<nobr>`, '');
-        const html = parseMarkdown(text);
-        setReadmePreview(html);
-        setIsReadmeLoading(false);
+        fetchMarkedDown(foundReadme);
       }
     }
   };
@@ -213,7 +201,7 @@ export default function RepositoryPage() {
         className="flex h-screen w-full flex-row justify-between gap-2.5 overflow-y-auto"
       >
         <ReposList setReadme={onSetReadMe} showData={dataForDisplay} />{' '}
-        <ReadmePanel readmePreview={readmePreview} loading={isReadmeLoading} />
+        <ReadmePanel readmePreview={readMe} loading={isReadmeLoading} />
       </div>
     </PageContainer>
   );

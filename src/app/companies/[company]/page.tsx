@@ -41,7 +41,7 @@ function CompanyNavbar({ companyName }: { companyName: string }) {
 
       <SocialLinks
         setView={(view) => {
-          if (view === 'repos') router.push('/repositories');
+          if (view === 'repos') router.push('/');
         }}
         view={'companies'}
       />
@@ -60,40 +60,28 @@ function CompanyRepositories() {
   const [companyRepos, setCompaniesRepos] = useState<DataProps[]>([]);
   const [showData, setShowData] = useState<DataProps[]>([]);
   const [company, setCompany] = useState<Organization>();
-  const [isReadmeLoading, setIsReadmeLoading] = useState(false);
-  const [currentRepo, setCurrentRepo] = useState('');
-  const [readmePreview, setReadmePreview] = useState(
-    DEFAULT_READ_ME_PLACEHOLDER
-  );
+  const [currentDisplayedRepo, setCurrentRepo] = useState('');
   const [activeSortType, setSortFunction] = useState<
     AllSortTypes | undefined
   >();
   const [selectedLang, setSelectedLang] = useState('');
-  const { parseMarkdown } = useMarkdown();
+  const { fetchMarkedDown, readMe, isReadmeLoading } = useMarkdown(
+    DEFAULT_READ_ME_PLACEHOLDER
+  );
 
   const onSetReadMe = async (readme: string) => {
-    if (currentRepo !== readme) {
-      setIsReadmeLoading(true);
+    if (currentDisplayedRepo !== readme) {
       const foundReadme = companyRepos.find(
         (repo) => `https://www.github.com/${repo.owner}/${repo.name}` === readme
       );
 
-      // nav to repo page
+      // for if check above to prevent refetch of active readme
       setCurrentRepo(
         `https://www.github.com/${foundReadme?.owner}/${foundReadme?.name}`
       );
 
       if (foundReadme) {
-        let res = await fetch(
-          `https://api.github.com/repos/${foundReadme.owner}/${foundReadme.name}/readme`
-        );
-        let data = await res.json();
-        res = await fetch(data.download_url);
-        data = await res.text();
-        const text = data.replace(`<nobr>`, '');
-        const html = parseMarkdown(text);
-        setReadmePreview(html);
-        setIsReadmeLoading(false);
+        fetchMarkedDown(foundReadme);
       }
     }
   };
@@ -102,10 +90,6 @@ function CompanyRepositories() {
     setLoading(true);
     const res = await fetch('/api/company/' + company);
     const data: { company: { organization: Organization } } = await res.json();
-    console.log('🚀 ~ file: page.tsx:159 ~ fetchCompanyRepos ~ data:', {
-      company,
-      data
-    });
     setCompany(data.company.organization);
 
     setCompaniesRepos(
@@ -201,11 +185,6 @@ function CompanyRepositories() {
   }, [companyRepos]);
 
   useEffect(() => {
-    console.log(
-      '🚀 ~ file: page.tsx:72 ~ CompanyRepositories ~ company,companyRepos:',
-      { company, companyRepos }
-    );
-
     setShowData(companyRepos.sort(sortByLastCommit));
   }, [company, companyRepos]);
 
@@ -217,12 +196,7 @@ function CompanyRepositories() {
 
     const companyLogin = parseLastParamFromUrl(pathname);
 
-    const searchParamObj = parseSearchParams(searchParams.toString());
-    console.log('🚀 ~ file: page.tsx:82 ~ useEffect ~ searchParamObj:', {
-      companyLogin,
-      searchParamObj
-    });
-
+    // const searchParamObj = parseSearchParams(searchParams.toString());
     if (companyLogin) fetchCompanyRepos(companyLogin);
 
     // if (pathname && pathname.split('/')) fetchCompanyRepos(pathname);
@@ -255,7 +229,7 @@ function CompanyRepositories() {
         className="flex h-screen w-full flex-row justify-between gap-2.5 overflow-y-auto"
       >
         <ReposList setReadme={onSetReadMe} showData={dataForDisplay} />
-        <ReadmePanel readmePreview={readmePreview} loading={isReadmeLoading} />
+        <ReadmePanel readmePreview={readMe} loading={isReadmeLoading} />
       </div>
     </PageContainer>
   );

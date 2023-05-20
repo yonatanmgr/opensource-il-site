@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { marked } from 'marked';
 import { markedEmoji } from '../parser-plugins/markedEmoji';
 import { nameToEmoji } from 'gemoji';
+import { DataProps } from '@/types/index.type';
 
 marked.use(
   {
@@ -16,12 +18,45 @@ marked.use(
   })
 );
 
-export default function useMarkdown() {
+export default function useMarkdown(readme?: string) {
+  const [readMe, setReadme] = useState(readme || '');
+  const [isReadmeLoading, setIsReadmeLoading] = useState(false);
+
   const parseMarkdown = (markdown: string) => {
     return marked.parse(markdown);
   };
 
+  const fetchMarkedDown = async (repo: DataProps) => {
+    const readmeUrl = `https://api.github.com/repos/${repo.owner}/${repo.name}/readme`;
+    try {
+      setIsReadmeLoading(true);
+      let res = await fetch(readmeUrl);
+      let data = await res.json();
+      if (data?.message === 'Not Found') {
+        throw new Error('data fetch for repo failed');
+      }
+      res = await fetch(data.download_url);
+      data = await res.text();
+      const text = data.replace(`<nobr>`, '');
+      const html = parseMarkdown(text);
+      setReadme(html);
+    } catch (error) {
+      console.error(
+        '🚀 ~ file: useMarkdown.ts:35 ~ fetchMarkedDown ~ error:',
+        error
+      );
+      setReadme(/*html*/ `
+      <div dir="ltr" style="font-size: 18px; font-family: 'Rubik'">
+        Readme fetching failed for - <br/> ${readmeUrl}
+      </div>`);
+    } finally {
+      setIsReadmeLoading(false);
+    }
+  };
   return {
-    parseMarkdown
+    parseMarkdown,
+    fetchMarkedDown,
+    isReadmeLoading,
+    readMe
   };
 }
