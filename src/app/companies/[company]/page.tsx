@@ -26,6 +26,15 @@ function CompanyNavbar({ companyName }: { companyName: string }) {
       className="flex w-full flex-col-reverse flex-wrap items-center justify-between gap-3 lg:h-24 lg:flex-row"
     >
       <div className="flex select-none flex-row items-end text-right text-2xl font-extrabold min-[330px]:text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+        <button
+          onClick={() => {
+            router.back();
+          }}
+          className="flex cursor-default flex-row items-center rounded-xl border border-myblue bg-mydarkblue px-4 py-0.5 text-base transition hover:bg-buttonhover active:bg-buttonactive sm:text-lg md:text-xl lg:py-1 lg:text-2xl"
+        >
+          &lt;
+        </button>
+        &nbsp;
         {companyName || 'חברה'}&nbsp;
         <span className="font-light opacity-60"> / פרויקטים</span>
       </div>
