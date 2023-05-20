@@ -22,7 +22,7 @@ function CompanyNavbar() {
 
       <SocialLinks
         setView={(view) => {
-          if (view === 'repos') router.push('/repositories');
+          if (view === 'repos') router.push('/');
         }}
         view={'companies'}
       />
