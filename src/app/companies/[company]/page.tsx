@@ -17,7 +17,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 const DEFAULT_READ_ME_PLACEHOLDER = `<div dir="rtl" style="font-size: 18px; font-family: 'Rubik'">בחרו ב-Repository מהרשימה כדי לקרוא את קובץ ה-README שלו!</div>`;
 
-function CompanyNavbar({ companyName }: { companyName: string }) {
+function CompanyNavbar({ companyName }: { companyName: string | undefined }) {
   const router = useRouter();
 
   return (
@@ -35,7 +35,7 @@ function CompanyNavbar({ companyName }: { companyName: string }) {
           &lt;
         </button>
         &nbsp;
-        {companyName || 'חברה'}&nbsp;
+        {companyName}&nbsp;
         <span className="font-light opacity-60"> / פרויקטים</span>
       </div>
 
@@ -68,6 +68,7 @@ function CompanyRepositories() {
   const { fetchMarkedDown, readMe, isReadmeLoading } = useMarkdown(
     DEFAULT_READ_ME_PLACEHOLDER
   );
+  const [companyName, setCompanyName] = useState<string | undefined>('');
 
   const onSetReadMe = async (readme: string) => {
     if (currentDisplayedRepo !== readme) {
@@ -111,15 +112,15 @@ function CompanyRepositories() {
 
           return {
             id: crypto.randomUUID(),
-            image: image,
+            image,
             owner: nameWithOwner.split('/')[0],
             name: nameWithOwner.split('/')[1],
-            description: description,
-            lastCommit: lastCommit,
+            description,
+            lastCommit,
             stars: stargazerCount,
-            issuesCount: issuesCount,
-            languages: languages,
-            totalSize: totalSize
+            issuesCount,
+            languages,
+            totalSize
           };
         })
         .filter((repo: DataProps) => repo.name != '.github')
@@ -195,6 +196,7 @@ function CompanyRepositories() {
     );
 
     const companyLogin = parseLastParamFromUrl(pathname);
+    if (companyLogin) setCompanyName(companyLogin);
 
     // const searchParamObj = parseSearchParams(searchParams.toString());
     if (companyLogin) fetchCompanyRepos(companyLogin);
@@ -216,7 +218,7 @@ function CompanyRepositories() {
   return (
     <PageContainer>
       <LoadingSpinner show={isLoading} />
-      <CompanyNavbar companyName={company?.name || ''} />
+      <CompanyNavbar companyName={companyName} />
       <Filters
         activeSortType={activeSortType}
         selectedLang={selectedLang}
