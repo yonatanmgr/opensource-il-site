@@ -4,11 +4,19 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.css") (prefers-color-scheme: light); */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-dark.css');
 
+/* try to edit img in readme 
+It seems that there is no reference to this in the github-markdown css file. I added a global setting that would give a max-height of 8rem and it looks much better.*/
+
+.markdown-body img {
+  max-height: 25rem;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+
   .markdown-body ul,
   ol,
   menu {
@@ -31,10 +39,11 @@
   padding: 45px;
 }
 
-a > img,
-p > img {
+a>img,
+p>img {
   display: inline;
 }
+
 .arrow {
   border: solid #fff;
   border-width: 0 2px 2px 0;
@@ -51,6 +60,7 @@ p > img {
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+
 /* we can use these lines instead if we want to support general dark / light modes
 @media (prefers-color-scheme: dark){
   [href$="#gh-light-mode-only"] {
