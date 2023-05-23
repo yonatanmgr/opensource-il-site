@@ -8,7 +8,7 @@
 It seems that there is no reference to this in the github-markdown css file. I added a global setting that would give a max-height of 8rem and it looks much better.*/
 
 .markdown-body img {
-  max-height: 8rem;
+  max-height: 25rem;
 }
 
 @tailwind base;
