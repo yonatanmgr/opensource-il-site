@@ -1,15 +1,25 @@
-@import "https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap";
+@import 'https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap';
 /* we can use these lines instead if we want to support general dark / light modes
 @import url("https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-dark.css") (prefers-color-scheme: dark);
 @import url("https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.css") (prefers-color-scheme: light); */
-@import url("https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-dark.css");
+@import url('https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-dark.css');
+
+/* try to edit img in readme 
+It seems that there is no reference to this in the github-markdown css file. I added a global setting that would give a max-height of 8rem and it looks much better.*/
+
+.markdown-body img {
+  max-height: 25rem;
+}
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  .markdown-body ul, ol, menu {
+
+  .markdown-body ul,
+  ol,
+  menu {
     list-style: revert;
   }
 }
@@ -29,9 +39,26 @@
   padding: 45px;
 }
 
-a > img,
-p > img {
+a>img,
+p>img {
   display: inline;
+}
+
+.arrow {
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 2px;
+}
+
+.up {
+  -webkit-transform: rotate(-135deg);
+  transform: rotate(-135deg);
+}
+
+.down {
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 /* we can use these lines instead if we want to support general dark / light modes
@@ -47,6 +74,6 @@ p > img {
   }
 }
 */
-[href$="#gh-light-mode-only"] {
+[href$='#gh-light-mode-only'] {
   display: none;
 }

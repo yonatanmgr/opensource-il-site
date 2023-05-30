@@ -1,22 +1,22 @@
-import OrgIcon from "../Icons/OrgIcon";
-import ReposIcon from "../Icons/ReposIcon";
-import { TitleAndSocialLinkProps } from "./types";
+import OrgIcon from '../Icons/OrgIcon';
+import ReposIcon from '../Icons/ReposIcon';
+import { TitleAndSocialLinkProps } from './types';
 
 export default function SocialLinks({
   setView,
-  view,
+  view
 }: TitleAndSocialLinkProps) {
   return (
     <div
       dir="ltr"
-      className="flex flex-row items-center min-[330px]:gap-4 gap-3"
+      className="flex flex-row items-center gap-3 min-[330px]:gap-5"
     >
       <a
-        rel="noopener"
+        rel="noreferrer"
         title="Social Links"
         href="https://bento.me/osil"
         target="_blank"
-        className="overflow-hidden flex flex-row text-lg border border-myblue hover:font-medium bg-mydarkblue px-4 py-2 rounded-xl items-center gap-4 transition hover:scale-105 active:scale-95"
+        className="flex flex-row items-center gap-4 overflow-hidden rounded-xl border border-myblue bg-mydarkblue px-4 py-2 text-lg transition hover:scale-[1.02] hover:font-medium active:scale-95"
       >
         <svg
           width="30"
@@ -25,10 +25,10 @@ export default function SocialLinks({
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <g clip-path="url(#clip0_1_25)">
+          <g clipPath="url(#clip0_1_25)">
             <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
+              fillRule="evenodd"
+              clipRule="evenodd"
               d="M20.9358 142.408C9.37495 133.365 3.59452 128.843 1.42875 123.628L0 116.526V87.4289H7.28891V101.905C10.4788 98.9151 14.9264 95.4357 20.9358 90.7347L78.735 45.5205C90.2959 36.4768 96.0761 31.955 102.742 30.2607C108.605 28.7705 114.921 28.7705 120.784 30.2607C127.45 31.955 133.23 36.4768 144.791 45.5205L202.59 90.7347C208.6 95.4357 213.047 98.9151 216.237 101.905V87.4289H223.526V116.572C223.526 118.953 223.05 121.335 222.097 123.628C219.931 128.843 214.151 133.365 202.59 142.408L144.791 187.623C133.231 196.666 127.45 201.188 120.784 202.882C114.921 204.373 108.605 204.373 102.742 202.882C96.0761 201.188 90.2959 196.666 78.735 187.623L20.9358 142.408Z"
               fill="white"
             />

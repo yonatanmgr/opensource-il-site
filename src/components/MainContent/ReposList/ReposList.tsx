@@ -1,5 +1,5 @@
-import Project from "@/components/MainContent/ReposList/Project";
-import { DataProps } from "@/types/index.types";
+import Project from '@/components/MainContent/ReposList/Project';
+import { DataProps } from '@/types/index.type';
 
 export default function ReposList(props: {
   showData: DataProps[];
@@ -8,11 +8,15 @@ export default function ReposList(props: {
   return (
     <div
       dir="rtl"
-      className="flex flex-col flex-no-wrap items-center w-full h-auto gap-5 overflow-x-hidden overflow-y-auto no-scrollbar"
+      className="flex-no-wrap no-scrollbar flex h-auto w-full flex-col items-center gap-5 overflow-y-auto overflow-x-hidden"
     >
       {props.showData.map((project) => {
         return (
-          <Project setReadme={props.setReadme} repo={project} key={project.id} />
+          <Project
+            setReadme={props.setReadme}
+            repo={project}
+            key={project.id}
+          />
         );
       })}
     </div>

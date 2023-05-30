@@ -1,3 +1,15 @@
+export type ReademGithubCompany = { name: string };
+export type ReademGithubProject = { name: string; description: string };
+
+export type Organization = {
+  name: string;
+  avatarUrl: string;
+  login: string;
+  repositories: {
+    nodes: RepoProps[];
+  };
+};
+
 export type RepoProps = {
   openIssues: {
     totalCount: number;
@@ -22,10 +34,10 @@ export type RepoProps = {
   };
 };
 
-export type Views = "repos" | "companies";
+export type Views = 'repos' | 'companies';
 
 export type DataProps = {
-  id:string;
+  id: string;
   image: string;
   owner: string;
   name: string;
