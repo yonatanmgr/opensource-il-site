@@ -276,6 +276,8 @@ export async function fetchComps(allComps: { name: string }[]) {
   });
 }
 
+const storeNonNulls = (arr: unknown[]) => arr.filter((n) => !!n);
+
 export async function mainDataFetch(resetData?: boolean) {
   let isFromDB = false;
   try {
@@ -297,7 +299,7 @@ export async function mainDataFetch(resetData?: boolean) {
       return {
         success,
         allComps,
-        projects: allGqlProjects.filter((project: any) => project !== null),
+        projects: allGqlProjects,
         companies: allGqlCompanies,
         allLanguages,
         isFromDB,
@@ -333,8 +335,8 @@ export async function mainDataFetch(resetData?: boolean) {
     const saveResult = await setRedisVal(JSON_DATA_STORE_KEY, {
       success,
       allComps,
-      allGqlProjects,
-      allGqlCompanies,
+      allGqlProjects: storeNonNulls(allGqlProjects),
+      allGqlCompanies: storeNonNulls(allGqlCompanies),
       allLanguages,
       createDate: new Date()
     });
@@ -348,8 +350,8 @@ export async function mainDataFetch(resetData?: boolean) {
     return {
       success,
       allComps,
-      projects: allGqlProjects,
-      companies: allGqlCompanies,
+      projects: storeNonNulls(allGqlProjects),
+      companies: storeNonNulls(allGqlCompanies),
       allLanguages,
       saveResult,
       isFromDB,
