@@ -1,0 +1,12 @@
+name: Hourly cron job
+on:
+  schedule:
+    - cron: '0 */4 * * *'
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hourly cron job
+        run: |
+          curl --request GET \
+          --url 'https://opensource-il.vercel.app/api?key=${{ secrets.UPDATE_PASSWORD }}'
