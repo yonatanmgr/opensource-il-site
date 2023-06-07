@@ -186,7 +186,7 @@ export default function RepositoryPage() {
 
   return (
     <PageContainer>
-      {/* <LoadingSpinner show={isLoading} /> */}
+      <LoadingSpinner show={isLoading} />
       <ReposNavbar />
       <Filters
         activeSortType={activeSortType}
