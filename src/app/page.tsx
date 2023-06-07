@@ -10,7 +10,6 @@ import useMarkdown from '@/hooks/useMarkdown';
 import type { DataProps, RepoProps } from '@/types/index.type';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
-
 function ReposNavbar() {
   const router = useRouter();
 
@@ -187,7 +186,7 @@ export default function RepositoryPage() {
 
   return (
     <PageContainer>
-      <LoadingSpinner show={isLoading} />
+      {/* <LoadingSpinner show={isLoading} /> */}
       <ReposNavbar />
       <Filters
         activeSortType={activeSortType}
