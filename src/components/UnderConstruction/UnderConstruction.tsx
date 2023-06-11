@@ -5,19 +5,21 @@ const UnderConstruction = () => {
         <img
           className="w-1/3"
           src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Under_construction_animated.gif"
-          alt=""
+          alt="under_construction_img"
         />
         <h1 className="text-2xl font-black">האתר סגור כעת לרגל שיפוצים</h1>
         <div className="flex flex-col gap-4">
-          <a
-            className="rounded bg-red-600 p-3 text-white hover:bg-red-300"
+          <a 
+rel="noreferrer"           
+className="rounded bg-red-600 p-3 text-white hover:bg-red-300"
             href="https://discord.gg/r9xZR8tf"
             target="_blank"
           >
             קישור לשרת הדיסקורד של הקהילה
           </a>
-          <a
-            className="rounded bg-red-600 p-3 text-center text-white hover:bg-red-300"
+          <a 
+rel="noreferrer"       
+ className="rounded bg-red-600 p-3 text-center text-white hover:bg-red-300"
             href="https://github.com/lirantal/awesome-opensource-israel"
             target="_blank"
           >
