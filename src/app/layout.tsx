@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
-
+import UnderConstruction from '@/components/UnderConstruction/UnderConstruction';
 export const metadata = {
   title: 'קוד פתוח ישראלי',
   description: 'Open Source Community Israel',
@@ -19,6 +19,8 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <body className='w-screen overflow-x-hidden bg-gradient-to-b from-gradientfrom to-gradientto font-["Rubik"] text-white'>
+        <UnderConstruction />
+
         {children}
         <div id="modal-root"></div>
       </body>

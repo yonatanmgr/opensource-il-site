@@ -10,7 +10,6 @@ import useMarkdown from '@/hooks/useMarkdown';
 import type { DataProps, RepoProps } from '@/types/index.type';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
-
 function ReposNavbar() {
   const router = useRouter();
 
