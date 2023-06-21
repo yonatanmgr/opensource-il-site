@@ -12,7 +12,7 @@ const UnderConstruction = () => {
           <a 
 rel="noreferrer"           
 className="rounded bg-red-600 p-3 text-white hover:bg-red-300"
-            href="https://discord.gg/r9xZR8tf"
+            href="https://discord.gg/a2VyCjRk2M"
             target="_blank"
           >
             קישור לשרת הדיסקורד של הקהילה
